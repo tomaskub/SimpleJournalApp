@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
+		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
+		D681AF102920057A001B415C /* CalendarDayButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = D681AF0F2920057A001B415C /* CalendarDayButton.xib */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
-		D6B43027291FB0B500E9C791 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* ViewController.swift */; };
+		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
 		D6B4302A291FB0B500E9C791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6B43028291FB0B500E9C791 /* Main.storyboard */; };
 		D6B4302C291FB0B800E9C791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6B4302B291FB0B800E9C791 /* Assets.xcassets */; };
 		D6B4302F291FB0B800E9C791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6B4302D291FB0B800E9C791 /* LaunchScreen.storyboard */; };
 		D6B4303A291FB0B800E9C791 /* SimpleJournalAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43039291FB0B800E9C791 /* SimpleJournalAppTests.swift */; };
 		D6B43044291FB0B800E9C791 /* SimpleJournalAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */; };
 		D6B43046291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */; };
+		D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43055291FB49800E9C791 /* FormatModel.swift */; };
+		D6D31ADF291FD4A700403433 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,10 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
+		D681AF0F2920057A001B415C /* CalendarDayButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarDayButton.xib; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D6B43026291FB0B500E9C791 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D6B43026291FB0B500E9C791 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		D6B43029291FB0B500E9C791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D6B4302B291FB0B800E9C791 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D6B4302E291FB0B800E9C791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +57,8 @@
 		D6B4303F291FB0B800E9C791 /* SimpleJournalAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleJournalAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITests.swift; sourceTree = "<group>"; };
 		D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D6B43055291FB49800E9C791 /* FormatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatModel.swift; sourceTree = "<group>"; };
+		D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +109,11 @@
 		D6B43021291FB0B500E9C791 /* SimpleJournalApp */ = {
 			isa = PBXGroup;
 			children = (
+				D6B43054291FB38A00E9C791 /* Views */,
+				D6B43053291FB37D00E9C791 /* Controllers */,
+				D6B43052291FB37300E9C791 /* Model */,
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
-				D6B43026291FB0B500E9C791 /* ViewController.swift */,
 				D6B43028291FB0B500E9C791 /* Main.storyboard */,
 				D6B4302B291FB0B800E9C791 /* Assets.xcassets */,
 				D6B4302D291FB0B800E9C791 /* LaunchScreen.storyboard */,
@@ -125,6 +137,33 @@
 				D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */,
 			);
 			path = SimpleJournalAppUITests;
+			sourceTree = "<group>";
+		};
+		D6B43052291FB37300E9C791 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D6B43055291FB49800E9C791 /* FormatModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D6B43053291FB37D00E9C791 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
+				D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */,
+				D681AF0B29200288001B415C /* HistoryViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D6B43054291FB38A00E9C791 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
+				D681AF0F2920057A001B415C /* CalendarDayButton.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +272,7 @@
 			files = (
 				D6B4302F291FB0B800E9C791 /* LaunchScreen.storyboard in Resources */,
 				D6B4302C291FB0B800E9C791 /* Assets.xcassets in Resources */,
+				D681AF102920057A001B415C /* CalendarDayButton.xib in Resources */,
 				D6B4302A291FB0B500E9C791 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,8 +298,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6B43027291FB0B500E9C791 /* ViewController.swift in Sources */,
+				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
+				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
+				D6D31ADF291FD4A700403433 /* SettingsTableViewController.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
+				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
+				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
