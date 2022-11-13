@@ -4,6 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,58 +25,17 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DDD, DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yuH-Mh-8Kh">
                                         <rect key="frame" x="0.0" y="0.0" width="85" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simple Journal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wr-u5-027">
                                         <rect key="frame" x="0.0" y="28.5" width="195" height="33.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWx-dj-JzI">
                                         <rect key="frame" x="0.0" y="70" width="394" height="130"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sjN-yH-4nS">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6J2-60-fwj">
-                                                        <rect key="frame" x="10" y="50" width="50" height="20.5"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="50" id="0yw-zQ-t99"/>
-                                                            <constraint firstAttribute="height" constant="20.5" id="Pjp-bX-IUW"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Right" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rw8-SB-6bV">
-                                                        <rect key="frame" x="560" y="49.5" width="40" height="21"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="21" id="Axh-pN-Mop"/>
-                                                            <constraint firstAttribute="width" constant="40" id="j4X-7m-kOC"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="120" id="Cda-vv-JjD"/>
-                                                    <constraint firstItem="6J2-60-fwj" firstAttribute="centerY" secondItem="sjN-yH-4nS" secondAttribute="centerY" id="JMG-pQ-OSy"/>
-                                                    <constraint firstItem="6J2-60-fwj" firstAttribute="leading" secondItem="sjN-yH-4nS" secondAttribute="leading" constant="10" id="PKt-KI-cHa"/>
-                                                    <constraint firstItem="Rw8-SB-6bV" firstAttribute="centerY" secondItem="sjN-yH-4nS" secondAttribute="centerY" id="xBT-PC-HXt"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Rw8-SB-6bV" secondAttribute="trailing" id="zPp-do-il4"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="rSc-4t-jsd" firstAttribute="bottom" secondItem="sjN-yH-4nS" secondAttribute="bottom" id="0ZX-LG-xC9"/>
-                                            <constraint firstItem="sjN-yH-4nS" firstAttribute="top" secondItem="rSc-4t-jsd" secondAttribute="top" id="314-t8-Q5L"/>
-                                            <constraint firstItem="rSc-4t-jsd" firstAttribute="trailing" secondItem="sjN-yH-4nS" secondAttribute="trailing" id="ubn-yF-11U"/>
-                                            <constraint firstItem="sjN-yH-4nS" firstAttribute="leading" secondItem="rSc-4t-jsd" secondAttribute="leading" id="ySe-hm-8iV"/>
-                                        </constraints>
                                         <viewLayoutGuide key="contentLayoutGuide" id="rSc-4t-jsd"/>
                                         <viewLayoutGuide key="frameLayoutGuide" id="y8C-KD-xfz"/>
                                     </scrollView>
@@ -111,7 +72,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uNM-xQ-ruY" secondAttribute="trailing" constant="20" id="Dck-TH-nyZ"/>
                             <constraint firstItem="uNM-xQ-ruY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="OoD-8S-wlt"/>
@@ -122,14 +83,14 @@
                             <constraint firstItem="qrQ-1S-mSA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="gtP-Z4-Zen"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" selectedImage="star.fill" catalog="system" id="1UI-m8-ths">
-                        <color key="badgeColor" systemColor="labelColor"/>
+                    <tabBarItem key="tabBarItem" id="1UI-m8-ths">
+                        <imageReference key="image" image="square.and.arrow.up.circle.fill" catalog="system" symbolScale="large"/>
+                        <imageReference key="selectedImage" image="star.fill" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                     <navigationItem key="navigationItem" id="PJe-1n-pox"/>
                     <connections>
                         <outlet property="dateLabel" destination="yuH-Mh-8Kh" id="UIb-F1-1ZF"/>
-                        <outlet property="leftLabel" destination="6J2-60-fwj" id="eqc-mc-pfP"/>
-                        <outlet property="scrollViewContentView" destination="sjN-yH-4nS" id="xHG-aQ-Bol"/>
+                        <outlet property="scrollView" destination="KWx-dj-JzI" id="Z7c-mU-x5x"/>
                         <outlet property="tableView" destination="uNM-xQ-ruY" id="c2x-BB-JtJ"/>
                     </connections>
                 </viewController>
@@ -147,8 +108,8 @@
                         <viewLayoutGuide key="safeArea" id="Aeb-78-tDq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" badgeValue="x" selectedImage="square.and.arrow.up.fill" catalog="system" id="MlZ-gW-bI1">
-                        <color key="badgeColor" systemColor="labelColor"/>
+                    <tabBarItem key="tabBarItem" title="Item" image="square.and.arrow.up.circle.fill" catalog="system" id="MlZ-gW-bI1">
+                        <color key="badgeColor" name="ComplementColor"/>
                     </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bym-Ob-5js" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -160,10 +121,11 @@
             <objects>
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="E2q-TO-LGi" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backgroundImage="rectangle.portrait.and.arrow.right" catalog="system" id="uc1-t1-MFX">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uc1-t1-MFX">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" name="ComplementColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pOo-ET-mMa"/>
@@ -198,9 +160,7 @@
                             <outlet property="delegate" destination="wCO-Pk-d26" id="vZO-p5-w1K"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" selectedImage="gearshape.fill" catalog="system" id="Usp-Zw-efo">
-                        <color key="badgeColor" systemColor="labelColor"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" enabled="NO" selectedImage="gearshape.fill" catalog="system" systemItem="more" id="Usp-Zw-efo"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Klg-gb-sgy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -209,12 +169,11 @@
     </scenes>
     <resources>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
-        <image name="rectangle.portrait.and.arrow.right" catalog="system" width="128" height="109"/>
-        <image name="square.and.arrow.up.fill" catalog="system" width="115" height="128"/>
+        <image name="square.and.arrow.up.circle.fill" catalog="system" width="128" height="123"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
-        <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <namedColor name="ComplementColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
