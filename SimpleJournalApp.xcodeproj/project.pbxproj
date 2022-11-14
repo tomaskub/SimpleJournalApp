@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
+		D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453229216CCC008598C9 /* QuestionCell.swift */; };
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		D63F453229216CCC008598C9 /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
+				D63F453229216CCC008598C9 /* QuestionCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				D6D31ADF291FD4A700403433 /* SettingsTableViewController.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
+				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
 				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
 			);

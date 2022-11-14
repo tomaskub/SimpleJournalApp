@@ -22,10 +22,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath)
-        cell.textLabel?.textColor = .black
-            cell.textLabel?.text = questions[indexPath.row]
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
+        cell.configureCell(questionText: questions[indexPath.row])
         return cell
     }
     
@@ -62,7 +60,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
 
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted)
-        
+        // TODO: set up calendar button constraints to work properly with scrollView
         // set up constraints for calendar buttons
             for i in 0...dateButtonArray.count-1 {
                 scrollView.addSubview(dateButtonArray[i])
@@ -79,15 +77,27 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 dateButtonArray[i].widthAnchor.constraint(equalToConstant: 85).isActive = true
                 dateButtonArray[i].heightAnchor.constraint(equalToConstant: 100).isActive = true
+//                dateButtonArray[i].widthAnchor.constraint(equalTo: dateButtonArray[i].heightAnchor, multiplier: 0.85).isActive = true
                 
             }
         dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
         // set up table view
-        tableView.rowHeight = 80
+        
+        tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
+        tableView.layer.cornerRadius = tableView.layer.bounds.width / 10
+        
+        
+//        tableView.rowHeight = UITableView.automaticDimension
+        
+        //Note - make the automatic table view height work!
+        tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
     }
 
+    
+    
 }
 
