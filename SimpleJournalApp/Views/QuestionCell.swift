@@ -54,7 +54,6 @@ class QuestionCell: UITableViewCell {
 //      Constraints for the button
         button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
         //TODO: check apple HIG for the guidline on the height of the button
-        button.heightAnchor.constraint(equalToConstant: contentView.frame.height * 0.8).isActive = true
         button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         button.widthAnchor.constraint(equalToConstant: contentView.frame.width * 0.2).isActive = true

@@ -40,7 +40,7 @@
                                 </constraints>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uNM-xQ-ruY">
-                                <rect key="frame" x="0.0" y="208" width="414" height="688"/>
+                                <rect key="frame" x="0.0" y="228" width="414" height="668"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="PrototypeCell" textLabel="Zea-lW-rGF" style="IBUITableViewCellStyleDefault" id="IlU-ll-AwY" customClass="QuestionCell" customModule="SimpleJournalApp" customModuleProvider="target">
@@ -65,7 +65,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWx-dj-JzI">
                                 <rect key="frame" x="10" y="116" width="394" height="80"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="nqd-PW-mUq"/>
+                                    <constraint firstAttribute="height" constant="100" id="W6K-YD-0DO"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="rSc-4t-jsd"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="y8C-KD-xfz"/>

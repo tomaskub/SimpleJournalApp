@@ -38,8 +38,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     let button = CalendarDayButton()
                     let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
                     // set the label text on the buttons
-                    button.setTopLabelText(text: //String(date!.formatted(date: .abbreviated, time: .omitted).prefix(2)))
-                                           String(Calendar.current.dateComponents([.day], from: date!).day!))
+                    button.setTopLabelText(text:String(Calendar.current.dateComponents([.day], from: date!).day!))
                     button.setBottomLabelText(text: String(date!.formatted(date: .complete, time: .omitted).prefix(3).uppercased()))
                     // change color on current day button
                     if i == 7 {
@@ -63,11 +62,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // TODO: set up calendar button constraints to work properly with scrollView
         // set up constraints for calendar buttons
             for i in 0...dateButtonArray.count-1 {
+                
                 scrollView.addSubview(dateButtonArray[i])
-                
-                dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-                dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-                
                 switch i {
                 case 0:
                     dateButtonArray[i].leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 10).isActive = true
@@ -75,6 +71,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     dateButtonArray[i].leadingAnchor.constraint(equalTo: dateButtonArray[i-1].trailingAnchor, constant: 10).isActive = true
                 }
                 
+                dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+                dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
                 dateButtonArray[i].widthAnchor.constraint(equalToConstant: 85).isActive = true
                 dateButtonArray[i].heightAnchor.constraint(equalToConstant: 100).isActive = true
 //                dateButtonArray[i].widthAnchor.constraint(equalTo: dateButtonArray[i].heightAnchor, multiplier: 0.85).isActive = true
@@ -96,8 +94,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
     }
-
-    
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        print("Constent size height of the scroll view is: \(scrollView.contentSize.height), and width is \(scrollView.contentSize.width)")
+//        scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width/2, y: 0 ), animated: true)
+//    }
+//
     
 }
 
