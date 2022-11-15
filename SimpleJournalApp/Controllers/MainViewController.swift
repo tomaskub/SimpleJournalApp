@@ -73,7 +73,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 
                 dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
                 dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-                dateButtonArray[i].widthAnchor.constraint(equalToConstant: 85).isActive = true
+                dateButtonArray[i].widthAnchor.constraint(equalToConstant: scrollView.frame.height * 0.85).isActive = true
                 dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height).isActive = true
 //                dateButtonArray[i].widthAnchor.constraint(equalTo: dateButtonArray[i].heightAnchor, multiplier: 0.85).isActive = true
                 
@@ -96,7 +96,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("Constent size height of the scroll view is: \(scrollView.contentSize.height), and width is \(scrollView.contentSize.width)")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         scrollView.setContentOffset(CGPoint(x: 5 * 105 , y: 0 ), animated: true)
     }
     

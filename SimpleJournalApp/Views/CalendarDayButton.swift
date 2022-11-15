@@ -53,7 +53,6 @@ import UIKit
     }
     
     override func draw(_ rect: CGRect) {
-
         // Draw card
         //main card rectangle
         let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: mainWidth, height: mainHeight), cornerRadius: mainCornerRadius)
