@@ -74,7 +74,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
                 dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
                 dateButtonArray[i].widthAnchor.constraint(equalToConstant: 85).isActive = true
-                dateButtonArray[i].heightAnchor.constraint(equalToConstant: 100).isActive = true
+                dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height).isActive = true
 //                dateButtonArray[i].widthAnchor.constraint(equalTo: dateButtonArray[i].heightAnchor, multiplier: 0.85).isActive = true
                 
             }
@@ -94,12 +94,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
     }
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        print("Constent size height of the scroll view is: \(scrollView.contentSize.height), and width is \(scrollView.contentSize.width)")
-//        scrollView.setContentOffset(CGPoint(x: scrollView.contentSize.width/2, y: 0 ), animated: true)
-//    }
-//
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("Constent size height of the scroll view is: \(scrollView.contentSize.height), and width is \(scrollView.contentSize.width)")
+        scrollView.setContentOffset(CGPoint(x: 5 * 105 , y: 0 ), animated: true)
+    }
     
 }
 

@@ -41,69 +41,47 @@ import UIKit
     private var halfHeight: CGFloat {
         return bounds.height / 2
     }
-    private var mainDimension: CGFloat {
-        if 1+bounds.height == bounds.width {
-            return 0.85 * bounds.height
-        } else {
-            
-            return min (bounds.height, bounds.width)
-            
-        }
+    
+    private var mainHeight: CGFloat {
+        return bounds.height
+    }
+    private var mainWidth: CGFloat {
+        return bounds.width
+    }
+    private var mainCornerRadius: CGFloat {
+        return  0.175 * min(mainWidth, mainHeight)
     }
     
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        
-        // main card rectangle
-        let path = UIBezierPath(roundedRect: CGRect(x: 0, //mainDimension * 0.15 / 2,
-                                                    y: 0, width: mainDimension, height: mainDimension*1.2), cornerRadius: mainDimension * 0.15)
+
+        // Draw card
+        //main card rectangle
+        let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: mainWidth, height: mainHeight), cornerRadius: mainCornerRadius)
         secondaryColor.setFill()
         path.fill()
-//        path.lineWidth = Constants.plusLineWidth / 2
-//        UIColor.black.setStroke()
-//        path.stroke()
-        // calendar card rectangle
-        let secondaryPath = UIBezierPath(roundedRect: CGRect(x: mainDimension * 0.1, y: mainDimension * 0.1, width: mainDimension * 0.8 , height: mainDimension * 0.7), cornerRadius: 0.15 * mainDimension)
+        //internal card rectangle
+        let secondaryPath = UIBezierPath(roundedRect: CGRect(x: mainWidth * 0.125, y: mainHeight * 0.125, width: mainWidth * 0.75 , height: mainHeight * 0.6), cornerRadius: mainCornerRadius * 0.5)
         primaryColor.setFill()
         secondaryPath.fill()
-        
-        if isTodayButton {
-            let plusWidth = min(bounds.width, bounds.height) * Constants.plusButtonScale
-            let halfPlusWidth = plusWidth / 2
-            let plusPath = UIBezierPath()
-            plusPath.lineWidth = Constants.plusLineWidth
-            plusPath.move(to: CGPoint(x: halfWidth - halfPlusWidth, y: halfHeight))
-            plusPath.addLine(to: CGPoint(x: halfWidth + halfPlusWidth, y: halfHeight))
-            plusPath.move(to: CGPoint(x: halfWidth, y: halfHeight + halfPlusWidth))
-            plusPath.addLine(to: CGPoint(x: halfWidth, y: halfHeight-halfPlusWidth))
-            UIColor.white.setFill()
-            plusPath.stroke()
-        }
-        
         //Set up button labels
         bottomLabel.text = bottomLabelText
         bottomLabel.textColor = tertiaryColor
-        
+        bottomLabel.font = .systemFont(ofSize: mainHeight * 0.2 )
         topLabel.text = topLabelText
-        topLabel.font = .systemFont(ofSize: mainDimension * 0.3 , weight: .bold)
+        topLabel.font = .systemFont(ofSize: mainHeight * 0.3 , weight: .bold)
         topLabel.textColor = secondaryColor
-        
+        //Add labels and constraints
         self.addSubview(bottomLabel)
-        bottomLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -0.10 * mainDimension).isActive = true
+        bottomLabel.centerYAnchor.constraint(equalTo: self.bottomAnchor, constant: -0.15 * mainHeight).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        
         self.addSubview(topLabel)
-        topLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -0.57 * mainDimension).isActive = true
+        topLabel.centerYAnchor.constraint(equalTo: self.bottomAnchor, constant: -0.575 * mainHeight).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        
-        
+
     }
     
     func setTopLabelText(text: String) -> Void {
-//        topLabel.text = text
         topLabelText = text
-//        self.setNeedsUpdateConfiguration()
     }
     func setBottomLabelText(text: String) -> Void {
         bottomLabelText = text

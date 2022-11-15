@@ -115,12 +115,28 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5cL-Li-tUe" customClass="CalendarDayButton" customModule="SimpleJournalApp" customModuleProvider="target">
+                                <rect key="frame" x="164.5" y="286" width="85" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="85" id="cc0-Fg-e3V"/>
+                                    <constraint firstAttribute="height" constant="100" id="qcy-yK-edY"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondaryColor">
+                                        <color key="value" name="AccentColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Aeb-78-tDq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="fud-vF-U01" firstAttribute="centerY" secondItem="ewZ-rF-8Up" secondAttribute="centerY" id="Skt-xv-Yfk"/>
                             <constraint firstItem="fud-vF-U01" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="dar-bK-EpV"/>
+                            <constraint firstItem="fud-vF-U01" firstAttribute="top" secondItem="5cL-Li-tUe" secondAttribute="bottom" constant="51.5" id="hPE-gk-CPj"/>
+                            <constraint firstItem="5cL-Li-tUe" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="z0F-6H-Dk3"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" image="chart.bar" catalog="system" selectedImage="chart.bar.fill" id="MlZ-gW-bI1">
@@ -185,6 +201,11 @@
             <point key="canvasLocation" x="2071" y="-548"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="5cL-Li-tUe">
+            <size key="intrinsicContentSize" width="24" height="14"/>
+        </designable>
+    </designables>
     <resources>
         <image name="chart.bar" catalog="system" width="128" height="89"/>
         <image name="chart.bar.fill" catalog="system" width="128" height="90"/>
@@ -192,6 +213,9 @@
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ComplementColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
