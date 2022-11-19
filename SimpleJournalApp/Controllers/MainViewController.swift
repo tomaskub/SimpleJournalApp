@@ -87,7 +87,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
 //        tableView.rowHeight = UITableView.automaticDimension
         
-        //Note - make the automatic table view height work!
+        //TODO: - make the automatic table view height work!
         tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
