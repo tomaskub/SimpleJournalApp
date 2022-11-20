@@ -10,14 +10,13 @@ import UIKit
 @IBDesignable class SettingCell: UITableViewCell {
     
     
-    enum iconType {
-        case clock
-        case book
-        case calendar
+    enum CellType {
+        case withChevronRight
+        case withToggleSwitch
     }
     
     static let identifier = "SettingCell"
-    
+    var cellType: CellType
     @IBInspectable var iconSystemName: String = "key.horizontal"
     
     private let label: UILabel = {
@@ -36,7 +35,7 @@ import UIKit
     private let button: UIButton = {
        let button = UIButton()
         button.setTitle("button", for: .normal)
-        button.setImage(UIImage(systemName: "book"), for: .normal)
+        button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -46,27 +45,34 @@ import UIKit
         return toggle
     }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        self.cellType = .withToggleSwitch
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        // Define background view
         self.backgroundColor = .white
         self.layer.cornerRadius = 5
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowRadius = 5
         
         
-//        contentView.backgroundColor = .red //UIColor(named: "ComplementColor")
         //Set up appearance of the cell
         contentView.layer.cornerRadius = contentView.bounds.height * 0.5
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowRadius = 5.0
         label.backgroundColor = .blue
         contentView.addSubview(label)
-        button.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
-        contentView.addSubview(button)
+        icon.image = UIImage(systemName: iconSystemName)
         icon.frame = CGRect(x: 0, y: 0, width: 75, height: 50)
         icon.contentMode = .scaleAspectFit
-//        icon.image = UIImage(systemName: iconSystemName)
         contentView.addSubview(icon)
-        addSubview(toggleSwitch)
+        //Build cell based on the cell type
+        switch cellType {
+        case .withChevronRight:
+            addSubview(button)
+            setUpConstraints(first: icon, second: label, third: button)
+        case .withToggleSwitch:
+            addSubview(toggleSwitch)
+            setUpConstraints(first: icon, second: label, third: toggleSwitch)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -75,38 +81,12 @@ import UIKit
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        //Icon view contraints
-        
-        icon.image = UIImage(systemName: iconSystemName)
-        icon.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10).isActive = true
-        icon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: icon.frame.height).isActive = true
-        
-        //Label title view contraints
-        label.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10 ).isActive = true
-        label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 10).isActive = true
-        label.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        // button constraints
-        button.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10).isActive = true
-        button.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 10).isActive = true
-        button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-//        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 50).isActive = true
-        
-        toggleSwitch.leadingAnchor.constraint(equalTo: button.trailingAnchor).isActive = true
-        toggleSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        toggleSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        
     }
+    
     func configureCell(iconImage: UIImage, labelText: String){//} , buttonImage: UIImage){
         label.text = labelText
-//        icon.image = iconImage
-        
-        
-//        button.imageView?.image = buttonImage
-        
     }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -118,4 +98,22 @@ import UIKit
         // Configure the view for the selected state
     }
 
+    func setUpConstraints(first: UIView, second: UIView, third: UIView){
+        //set up constraints for first item
+        first.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        first.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10.0).isActive = true
+        first.widthAnchor.constraint(equalToConstant: contentView.frame.height - 10).isActive = true
+        first.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10).isActive = true
+        // set up constraints for second item
+        second.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        second.leadingAnchor.constraint(equalTo: first.trailingAnchor, constant: 10).isActive = true
+        second.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        second.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10 ).isActive = true
+        // set up constraints for third item
+        third.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
+        third.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        third.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
+        
+    }
 }
