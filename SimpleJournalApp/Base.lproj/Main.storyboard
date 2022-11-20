@@ -86,9 +86,8 @@
                             <constraint firstItem="uNM-xQ-ruY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="sAV-JY-aUN"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" id="1UI-m8-ths">
+                    <tabBarItem key="tabBarItem" selectedImage="star.fill" catalog="system" id="1UI-m8-ths">
                         <imageReference key="image" image="star" catalog="system" symbolScale="large"/>
-                        <imageReference key="selectedImage" image="star.fill" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                     <navigationItem key="navigationItem" id="PJe-1n-pox"/>
                     <connections>
@@ -216,7 +215,7 @@
                                 <rect key="frame" x="0.0" y="128" width="414" height="768"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vWe-O4-Td8">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingCell" id="vWe-O4-Td8" customClass="SettingCell" customModule="SimpleJournalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vWe-O4-Td8" id="Zsp-jw-AdF">

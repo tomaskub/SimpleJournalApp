@@ -12,7 +12,7 @@ class QuestionCell: UITableViewCell {
     static let identifier = "QuestionCell"
     
     // UI elements declaration
-    private let label : UILabel = {
+    private let label: UILabel = {
         let label = UILabel()
         label.text = "Sample question text"
         label.textColor = UIColor(named: "ComplementColor")
@@ -21,7 +21,7 @@ class QuestionCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let button : UIButton = {
+    private let button: UIButton = {
         let button = UIButton()
         button.setTitle("Answer", for: .normal)
         button.backgroundColor = UIColor(named: "ComplementColor")
@@ -68,7 +68,7 @@ class QuestionCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
+        // Configure the view for the selected statexx
     }
     override func prepareForReuse() {
         super.prepareForReuse()
