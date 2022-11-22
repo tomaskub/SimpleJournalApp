@@ -10,14 +10,14 @@ import UIKit
 @IBDesignable class SettingCell: UITableViewCell {
     
     
-    enum CellType {
+    enum CellButtonType {
         case withChevronRight
         case withToggleSwitch
     }
     
     static let identifier = "SettingCell"
-    var cellType: CellType
-    @IBInspectable var iconSystemName: String = "key.horizontal"
+    var cellButtonType: CellButtonType
+    var iconSystemName: String = "key.horizontal"
     
     private let label: UILabel = {
         let label = UILabel()
@@ -30,6 +30,7 @@ import UIKit
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tintColor = .black
+        view.image = UIImage(systemName: "multiply.circle")
         return view
     }()
     private let button: UIButton = {
@@ -50,29 +51,22 @@ import UIKit
         return view
     }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        self.cellType = .withChevronRight
+        self.cellButtonType = .withChevronRight
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        // Define background view
         //Set up appearance of the cell
-        //TODO: figure out how to properly style the cell base on fitwifeapp
-        //inset frame by 10
-//        cellContentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10  ))
-        //set up corner radius
+        
+        //set up background color and corner radius
         cellContentView.layer.cornerRadius = contentView.frame.height * 0.5
-//        cellContentView.layer.borderWidth = 3.0
-//        cellContentView.layer.borderColor = UIColor.black.cgColor
-        //set up shadow
         cellContentView.backgroundColor = UIColor(named: "ComplementColor")
+        //set up shadow
         cellContentView.layer.shadowOffset = .zero
         cellContentView.layer.shadowColor = UIColor.black.cgColor
         cellContentView.layer.shadowRadius = 2.0
         cellContentView.layer.shadowOpacity = 0.5
         // set up constraints for cellContentView
-        
         //TODO: add logic to change icon in the view
-        //Setup icon image and frame (is frame needed?)
+        //Setup icon image
         icon.image = UIImage(systemName: iconSystemName)
-        icon.frame = CGRect(x: 0, y: 0, width: 75, height: 50)
         icon.contentMode = .scaleAspectFit
         
         // add subviews
@@ -80,7 +74,7 @@ import UIKit
         cellContentView.addSubview(label)
         cellContentView.addSubview(icon)
         //Build cell based on the cell type
-        switch cellType {
+        switch cellButtonType {
         case .withChevronRight:
             cellContentView.addSubview(button)
             setUpConstraints(first: icon, second: label, third: button)
@@ -97,9 +91,11 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
     }
-    
-    func configureCell(iconImage: UIImage, labelText: String){//} , buttonImage: UIImage){
+//    TODO: remove bug with cell type not properly updating UI elements
+    func configureCell(iconSystemName: String, labelText: String, cellType: CellButtonType){//} , buttonImage: UIImage){
         label.text = labelText
+        icon.image = UIImage(systemName: iconSystemName)
+        cellButtonType = cellType
     }
     
     override func awakeFromNib() {
