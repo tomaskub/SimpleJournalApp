@@ -34,8 +34,8 @@ import UIKit
         return view
     }()
     private let button: UIButton = {
-       let button = UIButton()
-//        button.setTitle("button", for: .normal)
+        let button = UIButton()
+        //        button.setTitle("button", for: .normal)
         button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -64,7 +64,7 @@ import UIKit
         cellContentView.layer.shadowRadius = 2.0
         cellContentView.layer.shadowOpacity = 0.5
         // set up constraints for cellContentView
-        //TODO: add logic to change icon in the view
+        //TODO: Remove the UIImage call after testing that it works without it
         //Setup icon image
         icon.image = UIImage(systemName: iconSystemName)
         icon.contentMode = .scaleAspectFit
@@ -91,25 +91,49 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
     }
-//    TODO: remove bug with cell type not properly updating UI elements
+    //    TODO: remove bug with cell type not properly updating UI elements
     func configureCell(iconSystemName: String, labelText: String, cellType: CellButtonType){//} , buttonImage: UIImage){
         label.text = labelText
         icon.image = UIImage(systemName: iconSystemName)
-        cellButtonType = cellType
+        if self.cellButtonType == cellType {
+            //do nothing - button type is already good
+        } else {
+            //when cell button is not cell type remove the button that is present
+            //TODO: check if removing contraints when a view is removed is needed for removed view ??
+            switch cellButtonType {
+            case .withToggleSwitch:
+                toggleSwitch.removeFromSuperview()
+            case .withChevronRight:
+                button.removeFromSuperview()
+            }
+            // when cell button is not the cell type add the other button
+            switch cellType {
+            case .withChevronRight:
+                cellContentView.addSubview(button)
+                setUpConstraintsForThirdView(view: button)
+            case .withToggleSwitch:
+                cellContentView.addSubview(toggleSwitch)
+                setUpConstraintsForThirdView(view: toggleSwitch)
+            }
+            cellButtonType = cellType
+        }
+        
+        
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
     func setUpConstraints(first: UIView, second: UIView, third: UIView){
+        
         cellContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
         cellContentView.topAnchor.constraint(equalTo: contentView.topAnchor, constant:  5).isActive = true
         cellContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
@@ -126,9 +150,16 @@ import UIKit
         second.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10 ).isActive = true
         // set up constraints for third item
         third.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
-//        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
+        //        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
         third.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
         third.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
+        
+    }
+    func setUpConstraintsForThirdView(view: UIView){
+        view.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
+        //        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
+        view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
         
     }
 }
