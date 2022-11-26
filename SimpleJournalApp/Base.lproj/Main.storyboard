@@ -100,7 +100,7 @@
             </objects>
             <point key="canvasLocation" x="2071.0144927536235" y="144.64285714285714"/>
         </scene>
-        <!--Item-->
+        <!--View Controller-->
         <scene sceneID="XtN-YL-4wz">
             <objects>
                 <viewController id="R6N-g6-tHS" sceneMemberID="viewController">
@@ -122,7 +122,7 @@
                             <constraint firstItem="fud-vF-U01" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="dar-bK-EpV"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" image="chart.bar" catalog="system" selectedImage="chart.bar.fill" id="MlZ-gW-bI1">
+                    <tabBarItem key="tabBarItem" title="" image="chart.bar" catalog="system" selectedImage="chart.bar.fill" id="MlZ-gW-bI1">
                         <color key="badgeColor" systemColor="labelColor"/>
                     </tabBarItem>
                 </viewController>
@@ -152,37 +152,6 @@
             </objects>
             <point key="canvasLocation" x="846" y="145"/>
         </scene>
-        <!--Settings Table View Controller-->
-        <scene sceneID="f1t-gu-iOH">
-            <objects>
-                <tableViewController id="wCO-Pk-d26" customClass="SettingsTableViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="6jH-fv-24s">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsCell" id="l3p-2e-U3B">
-                                <rect key="frame" x="0.0" y="50" width="414" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l3p-2e-U3B" id="ljq-5j-QLa">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="wCO-Pk-d26" id="ikF-hR-xdX"/>
-                            <outlet property="delegate" destination="wCO-Pk-d26" id="vZO-p5-w1K"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" selectedImage="gearshape.fill" catalog="system" id="Usp-Zw-efo">
-                        <imageReference key="image" image="gearshape" catalog="system" symbolScale="large"/>
-                    </tabBarItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Klg-gb-sgy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2071" y="-548"/>
-        </scene>
         <!--Settings View Controller-->
         <scene sceneID="eCB-pp-0cR">
             <objects>
@@ -195,17 +164,25 @@
                                 <rect key="frame" x="10" y="58" width="394" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="DDD, DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHy-Jd-aW4">
-                                        <rect key="frame" x="0.0" y="0.0" width="85" height="18.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="85" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w40-bg-0kl">
-                                        <rect key="frame" x="0.0" y="26.5" width="110.5" height="33.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w40-bg-0kl">
+                                        <rect key="frame" x="0.0" y="8" width="110.5" height="9.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                         <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNR-az-dZP">
+                                        <rect key="frame" x="0.0" y="25.5" width="125.5" height="34.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Change state"/>
+                                        <connections>
+                                            <action selector="changeStateButtonTouched:" destination="Bha-bv-caT" eventType="touchUpInside" id="Ieh-ef-XYs"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Bud-ZZ-Lj2"/>
@@ -216,10 +193,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingCell" id="vWe-O4-Td8" customClass="SettingCell" customModule="SimpleJournalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vWe-O4-Td8" id="Zsp-jw-AdF">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="10"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -242,6 +219,7 @@
                         <imageReference key="image" image="gearshape" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                     <connections>
+                        <outlet property="changeStateButton" destination="LNR-az-dZP" id="OVw-0g-doq"/>
                         <outlet property="dateLabel" destination="UHy-Jd-aW4" id="MIE-hz-Lmb"/>
                         <outlet property="tableView" destination="F4Y-wN-TBD" id="V56-Xz-VB4"/>
                     </connections>

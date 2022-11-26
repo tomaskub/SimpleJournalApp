@@ -23,6 +23,8 @@
 		D6B43044291FB0B800E9C791 /* SimpleJournalAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */; };
 		D6B43046291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */; };
 		D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43055291FB49800E9C791 /* FormatModel.swift */; };
+		D6B58AEC293276AA00A89B19 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AEB293276AA00A89B19 /* K.swift */; };
+		D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AED2932919800A89B19 /* Preferenes.swift */; };
 		D6D31ADF291FD4A700403433 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,8 @@
 		D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITests.swift; sourceTree = "<group>"; };
 		D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D6B43055291FB49800E9C791 /* FormatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatModel.swift; sourceTree = "<group>"; };
+		D6B58AEB293276AA00A89B19 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
+		D6B58AED2932919800A89B19 /* Preferenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferenes.swift; sourceTree = "<group>"; };
 		D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +99,7 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
+				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -157,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
+				D6B58AEB293276AA00A89B19 /* K.swift */,
 				D6D31ADE291FD4A700403433 /* SettingsTableViewController.swift */,
 				D681AF0B29200288001B415C /* HistoryViewController.swift */,
 				D63F453029215DAD008598C9 /* TabBarViewController.swift */,
@@ -310,11 +316,13 @@
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
+				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
 				D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */,
 				D6D31ADF291FD4A700403433 /* SettingsTableViewController.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
 				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
+				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
 			);

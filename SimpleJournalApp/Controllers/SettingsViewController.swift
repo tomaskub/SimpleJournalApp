@@ -9,40 +9,21 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    // MockupData
-    var mockUpSettings = [MockupData]()
-    
+    let pref = Preferences()
     let defaults = UserDefaults.standard
     let isReminderOnKey = "isReminderOnKey"
     
+    @IBOutlet weak var changeStateButton: UIButton!
     
-//    let isReminderOn: Bool = {
-//        return defaults.bool(forKey: isReminderOnKey)
-//    }()
-
+    @IBAction func changeStateButtonTouched(_ sender: Any) {
+        defaults.set(true, forKey: K.UserDefaultsKeys.isReminderEnabled)
+        print("Button tapped - changed setting for \(K.UserDefaultsKeys.isReminderEnabled) to true")
+    }
+    
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        defaults.setValue(true, forKey: "isReminderOn")
-        //TODO: Remove mock up after settings integration
-        //Mockup data
-        mockUpSettings.append(MockupData(settingSection: "Privacy", settingInSection: [
-            ("eye", "Track data", .withToggleSwitch),
-            ("figure.track.motion", "Tack location", .withToggleSwitch),
-            ("hand.raised", "Send failure reports", .withToggleSwitch)]))
-        mockUpSettings.append(MockupData(settingSection: "Color", settingInSection: [
-            ("circle.lefthalf.filled", "Use dark theme all the time", .withToggleSwitch),
-            ("pencil.tip.crop.circle", "Use custom colors", .withChevronRight),
-            ("figure.2.arms.open", "Use other user template", .withChevronRight),
-//            ("Randomly change template everyday")
-        ]))
-        mockUpSettings.append(MockupData(settingSection: "Reminders", settingInSection: [
-            ("clock.circle", "Set up reminder to journal", . withToggleSwitch),
-            ("clock.circle", "Time to journal", .withToggleSwitch),
-            ("calendar.badge.plus", "Create a calendar event for journaling", .withToggleSwitch),
-            ("r.circle", "Create a Reminder in Apple reminders", .withToggleSwitch)
-        ]))
         
         // Display date
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
@@ -60,6 +41,14 @@ class SettingsViewController: UIViewController {
         tableView.reloadData()
         
         
+        
+        let isReminderOn = defaults.bool(forKey: K.UserDefaultsKeys.isReminderEnabled)
+        print("Got the value for isReminderOn sucesfully")
+        if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? SettingCell{
+            
+            print("retrived cell: \(cell.getText())")
+            cell.setToggleButtonState(value: isReminderOn)
+        }
     }
     
 
@@ -77,14 +66,15 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mockUpSettings[section].settingsInSection.count
+        return pref.settings[section].settingInSection.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingCell.identifier) as! SettingCell
-        let iconName = mockUpSettings[indexPath.section].settingsInSection[indexPath.row].0
-        let labelText = mockUpSettings[indexPath.section].settingsInSection[indexPath.row].1
-        let cellType = mockUpSettings[indexPath.section].settingsInSection[indexPath.row].2
+        let iconName = pref.settings[indexPath.section].settingInSection[indexPath.row].icon
+        let labelText = pref.settings[indexPath.section].settingInSection[indexPath.row].text
+        let cellType = pref.settings[indexPath.section].settingInSection[indexPath.row].type
         cell.configureCell(iconSystemName: iconName, labelText: labelText, cellType: cellType)
         return cell
     }
@@ -94,10 +84,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return mockUpSettings.count
+        return pref.settings.count
     }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mockUpSettings[section].settingSection
+        return pref.settings[section].sectionName
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40

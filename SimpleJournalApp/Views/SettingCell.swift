@@ -7,8 +7,16 @@
 
 import UIKit
 
-@IBDesignable class SettingCell: UITableViewCell {
+protocol SettingCellDelegate {
+    func toggleSwitchPressed()
+    func chevronButtonPressed()
+}
+
+@IBDesignable class SettingCell: UITableViewCell { //, SettingCellDelegate {
     
+//    TODO: Add time picker as an option
+//    TODO: Add delegate for the setting cell
+//    var delegate: SettingCellDelegate
     
     enum CellButtonType {
         case withChevronRight
@@ -81,9 +89,17 @@ import UIKit
         case .withToggleSwitch:
             cellContentView.addSubview(toggleSwitch)
             setUpConstraints(first: icon, second: label, third: toggleSwitch)
+            toggleSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         }
     }
     
+    @objc func switchValueDidChange(){
+        if toggleSwitch.isOn {
+            print("UISwitch in \(label.text ?? "no label text") is on")
+        } else {
+            print("UISwitch in \(label.text ?? "no label text") is off")
+        }
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -91,7 +107,7 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
     }
-    //    TODO: remove bug with cell type not properly updating UI elements
+
     func configureCell(iconSystemName: String, labelText: String, cellType: CellButtonType){//} , buttonImage: UIImage){
         label.text = labelText
         icon.image = UIImage(systemName: iconSystemName)
@@ -162,4 +178,20 @@ import UIKit
         view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
         
     }
+    /// Return the state of the UISwitch located in the cell
+    public func getToggleButtonState() -> Bool? {
+        if self.cellButtonType == .withToggleSwitch {
+            return toggleSwitch.isOn
+        } else {
+            return nil
+        }
+    }
+    public func setToggleButtonState(value: Bool) {
+        toggleSwitch.setOn(value, animated: true)
+        print("Switch set to \(value) for cell \(self.label.text)")
+    }
+    public func getText() -> String? {
+        return label.text
+    }
+    
 }
