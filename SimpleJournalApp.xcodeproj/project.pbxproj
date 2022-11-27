@@ -99,7 +99,6 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
-				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -124,6 +123,7 @@
 				D6B43053291FB37D00E9C791 /* Controllers */,
 				D6B43052291FB37300E9C791 /* Model */,
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
+				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
 				D6B43028291FB0B500E9C791 /* Main.storyboard */,
 				D6B4302B291FB0B800E9C791 /* Assets.xcassets */,

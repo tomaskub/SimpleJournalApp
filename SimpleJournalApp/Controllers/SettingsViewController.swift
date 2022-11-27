@@ -7,7 +7,15 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, SettingCellDelegate {
+    func toggleSwitchPressed() {
+        print("toggle switch was pressed ")
+    }
+    
+    func chevronButtonPressed() {
+        print( "chevron button was pressed ")
+    }
+    
 
     let pref = Preferences()
     let defaults = UserDefaults.standard
@@ -46,7 +54,7 @@ class SettingsViewController: UIViewController {
         print("Got the value for isReminderOn sucesfully")
         if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? SettingCell{
             
-            print("retrived cell: \(cell.getText())")
+            print("retrived cell: \(String(describing: cell.getText()))")
             cell.setToggleButtonState(value: isReminderOn)
         }
     }
@@ -76,6 +84,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let labelText = pref.settings[indexPath.section].settingInSection[indexPath.row].text
         let cellType = pref.settings[indexPath.section].settingInSection[indexPath.row].type
         cell.configureCell(iconSystemName: iconName, labelText: labelText, cellType: cellType)
+        cell.delegate = self
         return cell
     }
     

@@ -14,17 +14,18 @@ protocol SettingCellDelegate {
 
 @IBDesignable class SettingCell: UITableViewCell { //, SettingCellDelegate {
     
-//    TODO: Add time picker as an option
-//    TODO: Add delegate for the setting cell
-//    var delegate: SettingCellDelegate
+    var delegate: SettingCellDelegate?
     
     enum CellButtonType {
         case withChevronRight
         case withToggleSwitch
+        case withTimePicker
     }
     
     static let identifier = "SettingCell"
+    
     var cellButtonType: CellButtonType
+    
     var iconSystemName: String = "key.horizontal"
     
     private let label: UILabel = {
@@ -58,6 +59,13 @@ protocol SettingCellDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let timePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .time
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.preferredDatePickerStyle = .compact
+        return picker
+    }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         self.cellButtonType = .withChevronRight
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -86,19 +94,23 @@ protocol SettingCellDelegate {
         case .withChevronRight:
             cellContentView.addSubview(button)
             setUpConstraints(first: icon, second: label, third: button)
+            button.addTarget(self, action: #selector(buttonPressed), for: .touchDown)
         case .withToggleSwitch:
             cellContentView.addSubview(toggleSwitch)
             setUpConstraints(first: icon, second: label, third: toggleSwitch)
             toggleSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        case .withTimePicker:
+            cellContentView.addSubview(timePicker)
+            setUpConstraints(first: icon, second: label, third: timePicker)
         }
     }
     
+    @objc func buttonPressed() {
+        delegate?.chevronButtonPressed()
+    }
+    
     @objc func switchValueDidChange(){
-        if toggleSwitch.isOn {
-            print("UISwitch in \(label.text ?? "no label text") is on")
-        } else {
-            print("UISwitch in \(label.text ?? "no label text") is off")
-        }
+        delegate?.toggleSwitchPressed()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -109,18 +121,21 @@ protocol SettingCellDelegate {
     }
 
     func configureCell(iconSystemName: String, labelText: String, cellType: CellButtonType){//} , buttonImage: UIImage){
+        
         label.text = labelText
         icon.image = UIImage(systemName: iconSystemName)
+        
         if self.cellButtonType == cellType {
             //do nothing - button type is already good
         } else {
             //when cell button is not cell type remove the button that is present
-            //TODO: check if removing contraints when a view is removed is needed for removed view ??
             switch cellButtonType {
             case .withToggleSwitch:
                 toggleSwitch.removeFromSuperview()
             case .withChevronRight:
                 button.removeFromSuperview()
+            case .withTimePicker:
+                timePicker.removeFromSuperview()
             }
             // when cell button is not the cell type add the other button
             switch cellType {
@@ -130,11 +145,13 @@ protocol SettingCellDelegate {
             case .withToggleSwitch:
                 cellContentView.addSubview(toggleSwitch)
                 setUpConstraintsForThirdView(view: toggleSwitch)
+            case .withTimePicker:
+                cellContentView.addSubview(timePicker)
+                setUpConstraintsForThirdView(view: timePicker)
             }
+            //set the cellButtonType to correct type
             cellButtonType = cellType
         }
-        
-        
     }
     
     override func awakeFromNib() {
@@ -149,7 +166,7 @@ protocol SettingCellDelegate {
     }
     
     func setUpConstraints(first: UIView, second: UIView, third: UIView){
-        
+        //set up constraints for the container view
         cellContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
         cellContentView.topAnchor.constraint(equalTo: contentView.topAnchor, constant:  5).isActive = true
         cellContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5).isActive = true
@@ -165,19 +182,16 @@ protocol SettingCellDelegate {
         second.widthAnchor.constraint(equalToConstant: 150).isActive = true
         second.heightAnchor.constraint(equalToConstant: contentView.frame.height - 10 ).isActive = true
         // set up constraints for third item
-        third.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
-        //        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
-        third.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
-        third.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
-        
+        setUpConstraintsForThirdView(view: third)
     }
+    
     func setUpConstraintsForThirdView(view: UIView){
         view.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
-        //        third.leadingAnchor.constraint(equalTo: second.trailingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
         view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
         
     }
+    
     /// Return the state of the UISwitch located in the cell
     public func getToggleButtonState() -> Bool? {
         if self.cellButtonType == .withToggleSwitch {
@@ -186,10 +200,12 @@ protocol SettingCellDelegate {
             return nil
         }
     }
+    
     public func setToggleButtonState(value: Bool) {
         toggleSwitch.setOn(value, animated: true)
-        print("Switch set to \(value) for cell \(self.label.text)")
+        print("Switch set to \(value) for cell \(String(describing: self.label.text))")
     }
+    
     public func getText() -> String? {
         return label.text
     }
