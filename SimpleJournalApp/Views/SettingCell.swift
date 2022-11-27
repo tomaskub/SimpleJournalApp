@@ -10,11 +10,12 @@ import UIKit
 protocol SettingCellDelegate {
     func toggleSwitchPressed()
     func chevronButtonPressed()
+    func timePickerEditingDidEnd(date: Date)
 }
 
 @IBDesignable class SettingCell: UITableViewCell { //, SettingCellDelegate {
     
-    var delegate: SettingCellDelegate?
+    
     
     enum CellButtonType {
         case withChevronRight
@@ -25,8 +26,7 @@ protocol SettingCellDelegate {
     static let identifier = "SettingCell"
     
     var cellButtonType: CellButtonType
-    
-    var iconSystemName: String = "key.horizontal"
+    var delegate: SettingCellDelegate?
     
     private let label: UILabel = {
         let label = UILabel()
@@ -80,9 +80,7 @@ protocol SettingCellDelegate {
         cellContentView.layer.shadowRadius = 2.0
         cellContentView.layer.shadowOpacity = 0.5
         // set up constraints for cellContentView
-        //TODO: Remove the UIImage call after testing that it works without it
         //Setup icon image
-        icon.image = UIImage(systemName: iconSystemName)
         icon.contentMode = .scaleAspectFit
         
         // add subviews
@@ -102,6 +100,7 @@ protocol SettingCellDelegate {
         case .withTimePicker:
             cellContentView.addSubview(timePicker)
             setUpConstraints(first: icon, second: label, third: timePicker)
+            timePicker.addTarget(self, action: #selector(timePickerValueChanged), for: UIControl.Event.editingDidEndOnExit)
         }
     }
     
@@ -112,6 +111,11 @@ protocol SettingCellDelegate {
     @objc func switchValueDidChange(){
         delegate?.toggleSwitchPressed()
     }
+    
+    @objc func timePickerValueChanged(){
+        delegate?.timePickerEditingDidEnd(date: timePicker.date)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

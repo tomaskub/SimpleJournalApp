@@ -7,29 +7,15 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, SettingCellDelegate {
-    func toggleSwitchPressed() {
-        print("toggle switch was pressed ")
-    }
+class SettingsViewController: UIViewController {
     
-    func chevronButtonPressed() {
-        print( "chevron button was pressed ")
-    }
-    
-
     let pref = Preferences()
     let defaults = UserDefaults.standard
     let isReminderOnKey = "isReminderOnKey"
     
-    @IBOutlet weak var changeStateButton: UIButton!
-    
-    @IBAction func changeStateButtonTouched(_ sender: Any) {
-        defaults.set(true, forKey: K.UserDefaultsKeys.isReminderEnabled)
-        print("Button tapped - changed setting for \(K.UserDefaultsKeys.isReminderEnabled) to true")
-    }
-    
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,19 +30,8 @@ class SettingsViewController: UIViewController, SettingCellDelegate {
         //set up tableView protocols
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.register(SettingCell.self, forCellReuseIdentifier: SettingCell.identifier)
         tableView.reloadData()
-        
-        
-        
-        let isReminderOn = defaults.bool(forKey: K.UserDefaultsKeys.isReminderEnabled)
-        print("Got the value for isReminderOn sucesfully")
-        if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? SettingCell{
-            
-            print("retrived cell: \(String(describing: cell.getText()))")
-            cell.setToggleButtonState(value: isReminderOn)
-        }
     }
     
 
@@ -102,15 +77,19 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return 40
     }
 }
-
-struct MockupData {
-    var settingSection: String?
-    var settingsInSection: [(String, String, SettingCell.CellButtonType)]
-    /// - settingInSection icon, text and cell button type from enum
-    init(settingSection: String? = nil, settingInSection: [(String, String, SettingCell.CellButtonType)]) {
-        self.settingSection = settingSection
-        self.settingsInSection = settingInSection
+extension SettingsViewController: SettingCellDelegate {
+    
+    // SettingCellDelegate protocol implementation
+    func toggleSwitchPressed() {
+        print("toggle switch was pressed ")
     }
     
+    func chevronButtonPressed() {
+        print( "chevron button was pressed ")
+    }
+    func timePickerEditingDidEnd(date: Date) {
+        print("Time set for notification to: \(date.description)")
+    }
 }
+
 

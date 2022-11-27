@@ -164,25 +164,17 @@
                                 <rect key="frame" x="10" y="58" width="394" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="DDD, DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHy-Jd-aW4">
-                                        <rect key="frame" x="0.0" y="0.0" width="85" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="85" height="18.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w40-bg-0kl">
-                                        <rect key="frame" x="0.0" y="8" width="110.5" height="9.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w40-bg-0kl">
+                                        <rect key="frame" x="0.0" y="26.5" width="110.5" height="33.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                         <color key="textColor" name="ComplementColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNR-az-dZP">
-                                        <rect key="frame" x="0.0" y="25.5" width="125.5" height="34.5"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Change state"/>
-                                        <connections>
-                                            <action selector="changeStateButtonTouched:" destination="Bha-bv-caT" eventType="touchUpInside" id="Ieh-ef-XYs"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Bud-ZZ-Lj2"/>
@@ -219,7 +211,6 @@
                         <imageReference key="image" image="gearshape" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                     <connections>
-                        <outlet property="changeStateButton" destination="LNR-az-dZP" id="OVw-0g-doq"/>
                         <outlet property="dateLabel" destination="UHy-Jd-aW4" id="MIE-hz-Lmb"/>
                         <outlet property="tableView" destination="F4Y-wN-TBD" id="V56-Xz-VB4"/>
                     </connections>
