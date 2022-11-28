@@ -15,7 +15,7 @@ struct Preferences {
         self.settings = [
             Section(sectionName: "Privacy", settingInSection: [
                 Setting(icon: "eye", key: K.UserDefaultsKeys.isTrackDataEnabled, text: "Track data", type: .withToggleSwitch),
-                Setting(icon: "hand.raised", key: K.UserDefaultsKeys.sendFailureReports, text: "Send failure reports", type: .withChevronRight)
+                Setting(icon: "hand.raised", key: K.UserDefaultsKeys.sendFailureReports, text: "Send failure reports", type: .withToggleSwitch)
             ]
                    ),
             Section(sectionName: "Colors", settingInSection: [

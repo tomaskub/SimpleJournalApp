@@ -57,7 +57,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        performFirstTimeSetUp()
+        
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted)
         // TODO: set up calendar button constraints to work properly with scrollView
         // set up constraints for calendar buttons
@@ -103,4 +104,33 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
 }
-
+//MARK: initial setup
+extension MainViewController {
+    
+    func performFirstTimeSetUp(){
+        
+        let preferences = Preferences()
+        let defaults = UserDefaults.standard
+        
+        if !defaults.bool(forKey: K.UserDefaultsKeys.wasRunBefore) {
+            
+            print("Performing first time set up!")
+            
+            for section in preferences.settings {
+                for setting in section.settingInSection {
+                    if setting.key != K.UserDefaultsKeys.isTrackDataEnabled && setting.key != K.UserDefaultsKeys.sendFailureReports {
+                        defaults.set(false, forKey: setting.key)
+                        print("Setting set to false for key \(setting.key)")
+                    } else {
+                        defaults.set(true, forKey: setting.key)
+                        print("Setting set to true for \(setting.key)")
+                    }
+                }
+            }
+            defaults.set(true, forKey: K.UserDefaultsKeys.wasRunBefore)
+        }
+    }
+    
+    
+    
+}

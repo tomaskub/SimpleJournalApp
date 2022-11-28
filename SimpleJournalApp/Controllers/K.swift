@@ -14,6 +14,7 @@ struct K {
         static let isTrackDataEnabled = "trackData"
         static let sendFailureReports = "sendFailureReports"
         static let useDarkTheme = "useDarkTheme"
+        static let wasRunBefore = "isRunFirstTime"
 //        static let
     }
     struct Reminder {
