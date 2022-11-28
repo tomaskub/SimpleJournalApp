@@ -13,7 +13,6 @@ struct Preferences {
     
     init() {
         self.settings = [
-            Section(sectionName: "time picker test", settingInSection: [Setting(icon: "sun.max", key: K.UserDefaultsKeys.reminderTime, text: "UIDatePicker test", type: .withTimePicker)]),
             Section(sectionName: "Privacy", settingInSection: [
                 Setting(icon: "eye", key: K.UserDefaultsKeys.isTrackDataEnabled, text: "Track data", type: .withToggleSwitch),
                 Setting(icon: "hand.raised", key: K.UserDefaultsKeys.sendFailureReports, text: "Send failure reports", type: .withChevronRight)
@@ -23,7 +22,7 @@ struct Preferences {
                 Setting(icon: "circle.lefthalf.filled", key: K.UserDefaultsKeys.useDarkTheme, text: "Use dark theme", type: .withToggleSwitch)]),
             Section(sectionName: "Reminders", settingInSection: [
                 Setting(icon: "bell", key: K.UserDefaultsKeys.isReminderEnabled, text: "Enable reminder", type: .withToggleSwitch),
-                Setting(icon: "clock", key: K.UserDefaultsKeys.reminderTime, text: "Time", type: .withChevronRight)])
+                Setting(icon: "clock", key: K.UserDefaultsKeys.reminderTime, text: "Time", type: .withTimePicker)])
         ]
     }
     struct Section {

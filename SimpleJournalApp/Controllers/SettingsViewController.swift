@@ -11,7 +11,6 @@ class SettingsViewController: UIViewController {
     
     let pref = Preferences()
     let defaults = UserDefaults.standard
-    let isReminderOnKey = "isReminderOnKey"
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -60,6 +59,16 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let cellType = pref.settings[indexPath.section].settingInSection[indexPath.row].type
         cell.configureCell(iconSystemName: iconName, labelText: labelText, cellType: cellType)
         cell.delegate = self
+        //test - get the value of a bool for key
+        if cellType == .withToggleSwitch {
+            cell.setToggleButtonState(value: defaults.bool(forKey: pref.settings[indexPath.section].settingInSection[indexPath.row].key))
+        }
+        if cellType == .withTimePicker {
+            if let date = defaults.value(forKey: pref.settings[indexPath.section].settingInSection[indexPath.row].key) as? Date{
+                cell.setTime(date: date)
+            }
+        }
+        
         return cell
     }
     
@@ -77,18 +86,35 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return 40
     }
 }
+// SettingCellDelegate protocol implementation
 extension SettingsViewController: SettingCellDelegate {
     
-    // SettingCellDelegate protocol implementation
-    func toggleSwitchPressed() {
-        print("toggle switch was pressed ")
+    func chevronButtonPressed(sender: SettingCell) {
+        //placeholder
+        print(tableView.indexPath(for: sender)?.debugDescription)
+        
     }
     
-    func chevronButtonPressed() {
-        print( "chevron button was pressed ")
+    func toggleSwitchPressed(sender: SettingCell) {
+        
+        if let indexPath = tableView.indexPath(for: sender) {
+            let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
+            defaults.setValue(sender.getToggleButtonState(), forKey: key)
+        } else {
+            print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")
+        }
+        
+        
     }
-    func timePickerEditingDidEnd(date: Date) {
-        print("Time set for notification to: \(date.description)")
+    
+    func timePickerEditingDidEnd(sender: SettingCell) {
+        if let indexPath = tableView.indexPath(for: sender){
+            if let date = sender.getTime() {
+                let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
+                defaults.setValue(date, forKey: key)
+            }
+        }
+        
     }
 }
 

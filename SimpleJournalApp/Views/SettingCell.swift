@@ -8,14 +8,14 @@
 import UIKit
 
 protocol SettingCellDelegate {
-    func toggleSwitchPressed()
-    func chevronButtonPressed()
-    func timePickerEditingDidEnd(date: Date)
+    func toggleSwitchPressed(sender: SettingCell)
+    func chevronButtonPressed(sender: SettingCell)
+    func timePickerEditingDidEnd(sender: SettingCell)
 }
 
-@IBDesignable class SettingCell: UITableViewCell { //, SettingCellDelegate {
-    
-    
+//TODO: fix UISwitch button and UIDatePicker targets not working properly (chevron works properly???)
+
+@IBDesignable class SettingCell: UITableViewCell {
     
     enum CellButtonType {
         case withChevronRight
@@ -105,15 +105,15 @@ protocol SettingCellDelegate {
     }
     
     @objc func buttonPressed() {
-        delegate?.chevronButtonPressed()
+        delegate?.chevronButtonPressed(sender: self)
     }
     
     @objc func switchValueDidChange(){
-        delegate?.toggleSwitchPressed()
+        delegate?.toggleSwitchPressed(sender: self)
     }
     
     @objc func timePickerValueChanged(){
-        delegate?.timePickerEditingDidEnd(date: timePicker.date)
+        delegate?.timePickerEditingDidEnd(sender: self)
     }
     
     required init?(coder: NSCoder) {
@@ -149,9 +149,11 @@ protocol SettingCellDelegate {
             case .withToggleSwitch:
                 cellContentView.addSubview(toggleSwitch)
                 setUpConstraintsForThirdView(view: toggleSwitch)
+                toggleSwitch.addTarget(self, action: #selector(switchValueDidChange), for: UIControl.Event.valueChanged)
             case .withTimePicker:
                 cellContentView.addSubview(timePicker)
                 setUpConstraintsForThirdView(view: timePicker)
+                timePicker.addTarget(self, action: #selector(timePickerValueChanged), for: UIControl.Event.valueChanged)
             }
             //set the cellButtonType to correct type
             cellButtonType = cellType
@@ -212,6 +214,13 @@ protocol SettingCellDelegate {
     
     public func getText() -> String? {
         return label.text
+    }
+    
+    public func getTime() -> Date? {
+        return timePicker.date
+    }
+    public func setTime(date: Date) {
+        timePicker.setDate(date, animated: true)
     }
     
 }
