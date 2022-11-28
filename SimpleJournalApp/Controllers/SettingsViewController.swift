@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 11/15/22.
 //
-
+import UserNotifications
 import UIKit
 
 class SettingsViewController: UIViewController {
@@ -32,19 +32,9 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingCell.self, forCellReuseIdentifier: SettingCell.identifier)
         tableView.reloadData()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+//MARK: UITableViewDelegate and DataSource
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,7 +76,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return 40
     }
 }
-// SettingCellDelegate protocol implementation
+
+//MARK: SettingCellDelegate protocol implementation
 extension SettingsViewController: SettingCellDelegate {
     
     func chevronButtonPressed(sender: SettingCell) {
@@ -99,6 +90,11 @@ extension SettingsViewController: SettingCellDelegate {
         
         if let indexPath = tableView.indexPath(for: sender) {
             let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
+            if key == K.UserDefaultsKeys.isReminderEnabled {
+                if let reminderTime = defaults.object(forKey: pref.settings[2].settingInSection[1].key) as? Date {
+                    scheduleReminder(for: reminderTime )
+                }
+            }
             defaults.setValue(sender.getToggleButtonState(), forKey: key)
         } else {
             print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")
@@ -115,6 +111,43 @@ extension SettingsViewController: SettingCellDelegate {
             }
         }
         
+    }
+    
+}
+
+// MARK: User notifications
+extension SettingsViewController {
+    
+    func scheduleReminder(for time: Date) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { success, error in
+            if success {
+                //schedule reminder
+                let content = UNMutableNotificationContent()
+                content.title = K.Reminder.notificationTitle
+                content.sound = .default
+                content.body = K.Reminder.notificationBody
+                
+//                let targetDate = Date().addingTimeInterval(10)
+                
+                let targetDate = time
+                
+                print(targetDate.formatted())
+                let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: targetDate)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                let request = UNNotificationRequest(identifier: K.Reminder.notificationRequestID, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error != nil {
+                        print(error.debugDescription)
+                    } else {
+                        print("Notification set up with success!")
+                    }
+                })
+                
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        })
     }
 }
 

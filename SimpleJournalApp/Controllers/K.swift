@@ -16,4 +16,10 @@ struct K {
         static let useDarkTheme = "useDarkTheme"
 //        static let
     }
+    struct Reminder {
+        static let notificationRequestID = "SimpleJournalNotification"
+        static let notificationTitle = "Simple Journal"
+        static let notificationBody = "Your journaling time is now! Spend 5 to 15 minutes to summarize you day the way Marcus Aurelius did!"
+        
+    }
 }
