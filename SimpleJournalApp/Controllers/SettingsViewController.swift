@@ -89,11 +89,20 @@ extension SettingsViewController: SettingCellDelegate {
     func toggleSwitchPressed(sender: SettingCell) {
         
         if let indexPath = tableView.indexPath(for: sender) {
+            // retrieve key for the cell that called toggleSwitchPressed
             let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
+//            If key is for reminder:
             if key == K.UserDefaultsKeys.isReminderEnabled {
-                if let reminderTime = defaults.object(forKey: pref.settings[2].settingInSection[1].key) as? Date {
-                    scheduleReminder(for: reminderTime )
-                }
+//                check the toggle button state
+                if sender.getToggleButtonState() == true {
+//                    schedule a reminder for switch in on position
+                    if let reminderTime = defaults.object(forKey: pref.settings[2].settingInSection[1].key) as? Date {
+                        scheduleReminder(for: reminderTime )
+                    }
+                } else {
+//                        remove existing reminder
+                        removeReminder()
+                    }
             }
             defaults.setValue(sender.getToggleButtonState(), forKey: key)
         } else {
@@ -107,7 +116,11 @@ extension SettingsViewController: SettingCellDelegate {
         if let indexPath = tableView.indexPath(for: sender){
             if let date = sender.getTime() {
                 let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
+                if key == K.UserDefaultsKeys.reminderTime && defaults.bool(forKey: K.UserDefaultsKeys.isReminderEnabled){
+                    scheduleReminder(for: date)
+                }
                 defaults.setValue(date, forKey: key)
+                
             }
         }
         
@@ -126,8 +139,6 @@ extension SettingsViewController {
                 content.title = K.Reminder.notificationTitle
                 content.sound = .default
                 content.body = K.Reminder.notificationBody
-                
-//                let targetDate = Date().addingTimeInterval(10)
                 
                 let targetDate = time
                 
@@ -148,6 +159,10 @@ extension SettingsViewController {
                 print(error.localizedDescription)
             }
         })
+    }
+    
+    func removeReminder() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [K.Reminder.notificationRequestID])
     }
 }
 
