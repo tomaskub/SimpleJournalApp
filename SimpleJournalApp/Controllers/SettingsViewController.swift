@@ -32,6 +32,14 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingCell.self, forCellReuseIdentifier: SettingCell.identifier)
         tableView.reloadData()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.useDarkTheme) {
+            overrideUserInterfaceStyle = .dark
+        } else {
+            overrideUserInterfaceStyle = .unspecified
+        }
+    }
 }
 
 //MARK: UITableViewDelegate and DataSource
@@ -103,7 +111,14 @@ extension SettingsViewController: SettingCellDelegate {
 //                        remove existing reminder
                         removeReminder()
                     }
+            } else if key == K.UserDefaultsKeys.useDarkTheme {
+                if sender.getToggleButtonState()! {
+                    self.overrideUserInterfaceStyle = .dark
+                } else {
+                    self.overrideUserInterfaceStyle = .unspecified
+                }
             }
+            
             defaults.setValue(sender.getToggleButtonState(), forKey: key)
         } else {
             print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")

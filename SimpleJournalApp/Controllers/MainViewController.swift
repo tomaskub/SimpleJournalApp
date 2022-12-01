@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //placeholder questions
+//    let overrideUserInterfaceStyle
     let questions: [String] = [
         "Summary of the day",
         "What did i do good?",
@@ -57,6 +58,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         performFirstTimeSetUp()
         
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted)
@@ -101,6 +103,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         scrollView.setContentOffset(CGPoint(x: 5 * 105 , y: 0 ), animated: true)
+        if UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.useDarkTheme) {
+            overrideUserInterfaceStyle = .dark
+        } else {
+            overrideUserInterfaceStyle = .unspecified
+        }
     }
     
 }
