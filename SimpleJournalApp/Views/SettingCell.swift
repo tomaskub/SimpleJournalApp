@@ -51,6 +51,7 @@ protocol SettingCellDelegate {
     }()
     private let toggleSwitch: UISwitch = {
         let toggle = UISwitch()
+        toggle.onTintColor = UIColor(named: "DominantColor")
         toggle.translatesAutoresizingMaskIntoConstraints = false
         return toggle
     }()
@@ -194,7 +195,12 @@ protocol SettingCellDelegate {
     func setUpConstraintsForThirdView(view: UIView){
         view.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
-        view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
+        if let view = view as? UISwitch {
+            return
+        } else {
+            view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
+        }
+        
         
     }
     
