@@ -7,10 +7,10 @@
 
 import UIKit
 
-class QuestionCell: UITableViewCell {
+@IBDesignable class QuestionCell: UITableViewCell {
 
     static let identifier = "QuestionCell"
-    
+    @IBInspectable var buttonTitle: String = "Answer"
     // UI elements declaration
     private let label: UILabel = {
         let label = UILabel()
@@ -23,7 +23,7 @@ class QuestionCell: UITableViewCell {
     }()
     private let button: UIButton = {
         let button = UIButton()
-        button.setTitle("Answer", for: .normal)
+        
         button.backgroundColor = UIColor(named: "ComplementColor")
         button.setTitleColor(UIColor(named: "DominantColor"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -36,6 +36,8 @@ class QuestionCell: UITableViewCell {
         contentView.layer.cornerRadius = contentView.bounds.height * 0.5
         contentView.addSubview(label)
         contentView.addSubview(button)
+        button.setTitle(buttonTitle, for: .normal)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -49,7 +51,7 @@ class QuestionCell: UITableViewCell {
         // Constraints for the label with question
         label.heightAnchor.constraint(equalToConstant: contentView.frame.height * 0.6).isActive = true
         label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: contentView.layer.cornerRadius).isActive = true
         label.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: 10).isActive = true
 //      Constraints for the button
         button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true

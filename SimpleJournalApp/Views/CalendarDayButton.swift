@@ -9,9 +9,9 @@ import UIKit
 
 @IBDesignable class CalendarDayButton: UIButton {
 
-    @IBInspectable var secondaryColor: UIColor = UIColor(red: 251.0/255.0, green: 251.0/255.0, blue: 251.0/255.0, alpha: 1)
-    @IBInspectable var primaryColor: UIColor = UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1)
-    @IBInspectable var tertiaryColor: UIColor = UIColor(red: 139/255, green: 139/255, blue: 139/255, alpha: 1)
+    @IBInspectable var secondaryColor: UIColor = UIColor(named: "ComplementColor") ?? UIColor(red: 251.0/255.0, green: 251.0/255.0, blue: 251.0/255.0, alpha: 1)
+    @IBInspectable var primaryColor: UIColor = UIColor(named:"DominantColor" ) ?? UIColor(red: 50/255, green: 50/255, blue: 50/255, alpha: 1)
+    @IBInspectable var tertiaryColor: UIColor = UIColor(named: "AccentColor") ?? UIColor(red: 139/255, green: 139/255, blue: 139/255, alpha: 1)
     @IBInspectable var isTodayButton: Bool = false
     @IBInspectable var bottomLabelText: String = "DAY"
     @IBInspectable var topLabelText: String = "NN"

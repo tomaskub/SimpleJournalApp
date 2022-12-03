@@ -6,10 +6,22 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
+    // CoreData container
+    lazy var persistentContainter: NSPersistentContainer = {
+        let containter = NSPersistentContainer(name: "Model")
+        containter.loadPersistentStores(completionHandler: {
+            (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved fatal error \(error), \(error.userInfo)")
+            }
+        })
+        return containter
+    }()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
