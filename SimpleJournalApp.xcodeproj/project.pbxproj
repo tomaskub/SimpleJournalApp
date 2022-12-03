@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63741962924154C00FFF9E5 /* SettingsViewController.swift */; };
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
+		D63D6BFD293BAE3F0092E446 /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */; };
+		D63D6BFE293BAE3F0092E446 /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
 		D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453229216CCC008598C9 /* QuestionCell.swift */; };
 		D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A996C29294DC3000DEBD4 /* SettingCell.swift */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		D63741962924154C00FFF9E5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D63F453229216CCC008598C9 /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
 		D64A996C29294DC3000DEBD4 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingCell.swift; path = SimpleJournalApp/Views/SettingCell.swift; sourceTree = SOURCE_ROOT; };
@@ -154,6 +158,8 @@
 		D6B43052291FB37300E9C791 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */,
+				D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */,
 				D6B43055291FB49800E9C791 /* FormatModel.swift */,
 			);
 			path = Model;
@@ -314,6 +320,7 @@
 			files = (
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
+				D63D6BFE293BAE3F0092E446 /* DayLog+CoreDataProperties.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
 				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
@@ -323,6 +330,7 @@
 				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
+				D63D6BFD293BAE3F0092E446 /* DayLog+CoreDataClass.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
 			);
