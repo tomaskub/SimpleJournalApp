@@ -23,4 +23,12 @@ struct K {
         static let notificationBody = "Your journaling time is now! Spend 5 to 15 minutes to summarize you day the way Marcus Aurelius did!"
         
     }
+    struct SegueIdentifiers {
+        static let toQuestionVC = "ToAnswerQuestion"
+    }
+    struct Colors {
+        static let complement = "ComplementColor"
+        static let accent = "AccentColor"
+        static let dominant = "DominantColor"
+    }
 }

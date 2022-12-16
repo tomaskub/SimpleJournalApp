@@ -28,6 +28,7 @@
 		D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43055291FB49800E9C791 /* FormatModel.swift */; };
 		D6B58AEC293276AA00A89B19 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AEB293276AA00A89B19 /* K.swift */; };
 		D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AED2932919800A89B19 /* Preferenes.swift */; };
+		D6D827B7294CB038005AF563 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D827B6294CB038005AF563 /* QuestionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		D6B43055291FB49800E9C791 /* FormatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatModel.swift; sourceTree = "<group>"; };
 		D6B58AEB293276AA00A89B19 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D6B58AED2932919800A89B19 /* Preferenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferenes.swift; sourceTree = "<group>"; };
+		D6D827B6294CB038005AF563 /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 				D63F453029215DAD008598C9 /* TabBarViewController.swift */,
 				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
 				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
+				D6D827B6294CB038005AF563 /* QuestionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
 				D63D6BFD293BAE3F0092E446 /* DayLog+CoreDataClass.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
+				D6D827B7294CB038005AF563 /* QuestionViewController.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -91,6 +91,29 @@ class MainViewController: UIViewController {
         }
     dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
     }
+    //MARK: - NAVIGATION
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell{
+            let targetVC = segue.destination as! QuestionViewController
+            if let indexPath = tableView.indexPath(for: cell) {
+                let question = questions[indexPath.row]
+                targetVC.setLabelText(text: question )
+            } else {
+                print("Error getting question text")
+            }
+        }
+    }
+}
+
+extension MainViewController: QuestionCellDelegate {
+    func buttonPressed(sender: QuestionCell) {
+        if let indexPath = tableView.indexPath(for: sender){
+            let question = questions[indexPath.row]
+            print("Question button pressed for: \(question)")
+            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
+        }
+        
+    }
 }
 
 //MARK: CoreData methods
@@ -146,6 +169,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
         cell.configureCell(questionText: questions[indexPath.row])
+        cell.delegate = self
         return cell
     }
 }
