@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol QuestionViewControllerDelegate {
+    func nextButtonPressed(question: String, Answer: String)
+    func backButtonPressed(question: String, Answer: String)
+}
+
 class QuestionViewController: UIViewController {
     
 //  Constraint with constant to adjust based on keyboard height
     var nextButtonBottomConstraint: NSLayoutConstraint?
+    var delegate: QuestionViewControllerDelegate?
     
     private let questionLabel: UILabel = {
         let label = UILabel()
@@ -51,14 +57,57 @@ class QuestionViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDissapear), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
             nextButtonBottomConstraint?.constant = -(keyboardHeight+10)
         }
     }
+    
     @objc func keyboardWillDissapear(_ notification: Notification) {
         nextButtonBottomConstraint?.constant = -30
+    }
+    //TODO: decide which way is better to present - changing VCs or properties (label, buton titles), maybe something else?
+    @objc func backButtonPressed() {
+        
+        if let question = questionLabel.text, let answer = textField.text {
+            delegate?.nextButtonPressed(question: question, Answer: answer)
+        }
+        
+        weak var presentingVC = self.presentingViewController
+        self.dismiss(animated: true, completion: {
+            let targetVC = QuestionViewController()
+            let e = K.questions.firstIndex(of: self.questionLabel.text!)!
+            if e == 0 {
+                return
+            } else {
+                targetVC.setLabelText(text: K.questions[e-1])
+                presentingVC?.present(targetVC, animated: true)
+                
+            }
+        })
+    }
+    
+    @objc func nextButtonPressed() {
+        
+        if let question = questionLabel.text, let answer = textField.text {
+            delegate?.nextButtonPressed(question: question, Answer: answer)
+        }
+        
+        //present title for next question
+        let e = K.questions.firstIndex(of: questionLabel.text!)!
+        if e < K.questions.count - 2 {
+            let nextQuestion = K.questions[e+1]
+            self.setLabelText(text: nextQuestion)
+        } else if e == K.questions.count - 2 {
+            let nextQuestion = K.questions[e+1]
+            self.setLabelText(text: nextQuestion)
+            nextButton.setTitle("Finish", for: .normal)
+            print("last question")
+        }
+        //empty text field for next answer
+        textField.text = nil
     }
     
     override func viewDidLoad() {
@@ -66,13 +115,18 @@ class QuestionViewController: UIViewController {
         view.backgroundColor = UIColor(named: "AccentColor")
         addSubviews()
         setUpConstraints()
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         textField.delegate = self
+        
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
     func addSubviews(){
         view.addSubview(questionLabel)
         view.addSubview(nextButton)
@@ -125,6 +179,7 @@ class QuestionViewController: UIViewController {
     */
 
 }
+
 extension QuestionViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

@@ -13,8 +13,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
-    //Calendar buttons
+    //Declare calendar buttons
     var dateButtonArray: [CalendarDayButton] = {
         var tempArray: [CalendarDayButton] = []
             for i in 0...13 {
@@ -35,10 +37,16 @@ class MainViewController: UIViewController {
         }
         return tempArray
     }()
+    
     var items: [DayLog]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fetchDayLogs()
+        
+        
+        
         performFirstTimeSetUp()
         configureView()
         // set up table view apperance
@@ -51,6 +59,7 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,13 +92,15 @@ class MainViewController: UIViewController {
         }
     dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
     }
+    
     //MARK: - NAVIGATION
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell{
             let targetVC = segue.destination as! QuestionViewController
             if let indexPath = tableView.indexPath(for: cell) {
                 let question = K.questions[indexPath.row]
-                targetVC.setLabelText(text: question )
+                targetVC.setLabelText(text: question)
+                targetVC.delegate = self
             } else {
                 print("Error getting question text")
             }
@@ -97,6 +108,7 @@ class MainViewController: UIViewController {
     }
 }
 
+//MARK: QuestionCellDelegate methods
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
         if let indexPath = tableView.indexPath(for: sender){
@@ -121,6 +133,22 @@ extension MainViewController {
             print(error.localizedDescription)
         }
     }
+    
+    func createNewDayLog() {
+        let newDayLog = DayLog(context: self.context)
+        
+        newDayLog.date = Date()
+        newDayLog.id = UUID()
+        newDayLog.answers = []
+        
+        do {
+            try self.context.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    
 }
 
 //MARK: initial setup
@@ -164,4 +192,18 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         return cell
     }
+}
+
+//MARK: QuestionViewControllerDelegate methods
+extension MainViewController: QuestionViewControllerDelegate {
+    func nextButtonPressed(question: String, Answer: String) {
+        print(question)
+        print(Answer)
+    }
+    
+    func backButtonPressed(question: String, Answer: String) {
+        print(question)
+        print(Answer)
+    }
+    
 }
