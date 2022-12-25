@@ -109,6 +109,7 @@ class QuestionViewController: UIViewController {
         textField.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -20).isActive = true
         textField.layer.cornerRadius = 10
     }
+    
     public func setLabelText(text: String){
         questionLabel.text = text
     }

@@ -9,14 +9,6 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    //placeholder questions
-    let questions: [String] = [
-        "Summary of the day",
-        "What did i do good?",
-        "What did i do bad?",
-        "How can I improve on that?",
-        "Where was my discipline and self-control tested?"]
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -96,7 +88,7 @@ class MainViewController: UIViewController {
         if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell{
             let targetVC = segue.destination as! QuestionViewController
             if let indexPath = tableView.indexPath(for: cell) {
-                let question = questions[indexPath.row]
+                let question = K.questions[indexPath.row]
                 targetVC.setLabelText(text: question )
             } else {
                 print("Error getting question text")
@@ -108,7 +100,7 @@ class MainViewController: UIViewController {
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
         if let indexPath = tableView.indexPath(for: sender){
-            let question = questions[indexPath.row]
+            let question = K.questions[indexPath.row]
             print("Question button pressed for: \(question)")
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         }
@@ -163,12 +155,12 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     //tableView method implementation
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return questions.count
+        return K.questions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
-        cell.configureCell(questionText: questions[indexPath.row])
+        cell.configureCell(questionText: K.questions[indexPath.row])
         cell.delegate = self
         return cell
     }

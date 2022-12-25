@@ -31,4 +31,14 @@ struct K {
         static let accent = "AccentColor"
         static let dominant = "DominantColor"
     }
+    
+    static let questions: [String] = [
+        "Summary of the day",
+        "What did i do good?",
+        "What did i do bad?",
+        "How can I improve on that?",
+        "Where was my discipline and self-control tested?"
+    ]
+        
+    
 }
