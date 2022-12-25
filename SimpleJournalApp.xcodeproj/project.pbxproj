@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63741962924154C00FFF9E5 /* SettingsViewController.swift */; };
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
-		D63D6BFD293BAE3F0092E446 /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */; };
-		D63D6BFE293BAE3F0092E446 /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
 		D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453229216CCC008598C9 /* QuestionCell.swift */; };
 		D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A996C29294DC3000DEBD4 /* SettingCell.swift */; };
@@ -25,10 +23,13 @@
 		D6B4303A291FB0B800E9C791 /* SimpleJournalAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43039291FB0B800E9C791 /* SimpleJournalAppTests.swift */; };
 		D6B43044291FB0B800E9C791 /* SimpleJournalAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */; };
 		D6B43046291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */; };
-		D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43055291FB49800E9C791 /* FormatModel.swift */; };
 		D6B58AEC293276AA00A89B19 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AEB293276AA00A89B19 /* K.swift */; };
 		D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AED2932919800A89B19 /* Preferenes.swift */; };
 		D6D827B7294CB038005AF563 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D827B6294CB038005AF563 /* QuestionViewController.swift */; };
+		D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */; };
+		D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */; };
+		D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */; };
+		D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +52,6 @@
 /* Begin PBXFileReference section */
 		D63741962924154C00FFF9E5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D63F453229216CCC008598C9 /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
 		D64A996C29294DC3000DEBD4 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingCell.swift; path = SimpleJournalApp/Views/SettingCell.swift; sourceTree = SOURCE_ROOT; };
@@ -71,10 +70,13 @@
 		D6B4303F291FB0B800E9C791 /* SimpleJournalAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleJournalAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43043291FB0B800E9C791 /* SimpleJournalAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITests.swift; sourceTree = "<group>"; };
 		D6B43045291FB0B800E9C791 /* SimpleJournalAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleJournalAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D6B43055291FB49800E9C791 /* FormatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatModel.swift; sourceTree = "<group>"; };
 		D6B58AEB293276AA00A89B19 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		D6B58AED2932919800A89B19 /* Preferenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferenes.swift; sourceTree = "<group>"; };
 		D6D827B6294CB038005AF563 /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
+		D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,9 +162,10 @@
 		D6B43052291FB37300E9C791 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				D63D6BFB293BAE3F0092E446 /* DayLog+CoreDataClass.swift */,
-				D63D6BFC293BAE3F0092E446 /* DayLog+CoreDataProperties.swift */,
-				D6B43055291FB49800E9C791 /* FormatModel.swift */,
+				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
+				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
+				D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */,
+				D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -322,18 +325,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
+				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
-				D63D6BFE293BAE3F0092E446 /* DayLog+CoreDataProperties.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
 				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
 				D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
+				D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */,
+				D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */,
+				D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
 				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
-				D6B43056291FB49800E9C791 /* FormatModel.swift in Sources */,
-				D63D6BFD293BAE3F0092E446 /* DayLog+CoreDataClass.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6D827B7294CB038005AF563 /* QuestionViewController.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,

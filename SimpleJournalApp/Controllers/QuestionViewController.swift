@@ -8,8 +8,8 @@
 import UIKit
 
 protocol QuestionViewControllerDelegate {
-    func nextButtonPressed(question: String, Answer: String)
-    func backButtonPressed(question: String, Answer: String)
+    func nextButtonPressed(question: String, answer: String)
+    func backButtonPressed(question: String, answer: String)
 }
 
 class QuestionViewController: UIViewController {
@@ -72,7 +72,7 @@ class QuestionViewController: UIViewController {
     @objc func backButtonPressed() {
         
         if let question = questionLabel.text, let answer = textField.text {
-            delegate?.nextButtonPressed(question: question, Answer: answer)
+            delegate?.nextButtonPressed(question: question, answer: answer)
         }
         
         weak var presentingVC = self.presentingViewController
@@ -92,7 +92,7 @@ class QuestionViewController: UIViewController {
     @objc func nextButtonPressed() {
         
         if let question = questionLabel.text, let answer = textField.text {
-            delegate?.nextButtonPressed(question: question, Answer: answer)
+            delegate?.nextButtonPressed(question: question, answer: answer)
         }
         
         //present title for next question
@@ -168,6 +168,9 @@ class QuestionViewController: UIViewController {
         questionLabel.text = text
     }
     
+    public func setTextFieldText(text: String) {
+        textField.text = text
+    }
     /*
     // MARK: - Navigation
 

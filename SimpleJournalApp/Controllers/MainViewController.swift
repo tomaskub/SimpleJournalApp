@@ -21,16 +21,17 @@ class MainViewController: UIViewController {
         var tempArray: [CalendarDayButton] = []
             for i in 0...13 {
                 let button: CalendarDayButton = {
-                    let button = CalendarDayButton()
                     let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
-                    // set the label text on the buttons
-                    button.setTopLabelText(text:String(Calendar.current.dateComponents([.day], from: date!).day!))
-                    button.setBottomLabelText(text: String(date!.formatted(date: .complete, time: .omitted).prefix(3).uppercased()))
-                    // change color on current day button
+                    let button = CalendarDayButton(date: date!)//, isToday: false)
+                    
                     if i == 7 {
-                        button.primaryColor = .black
+                        button.isTodayButton = true
+                        button.isSelected = true
                     }
+                    
                     button.translatesAutoresizingMaskIntoConstraints = false
+                    button.addTarget(self, action: #selector(setSelected(sender:)), for: .touchUpInside)
+                    
                     return button
             }()
                 tempArray.append(button)
@@ -38,14 +39,24 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
-    var items: [DayLog]?
+    @objc func setSelected(sender: UIButton) {
+        
+        for button in dateButtonArray {
+            button.isSelected = false
+        }
+        sender.isSelected = true
+        selectedDayLogDate = (sender as! CalendarDayButton).getDate()
+        //TODO: set the current dayLog to display
+        
+    }
+    
+    var selectedDayLogDate = Date()
+    var selectedDayLog: DayLog?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchDayLogs()
-        
-        
+        fetchDayLog(for: Date())
         
         performFirstTimeSetUp()
         configureView()
@@ -101,6 +112,17 @@ class MainViewController: UIViewController {
                 let question = K.questions[indexPath.row]
                 targetVC.setLabelText(text: question)
                 targetVC.delegate = self
+                if let answers = selectedDayLog?.answers?.allObjects as? [Answer] {
+                    for answer in answers {
+                        if answer.question == question {
+                            if let text = answer.text {
+                                targetVC.setTextFieldText(text: text)
+                            }
+                        }
+                    }
+                } else {
+                    print("Failed to retrieve answer")
+                }
             } else {
                 print("Error getting question text")
             }
@@ -123,30 +145,55 @@ extension MainViewController: QuestionCellDelegate {
 //MARK: CoreData methods
 extension MainViewController {
     
-    func fetchDayLogs() {
+    func fetchDayLog(for date: Date) {
+        
+        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
+        
+        let dateFrom = Calendar.current.startOfDay(for: date)
+        let dateTo = Calendar.current.date(byAdding: .day, value: 1, to: dateFrom)
+        
+        let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
+        let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
+        let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
+        
+        request.predicate = datePredicate
+        
         do {
-            try self.items = context.fetch(DayLog.fetchRequest())
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            let retrivedDayLogs = try context.fetch(request)
+        
+            if retrivedDayLogs.isEmpty {
+                print("There is no logs for current day, creating a new DayLog")
+                selectedDayLog = createNewDayLog()
+            } else if retrivedDayLogs.count > 1 {
+                print("Retrived multiple day logs = \(retrivedDayLogs.count) - this should not be possible, something is wrong")
+                selectedDayLog = retrivedDayLogs.first!
+            } else {
+                print("Retrived 1 day log succesfully")
+                selectedDayLog = retrivedDayLogs.first!
+                
             }
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func createNewDayLog() {
+    func createNewDayLog() -> DayLog {
         let newDayLog = DayLog(context: self.context)
         
-        newDayLog.date = Date()
+        newDayLog.date = Calendar.current.startOfDay(for: Date())
         newDayLog.id = UUID()
-        newDayLog.answers = []
         
         do {
             try self.context.save()
         } catch {
             print(error)
         }
+        
+        return newDayLog
+        
     }
+    
+    
     
     
 }
@@ -196,14 +243,22 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: QuestionViewControllerDelegate methods
 extension MainViewController: QuestionViewControllerDelegate {
-    func nextButtonPressed(question: String, Answer: String) {
-        print(question)
-        print(Answer)
+    func nextButtonPressed(question: String, answer: String) {
+        let newAnswer = Answer(context: self.context)
+        newAnswer.question = question
+        newAnswer.text = answer
+        newAnswer.dayLog = selectedDayLog
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
     }
     
-    func backButtonPressed(question: String, Answer: String) {
+    func backButtonPressed(question: String, answer: String) {
         print(question)
-        print(Answer)
+        print(answer)
     }
     
 }
