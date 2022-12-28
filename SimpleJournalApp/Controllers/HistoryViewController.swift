@@ -14,6 +14,8 @@ class HistoryViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     var dayLogs: [DayLog] = []
     
+    let didSaveNotification = NSManagedObjectContext.didSaveObjectsNotification
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,8 +26,22 @@ class HistoryViewController: UIViewController {
             dayLogs = results
             tableView.reloadData()
         }
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(didSave(notification:)), name: didSaveNotification, object: nil)
     }
+    
+    @objc func didSave(notification: Notification) {
+        if let results = fetchAllDayLogs() {
+            dayLogs = results
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    
+    
     
     //MARK: - CoreData
     func fetchAllDayLogs() -> [DayLog]? {
