@@ -85,7 +85,7 @@ class MainViewController: UIViewController {
     
     func configureView(){
         // configure date label text
-        dateLabel.text = Date.now.formatted(date: .complete, time: .omitted)
+        dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
         // TODO: set up calendar button constraints to work properly with scrollView - still has
         // set up constraints for calendar buttons
         for i in 0...dateButtonArray.count-1 {
