@@ -13,8 +13,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    
-    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     var dateButtonArray: [CalendarDayButton] = {
@@ -30,7 +28,7 @@ class MainViewController: UIViewController {
                     }
                     
                     button.translatesAutoresizingMaskIntoConstraints = false
-                    button.addTarget(self, action: #selector(setSelected(sender:)), for: .touchUpInside)
+                    button.addTarget(/*MainViewController.*/self, action: #selector(setSelected(sender:)), for: .touchUpInside)
                     
                     return button
             }()
@@ -39,6 +37,37 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
+    let clearDataButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(clearDayLogs), for: .touchUpInside)
+        button.setTitle("Clear data", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    @objc func clearDayLogs() {
+        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
+//        var data: [DayLog]
+        do {
+            var retrivedDayLogs = try context.fetch(request)
+            print(retrivedDayLogs.count)
+            for dayLog in retrivedDayLogs {
+                print("Day log to remove: \(dayLog.description)")
+                self.context.delete(dayLog)
+                print("Day log removed")
+            }
+            do {
+                try context.save()
+                print("context saved after deleting the logs")
+            } catch {
+                print(error.localizedDescription)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
     @objc func setSelected(sender: UIButton) {
         
         for button in dateButtonArray {
@@ -46,7 +75,7 @@ class MainViewController: UIViewController {
         }
         sender.isSelected = true
         selectedDayLogDate = (sender as! CalendarDayButton).getDate()
-        //TODO: set the current dayLog to display
+        fetchDayLog(for: selectedDayLogDate)
         
     }
     
@@ -102,21 +131,35 @@ class MainViewController: UIViewController {
             dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height).isActive = true
         }
     dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
+        //add temp clear all data button
+        view.addSubview(clearDataButton)
+        clearDataButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor, constant: -10).isActive = true
+        clearDataButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        clearDataButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     //MARK: - NAVIGATION
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell{
+        // preparation fo a segue triggered by question cell button
+        if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell {
+            
             let targetVC = segue.destination as! QuestionViewController
+            
             if let indexPath = tableView.indexPath(for: cell) {
+                
                 let question = K.questions[indexPath.row]
+                
                 targetVC.setLabelText(text: question)
                 targetVC.delegate = self
+                
                 if let answers = selectedDayLog?.answers?.allObjects as? [Answer] {
                     for answer in answers {
                         if answer.question == question {
+                            print("")
                             if let text = answer.text {
+                                
                                 targetVC.setTextFieldText(text: text)
+                                
                             }
                         }
                     }
@@ -146,23 +189,23 @@ extension MainViewController: QuestionCellDelegate {
 extension MainViewController {
     
     func fetchDayLog(for date: Date) {
-        
+        //Create request
         let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
-        
+        //Create dates for begining of the day and end of a day
         let dateFrom = Calendar.current.startOfDay(for: date)
         let dateTo = Calendar.current.date(byAdding: .day, value: 1, to: dateFrom)
-        
+        //Create sub predicates and compond predicate
         let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
         let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
         let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
-        
+        //add predicate to the request
         request.predicate = datePredicate
-        
+        //Retrive day log for that date
         do {
             let retrivedDayLogs = try context.fetch(request)
-        
             if retrivedDayLogs.isEmpty {
                 print("There is no logs for current day, creating a new DayLog")
+                //If there is no retrived day logs for particular day, create an empty day log
                 selectedDayLog = createNewDayLog()
             } else if retrivedDayLogs.count > 1 {
                 print("Retrived multiple day logs = \(retrivedDayLogs.count) - this should not be possible, something is wrong")
@@ -170,7 +213,6 @@ extension MainViewController {
             } else {
                 print("Retrived 1 day log succesfully")
                 selectedDayLog = retrivedDayLogs.first!
-                
             }
         } catch {
             print(error.localizedDescription)
@@ -180,7 +222,7 @@ extension MainViewController {
     func createNewDayLog() -> DayLog {
         let newDayLog = DayLog(context: self.context)
         
-        newDayLog.date = Calendar.current.startOfDay(for: Date())
+        newDayLog.date = Calendar.current.startOfDay(for: selectedDayLogDate)
         newDayLog.id = UUID()
         
         do {
@@ -244,6 +286,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: QuestionViewControllerDelegate methods
 extension MainViewController: QuestionViewControllerDelegate {
     func nextButtonPressed(question: String, answer: String) {
+        
+        //TODO: check if the selected day log already has an answer to this question
+        //TODO: if answer is avaliable, update the stored value
+        //TODO:
+        
+        
+        
+        
         let newAnswer = Answer(context: self.context)
         newAnswer.question = question
         newAnswer.text = answer
@@ -257,8 +307,15 @@ extension MainViewController: QuestionViewControllerDelegate {
     }
     
     func backButtonPressed(question: String, answer: String) {
-        print(question)
-        print(answer)
+        let newAnswer = Answer(context: self.context)
+        newAnswer.question = question
+        newAnswer.text = answer
+        newAnswer.dayLog = selectedDayLog
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
 }
