@@ -18,6 +18,8 @@ struct Preferences {
                 Setting(icon: "hand.raised", key: K.UserDefaultsKeys.sendFailureReports, text: "Send failure reports", type: .withToggleSwitch)
             ]
                    ),
+            Section(sectionName: "Data", settingInSection: [
+                Setting(icon: "server.rack", key: nil, text: "Remove all day logs", type: .withChevronRight)]),
             Section(sectionName: "Colors", settingInSection: [
                 Setting(icon: "circle.lefthalf.filled", key: K.UserDefaultsKeys.useDarkTheme, text: "Use dark theme", type: .withToggleSwitch)]),
             Section(sectionName: "Reminders", settingInSection: [
@@ -33,7 +35,7 @@ struct Preferences {
     
     struct Setting {
         let icon: String
-        let key: String
+        let key: String?
         let text: String
         let type: SettingCell.CellButtonType
     }

@@ -39,12 +39,12 @@ struct K {
         "How can I improve on that?",
         "Where was my discipline and self-control tested?"
     ]
-//    enum QuestionEnum {
-//        case question1: "Summary of the day"
-//        case question2: "What did i do good?"
-//        case question3: "What did i do bad?"
-//        case question4: "How can I improve on that?",
-//        case question5: "Where was my discipline and self-control tested?"
-//    }
+    enum QuestionEnum: String, CaseIterable {
+        case summary = "Summary of the day"
+        case good = "What did i do good?"
+        case bad = "What did i do bad?"
+        case improve = "How can I improve on that?"
+        case tested = "Where was my discipline and self-control tested?"
+    }
     
 }

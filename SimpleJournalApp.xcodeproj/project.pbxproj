@@ -131,8 +131,8 @@
 				D6B43053291FB37D00E9C791 /* Controllers */,
 				D6B43052291FB37300E9C791 /* Model */,
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
-				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
+				D6B58AEB293276AA00A89B19 /* K.swift */,
 				D6B43028291FB0B500E9C791 /* Main.storyboard */,
 				D6B4302B291FB0B800E9C791 /* Assets.xcassets */,
 				D6B4302D291FB0B800E9C791 /* LaunchScreen.storyboard */,
@@ -162,6 +162,7 @@
 		D6B43052291FB37300E9C791 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
 				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
 				D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */,
@@ -174,11 +175,9 @@
 			isa = PBXGroup;
 			children = (
 				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
-				D6B58AEB293276AA00A89B19 /* K.swift */,
 				D681AF0B29200288001B415C /* HistoryViewController.swift */,
 				D63F453029215DAD008598C9 /* TabBarViewController.swift */,
 				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
-				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
 				D6D827B6294CB038005AF563 /* QuestionViewController.swift */,
 			);
 			path = Controllers;
@@ -189,6 +188,7 @@
 			children = (
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
 				D63F453229216CCC008598C9 /* QuestionCell.swift */,
+				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -4,6 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 11/15/22.
 //
+import CoreData
 import UserNotifications
 import UIKit
 
@@ -11,6 +12,7 @@ class SettingsViewController: UIViewController {
     
     let pref = Preferences()
     let defaults = UserDefaults.standard
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -32,6 +34,7 @@ class SettingsViewController: UIViewController {
         tableView.register(SettingCell.self, forCellReuseIdentifier: SettingCell.identifier)
         tableView.reloadData()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.useDarkTheme) {
@@ -40,6 +43,7 @@ class SettingsViewController: UIViewController {
             overrideUserInterfaceStyle = .unspecified
         }
     }
+    
 }
 
 //MARK: UITableViewDelegate and DataSource
@@ -58,12 +62,15 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configureCell(iconSystemName: iconName, labelText: labelText, cellType: cellType)
         cell.delegate = self
         //test - get the value of a bool for key
-        if cellType == .withToggleSwitch {
-            cell.setToggleButtonState(value: defaults.bool(forKey: pref.settings[indexPath.section].settingInSection[indexPath.row].key))
-        }
-        if cellType == .withTimePicker {
-            if let date = defaults.value(forKey: pref.settings[indexPath.section].settingInSection[indexPath.row].key) as? Date{
-                cell.setTime(date: date)
+        if let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key {
+            
+            if cellType == .withToggleSwitch {
+                cell.setToggleButtonState(value: defaults.bool(forKey: key))
+            }
+            if cellType == .withTimePicker {
+                if let date = defaults.value(forKey: key) as? Date{
+                    cell.setTime(date: date)
+                }
             }
         }
         
@@ -89,8 +96,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 extension SettingsViewController: SettingCellDelegate {
     
     func chevronButtonPressed(sender: SettingCell) {
-        //placeholder
-        print(tableView.indexPath(for: sender)?.debugDescription)
+        if let indexPath = tableView.indexPath(for: sender) {
+            if sender.getText() == pref.settings[1].settingInSection[0].text {
+                removeAllDayLogs()
+            }
+        }
+        
         
     }
     
@@ -98,42 +109,44 @@ extension SettingsViewController: SettingCellDelegate {
         
         if let indexPath = tableView.indexPath(for: sender) {
             // retrieve key for the cell that called toggleSwitchPressed
-            let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
-//            If key is for reminder:
-            if key == K.UserDefaultsKeys.isReminderEnabled {
-//                check the toggle button state
-                if sender.getToggleButtonState() == true {
-//                    schedule a reminder for switch in on position
-                    if let reminderTime = defaults.object(forKey: pref.settings[2].settingInSection[1].key) as? Date {
-                        scheduleReminder(for: reminderTime )
-                    }
-                } else {
-//                        remove existing reminder
+            if let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key {
+//              if key is for reminder:
+                if key == K.UserDefaultsKeys.isReminderEnabled {
+                    //                check the toggle button state
+                    if sender.getToggleButtonState() == true {
+                        //                    schedule a reminder for switch in on position
+                        if let reminderTime = defaults.object(forKey: key) as? Date {
+                            scheduleReminder(for: reminderTime )
+                        }
+                    } else {
+                        //                        remove existing reminder
                         removeReminder()
                     }
-            } else if key == K.UserDefaultsKeys.useDarkTheme {
-                if sender.getToggleButtonState()! {
-                    self.overrideUserInterfaceStyle = .dark
-                } else {
-                    self.overrideUserInterfaceStyle = .unspecified
+                } else if key == K.UserDefaultsKeys.useDarkTheme {
+                    if sender.getToggleButtonState()! {
+                        self.overrideUserInterfaceStyle = .dark
+                    } else {
+                        self.overrideUserInterfaceStyle = .unspecified
+                    }
                 }
+                
+                defaults.setValue(sender.getToggleButtonState(), forKey: key)
+            } else {
+                print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")
             }
-            
-            defaults.setValue(sender.getToggleButtonState(), forKey: key)
-        } else {
-            print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")
         }
-        
         
     }
     
     func timePickerEditingDidEnd(sender: SettingCell) {
-        if let indexPath = tableView.indexPath(for: sender){
-            if let date = sender.getTime() {
-                let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key
-                if key == K.UserDefaultsKeys.reminderTime && defaults.bool(forKey: K.UserDefaultsKeys.isReminderEnabled){
+        
+        if let indexPath = tableView.indexPath(for: sender) {
+            
+            if let date = sender.getTime(), let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key {
+                if key == K.UserDefaultsKeys.reminderTime && defaults.bool(forKey: K.UserDefaultsKeys.isReminderEnabled) {
                     scheduleReminder(for: date)
                 }
+                
                 defaults.setValue(date, forKey: key)
                 
             }
@@ -181,4 +194,44 @@ extension SettingsViewController {
     }
 }
 
+// MARK: Alerts for chevron button cells
+extension SettingsViewController {
+    func removeAllDayLogs() {
+        let alert = UIAlertController(title: "Remove all entries", message: "By confirming you will delete all of the entries describing your day", preferredStyle: .alert)
+        let confirmButton = UIAlertAction(title: "Confirm", style: .destructive) {
+            (action) in
+            self.removeAllEntries()
+            
+        }
+        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(confirmButton)
+        alert.addAction(cancelButton)
+        
+        self.present(alert, animated: true)
+    }
+}
 
+// MARK: CoreData methods
+extension SettingsViewController {
+    
+    func removeAllEntries(){
+        
+        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
+        do {
+            var retrivedDayLogs = try context.fetch(request)
+            for dayLog in retrivedDayLogs {
+                self.context.delete(dayLog)
+            }
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+}

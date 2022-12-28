@@ -16,8 +16,10 @@ class MainViewController: UIViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     var dateButtonArray: [CalendarDayButton] = {
+        
         var tempArray: [CalendarDayButton] = []
-            for i in 0...13 {
+            
+        for i in 0...13 {
                 let button: CalendarDayButton = {
                     let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
                     let button = CalendarDayButton(date: date!)//, isToday: false)
@@ -36,56 +38,14 @@ class MainViewController: UIViewController {
         }
         return tempArray
     }()
-    
-    let clearDataButton: UIButton = {
-        let button = UIButton()
-        button.addTarget(self, action: #selector(clearDayLogs), for: .touchUpInside)
-        button.setTitle("Clear data", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    @objc func clearDayLogs() {
-        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
-//        var data: [DayLog]
-        do {
-            var retrivedDayLogs = try context.fetch(request)
-            print(retrivedDayLogs.count)
-            for dayLog in retrivedDayLogs {
-                print("Day log to remove: \(dayLog.description)")
-                self.context.delete(dayLog)
-                print("Day log removed")
-            }
-            do {
-                try context.save()
-                print("context saved after deleting the logs")
-            } catch {
-                print(error.localizedDescription)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        
-    }
-    @objc func setSelected(sender: UIButton) {
-        
-        for button in dateButtonArray {
-            button.isSelected = false
-        }
-        sender.isSelected = true
-        selectedDayLogDate = (sender as! CalendarDayButton).getDate()
-        fetchDayLog(for: selectedDayLogDate)
-        
-    }
-    
+
     var selectedDayLogDate = Date()
     var selectedDayLog: DayLog?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchDayLog(for: Date())
+        fetchDayLog(for: selectedDayLogDate)
         
         performFirstTimeSetUp()
         configureView()
@@ -112,6 +72,17 @@ class MainViewController: UIViewController {
         }
     }
     
+    @objc func setSelected(sender: UIButton) {
+        
+        for button in dateButtonArray {
+            button.isSelected = false
+        }
+        sender.isSelected = true
+        selectedDayLogDate = (sender as! CalendarDayButton).getDate()
+        fetchDayLog(for: selectedDayLogDate)
+        
+    }
+    
     func configureView(){
         // configure date label text
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted)
@@ -130,12 +101,8 @@ class MainViewController: UIViewController {
             dateButtonArray[i].widthAnchor.constraint(equalToConstant: scrollView.frame.height * 0.85).isActive = true
             dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height).isActive = true
         }
-    dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
-        //add temp clear all data button
-        view.addSubview(clearDataButton)
-        clearDataButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor, constant: -10).isActive = true
-        clearDataButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        clearDataButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
     }
     
     //MARK: - NAVIGATION
@@ -254,12 +221,14 @@ extension MainViewController {
             
             for section in preferences.settings {
                 for setting in section.settingInSection {
-                    if setting.key != K.UserDefaultsKeys.isTrackDataEnabled && setting.key != K.UserDefaultsKeys.sendFailureReports {
-                        defaults.set(false, forKey: setting.key)
-                        print("Setting set to false for key \(setting.key)")
-                    } else {
-                        defaults.set(true, forKey: setting.key)
-                        print("Setting set to true for \(setting.key)")
+                    if let key = setting.key {
+                        if setting.key != K.UserDefaultsKeys.isTrackDataEnabled && setting.key != K.UserDefaultsKeys.sendFailureReports {
+                            defaults.set(false, forKey: key)
+                            print("Setting set to false for key \(key)")
+                        } else {
+                            defaults.set(true, forKey: key)
+                            print("Setting set to true for \(key)")
+                        }
                     }
                 }
             }
