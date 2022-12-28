@@ -61,6 +61,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let cellType = pref.settings[indexPath.section].settingInSection[indexPath.row].type
         cell.configureCell(iconSystemName: iconName, labelText: labelText, cellType: cellType)
         cell.delegate = self
+        cell.selectionStyle = .none
         //test - get the value of a bool for key
         if let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key {
             
@@ -77,9 +78,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//
+//    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return pref.settings.count

@@ -122,11 +122,8 @@ class MainViewController: UIViewController {
                 if let answers = selectedDayLog?.answers?.allObjects as? [Answer] {
                     for answer in answers {
                         if answer.question == question {
-                            print("")
                             if let text = answer.text {
-                                
                                 targetVC.setTextFieldText(text: text)
-                                
                             }
                         }
                     }
@@ -248,6 +245,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
         cell.configureCell(questionText: K.questions[indexPath.row])
         cell.delegate = self
+        cell.selectionStyle = .none
         return cell
     }
 }
@@ -259,9 +257,6 @@ extension MainViewController: QuestionViewControllerDelegate {
         //TODO: check if the selected day log already has an answer to this question
         //TODO: if answer is avaliable, update the stored value
         //TODO:
-        
-        
-        
         
         let newAnswer = Answer(context: self.context)
         newAnswer.question = question

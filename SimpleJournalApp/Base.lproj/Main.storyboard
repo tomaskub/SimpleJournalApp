@@ -47,7 +47,7 @@
                                         <rect key="frame" x="0.0" y="50" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Uiv-bL-W5U" id="NS5-pp-eBB">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="10" y="10" width="394" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -109,31 +109,68 @@
             </objects>
             <point key="canvasLocation" x="3270" y="242"/>
         </scene>
-        <!--View Controller-->
+        <!--History View Controller-->
         <scene sceneID="XtN-YL-4wz">
             <objects>
-                <viewController id="R6N-g6-tHS" sceneMemberID="viewController">
+                <viewController id="R6N-g6-tHS" customClass="HistoryViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ewZ-rF-8Up">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is History VC" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fud-vF-U01">
-                                <rect key="frame" x="139.5" y="437.5" width="135" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous Entries" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fud-vF-U01">
+                                <rect key="frame" x="146" y="68" width="122.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2bg-aX-YKB">
+                                <rect key="frame" x="10" y="109" width="394" height="694"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Prototype" textLabel="bja-iB-7Wl" detailTextLabel="oFE-XO-dnI" style="IBUITableViewCellStyleSubtitle" id="6Fu-Rd-04r">
+                                        <rect key="frame" x="0.0" y="50" width="394" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6Fu-Rd-04r" id="yhK-Tk-YBW">
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bja-iB-7Wl">
+                                                    <rect key="frame" x="20" y="6" width="25" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oFE-XO-dnI">
+                                                    <rect key="frame" x="20" y="22.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Aeb-78-tDq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="fud-vF-U01" firstAttribute="centerY" secondItem="ewZ-rF-8Up" secondAttribute="centerY" id="Skt-xv-Yfk"/>
+                            <constraint firstItem="Aeb-78-tDq" firstAttribute="trailing" secondItem="2bg-aX-YKB" secondAttribute="trailing" constant="10" id="Vzb-rE-wgf"/>
+                            <constraint firstItem="2bg-aX-YKB" firstAttribute="top" secondItem="fud-vF-U01" secondAttribute="bottom" constant="20" id="YKs-ee-7V4"/>
                             <constraint firstItem="fud-vF-U01" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="dar-bK-EpV"/>
+                            <constraint firstItem="fud-vF-U01" firstAttribute="top" secondItem="Aeb-78-tDq" secondAttribute="top" constant="20" id="ddj-gH-vH2"/>
+                            <constraint firstItem="2bg-aX-YKB" firstAttribute="leading" secondItem="Aeb-78-tDq" secondAttribute="leading" constant="10" id="hiW-4x-n6c"/>
+                            <constraint firstItem="Aeb-78-tDq" firstAttribute="bottom" secondItem="2bg-aX-YKB" secondAttribute="bottom" constant="10" id="q2k-Lu-HzP"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="chart.bar" catalog="system" selectedImage="chart.bar.fill" id="MlZ-gW-bI1">
                         <color key="badgeColor" systemColor="labelColor"/>
                     </tabBarItem>
+                    <connections>
+                        <outlet property="tableView" destination="2bg-aX-YKB" id="ECV-t1-ZHz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bym-Ob-5js" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
