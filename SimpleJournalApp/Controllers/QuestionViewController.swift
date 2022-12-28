@@ -113,7 +113,7 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "AccentColor")
+        view.backgroundColor = UIColor(named: K.Colors.dominant)
         addSubviews()
         setUpConstraints()
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
