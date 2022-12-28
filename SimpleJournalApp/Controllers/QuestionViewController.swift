@@ -43,13 +43,14 @@ class QuestionViewController: UIViewController {
         button.setTitleColor(UIColor(named: K.Colors.accent), for: .normal)
         return button
     }()
-    private let textField: UITextField = {
-        let field = UITextField()
-        field.translatesAutoresizingMaskIntoConstraints = false
-        field.backgroundColor = UIColor(named: K.Colors.complement)
-        field.contentVerticalAlignment = .top
-        field.returnKeyType = .done
-        return field
+    
+    private let textView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = UIColor(named: K.Colors.complement)
+        textView.returnKeyType = .done
+        
+        return textView
     }()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +72,7 @@ class QuestionViewController: UIViewController {
     //TODO: decide which way is better to present - changing VCs or properties (label, buton titles), maybe something else?
     @objc func backButtonPressed() {
         
-        if let question = questionLabel.text, let answer = textField.text {
+        if let question = questionLabel.text, let answer = textView.text {
             delegate?.nextButtonPressed(question: question, answer: answer)
         }
         
@@ -91,7 +92,7 @@ class QuestionViewController: UIViewController {
     
     @objc func nextButtonPressed() {
         
-        if let question = questionLabel.text, let answer = textField.text {
+        if let question = questionLabel.text, let answer = textView.text {
             delegate?.nextButtonPressed(question: question, answer: answer)
         }
         
@@ -106,8 +107,8 @@ class QuestionViewController: UIViewController {
             nextButton.setTitle("Finish", for: .normal)
             print("last question")
         }
-        //empty text field for next answer
-        textField.text = nil
+        //empty text view for next answer
+        textView.text = nil
     }
     
     override func viewDidLoad() {
@@ -117,7 +118,7 @@ class QuestionViewController: UIViewController {
         setUpConstraints()
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        textField.delegate = self
+        textView.delegate = self
         
     }
     
@@ -131,7 +132,7 @@ class QuestionViewController: UIViewController {
         view.addSubview(questionLabel)
         view.addSubview(nextButton)
         view.addSubview(backButton)
-        view.addSubview(textField)
+        view.addSubview(textView)
     }
     
     func setUpConstraints() {
@@ -157,11 +158,11 @@ class QuestionViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: view.frame.width/3).isActive = true
         backButton.layer.cornerRadius = 10
 //        layout text field
-        textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        textField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 10).isActive = true
-        textField.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -20).isActive = true
-        textField.layer.cornerRadius = 10
+        textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        textView.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 10).isActive = true
+        textView.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -20).isActive = true
+        textView.layer.cornerRadius = 10
     }
     
     public func setLabelText(text: String){
@@ -169,7 +170,7 @@ class QuestionViewController: UIViewController {
     }
     
     public func setTextFieldText(text: String) {
-        textField.text = text
+        textView.text = text
     }
     /*
     // MARK: - Navigation
@@ -183,7 +184,7 @@ class QuestionViewController: UIViewController {
 
 }
 
-extension QuestionViewController: UITextFieldDelegate {
+extension QuestionViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
