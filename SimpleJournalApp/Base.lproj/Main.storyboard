@@ -47,7 +47,7 @@
                                         <rect key="frame" x="0.0" y="50" width="414" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Uiv-bL-W5U" id="NS5-pp-eBB">
-                                            <rect key="frame" x="10" y="10" width="394" height="34"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
@@ -107,7 +107,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nl6-oY-aRc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3270" y="242"/>
+            <point key="canvasLocation" x="2978" y="145"/>
         </scene>
         <!--History View Controller-->
         <scene sceneID="XtN-YL-4wz">
@@ -123,15 +123,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2bg-aX-YKB">
-                                <rect key="frame" x="10" y="109" width="394" height="694"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2bg-aX-YKB">
+                                <rect key="frame" x="0.0" y="109" width="414" height="704"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="120" id="q3K-ct-9Wo" customClass="HistoryTableViewCell" customModule="SimpleJournalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="394" height="120"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="q3K-ct-9Wo" id="j5n-OG-Byr">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <userDefinedRuntimeAttributes>
@@ -146,12 +146,12 @@
                         <viewLayoutGuide key="safeArea" id="Aeb-78-tDq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Aeb-78-tDq" firstAttribute="trailing" secondItem="2bg-aX-YKB" secondAttribute="trailing" constant="10" id="Vzb-rE-wgf"/>
+                            <constraint firstItem="Aeb-78-tDq" firstAttribute="trailing" secondItem="2bg-aX-YKB" secondAttribute="trailing" id="Vzb-rE-wgf"/>
                             <constraint firstItem="2bg-aX-YKB" firstAttribute="top" secondItem="fud-vF-U01" secondAttribute="bottom" constant="20" id="YKs-ee-7V4"/>
                             <constraint firstItem="fud-vF-U01" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="dar-bK-EpV"/>
                             <constraint firstItem="fud-vF-U01" firstAttribute="top" secondItem="Aeb-78-tDq" secondAttribute="top" constant="20" id="ddj-gH-vH2"/>
-                            <constraint firstItem="2bg-aX-YKB" firstAttribute="leading" secondItem="Aeb-78-tDq" secondAttribute="leading" constant="10" id="hiW-4x-n6c"/>
-                            <constraint firstItem="Aeb-78-tDq" firstAttribute="bottom" secondItem="2bg-aX-YKB" secondAttribute="bottom" constant="10" id="q2k-Lu-HzP"/>
+                            <constraint firstItem="2bg-aX-YKB" firstAttribute="leading" secondItem="Aeb-78-tDq" secondAttribute="leading" id="hiW-4x-n6c"/>
+                            <constraint firstItem="Aeb-78-tDq" firstAttribute="bottom" secondItem="2bg-aX-YKB" secondAttribute="bottom" id="q2k-Lu-HzP"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="chart.bar" catalog="system" selectedImage="chart.bar.fill" id="MlZ-gW-bI1">
@@ -159,11 +159,28 @@
                     </tabBarItem>
                     <connections>
                         <outlet property="tableView" destination="2bg-aX-YKB" id="ECV-t1-ZHz"/>
+                        <segue destination="f5A-rf-n7e" kind="show" identifier="toHistoryDetailViewController" id="vrK-sm-MJt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bym-Ob-5js" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2070" y="844"/>
+        </scene>
+        <!--History Detail View Controller-->
+        <scene sceneID="hVx-LB-hvo">
+            <objects>
+                <viewController id="f5A-rf-n7e" customClass="HistoryDetailViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oGZ-Nm-WFO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="838"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="tJ3-CH-jvx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="mF3-da-tju"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FMZ-2Z-bk7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2995" y="855"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="o7R-gA-uEm">

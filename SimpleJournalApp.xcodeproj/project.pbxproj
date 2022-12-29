@@ -31,6 +31,7 @@
 		D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */; };
 		D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */; };
 		D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */; };
+		D6FF7A9D295E22C200A13453 /* HistoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF7A9C295E22C200A13453 /* HistoryDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		D6FF7A9C295E22C200A13453 /* HistoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HistoryDetailViewController.swift; path = SimpleJournalApp/Controllers/HistoryDetailViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,11 +178,12 @@
 		D6B43053291FB37D00E9C791 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
-				D681AF0B29200288001B415C /* HistoryViewController.swift */,
 				D63F453029215DAD008598C9 /* TabBarViewController.swift */,
-				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
+				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
 				D6D827B6294CB038005AF563 /* QuestionViewController.swift */,
+				D681AF0B29200288001B415C /* HistoryViewController.swift */,
+				D6FF7A9C295E22C200A13453 /* HistoryDetailViewController.swift */,
+				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */,
 				D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
+				D6FF7A9D295E22C200A13453 /* HistoryDetailViewController.swift in Sources */,
 				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
