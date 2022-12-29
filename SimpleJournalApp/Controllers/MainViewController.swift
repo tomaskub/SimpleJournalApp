@@ -104,7 +104,7 @@ class MainViewController: UIViewController {
         
         dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
     }
-    //dddd
+
     //MARK: - NAVIGATION
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // preparation fo a segue triggered by question cell button
