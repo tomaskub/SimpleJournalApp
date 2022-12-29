@@ -28,6 +28,7 @@ import UIKit
         textView.textContainer.maximumNumberOfLines = 3
         textView.textContainer.lineBreakMode = .byWordWrapping
         textView.isEditable = false
+        textView.isSelectable = false 
         textView.isScrollEnabled = false
         textView.backgroundColor = UIColor(named: K.Colors.dominant)
         textView.textColor = UIColor(named: K.Colors.complement)
