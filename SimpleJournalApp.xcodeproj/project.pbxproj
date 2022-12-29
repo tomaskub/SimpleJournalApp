@@ -30,6 +30,7 @@
 		D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */; };
 		D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */; };
 		D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */; };
+		D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 		D6B43054291FB38A00E9C791 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */,
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
 				D63F453229216CCC008598C9 /* QuestionCell.swift */,
 				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
@@ -324,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */,
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
 				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
