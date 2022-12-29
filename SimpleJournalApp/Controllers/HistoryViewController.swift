@@ -18,7 +18,9 @@ class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 115
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -46,6 +48,9 @@ class HistoryViewController: UIViewController {
     //MARK: - CoreData
     func fetchAllDayLogs() -> [DayLog]? {
         let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
+        let sort = NSSortDescriptor(key: "date", ascending: false)
+        request.sortDescriptors = [sort]
+        
         var results: [DayLog]?
         do {
             results = try context.fetch(request)
@@ -72,25 +77,17 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Prototype", for: indexPath)
-        
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: HistoryTableViewCell.identifier, for: indexPath) as! HistoryTableViewCell
         if let date = dayLogs[indexPath.row].date {
-            cell.textLabel?.text = date.formatted(date: .complete, time: .omitted)
-        }
-        
-        if let answers = dayLogs[indexPath.row].answers?.allObjects as? [Answer] {
-            for answer in answers {
-                if answer.question == K.questions[0] {
-                    cell.detailTextLabel?.text = answer.text
+            if let answers = dayLogs[indexPath.row].answers?.allObjects as? [Answer] {
+                for answer in answers {
+                    if answer.question == K.questions[0] {
+                        cell.configureCell(date: date.formatted(date: .abbreviated, time: .omitted), summary: answer.text!)
+                        cell.layoutIfNeeded()
+                    }
                 }
             }
-        } else {
-            cell.detailTextLabel?.text = " There was no summary for this day saved."
         }
-        
         return cell
     }
-    
-    
 }
