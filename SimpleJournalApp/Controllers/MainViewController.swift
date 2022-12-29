@@ -116,6 +116,11 @@ class MainViewController: UIViewController {
                 
                 let question = K.questions[indexPath.row]
                 
+                if indexPath.row + 1 == K.questions.count {
+                    targetVC.isLastQuestion = true
+                } else {
+                    targetVC.isLastQuestion = false
+                }
                 targetVC.setLabelText(text: question)
                 targetVC.delegate = self
                 
@@ -252,7 +257,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: QuestionViewControllerDelegate methods
 extension MainViewController: QuestionViewControllerDelegate {
-    func nextButtonPressed(question: String, answer: String) {
+    func saveAnswer(question: String, answer: String) {
         
         //TODO: check if the selected day log already has an answer to this question
         //TODO: if answer is avaliable, update the stored value
@@ -270,16 +275,16 @@ extension MainViewController: QuestionViewControllerDelegate {
         
     }
     
-    func backButtonPressed(question: String, answer: String) {
-        let newAnswer = Answer(context: self.context)
-        newAnswer.question = question
-        newAnswer.text = answer
-        newAnswer.dayLog = selectedDayLog
-        do {
-            try context.save()
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+//    func backButtonPressed(question: String, answer: String) {
+//        let newAnswer = Answer(context: self.context)
+//        newAnswer.question = question
+//        newAnswer.text = answer
+//        newAnswer.dayLog = selectedDayLog
+//        do {
+//            try context.save()
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
     
 }
