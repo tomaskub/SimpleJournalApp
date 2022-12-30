@@ -11,6 +11,7 @@ class HistoryDetailViewController: UIViewController {
     
     var dayLog: DayLog?
     
+    
     //MARK: UI elements
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -61,7 +62,6 @@ class HistoryDetailViewController: UIViewController {
                 card.widthAnchor.constraint(equalToConstant: view.frame.width)
             ])
         }
-        view.addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
