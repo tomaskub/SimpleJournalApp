@@ -25,14 +25,18 @@ import UIKit
     private let summaryTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
+        
         textView.textContainer.maximumNumberOfLines = 3
         textView.textContainer.lineBreakMode = .byWordWrapping
+        textView.contentMode = .topLeft
+        
         textView.isEditable = false
         textView.isSelectable = false 
         textView.isScrollEnabled = false
+        
         textView.backgroundColor = UIColor(named: K.Colors.dominant)
         textView.textColor = UIColor(named: K.Colors.complement)
-        textView.contentMode = .topLeft
+        
         return textView
     }()
     private let containerView: UIView = {
