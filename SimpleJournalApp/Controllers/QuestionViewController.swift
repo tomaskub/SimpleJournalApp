@@ -16,10 +16,29 @@ class QuestionViewController: UIViewController {
 //  Constraint with constant to adjust based on keyboard height
     private var navigationButtonBottomConstraint: NSLayoutConstraint?
     
+    var dayLog: DayLog?
+    
     public var delegate: QuestionViewControllerDelegate?
     public var isLastQuestion = false
     
 //  MARK: UI elements declarations
+    private let questionViews: [QuestionView] = {
+        var views: [QuestionView] = []
+        for question in K.questions {
+            let view = QuestionView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.configure(question: question)
+            views.append(view)
+        }
+        return views
+    }()
+    private let scrollView: QuestionView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isPagingEnabled = true
+        return
+    }()
+    
     private let questionLabel: UILabel = {
         let label = UILabel()
         label.text = "Placeholder text"
