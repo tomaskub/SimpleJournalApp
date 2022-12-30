@@ -9,6 +9,9 @@ import UIKit
 
 class QuestionView: UIView {
     
+    var isEditable: Bool = false
+    weak var delegate: UITextViewDelegate?
+    
     private let questionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +29,10 @@ class QuestionView: UIView {
     }()
     
     override init(frame: CGRect) {
+        textView.isEditable = isEditable
+        textView.delegate = delegate
         super.init(frame: frame)
+        
         self.backgroundColor = UIColor(named: K.Colors.dominant)
         addSubview(questionLabel)
         addSubview(textView)
@@ -46,6 +52,10 @@ class QuestionView: UIView {
     func configure(question: String, answer: String? = nil) {
         questionLabel.text = question
         textView.text = answer
+    }
+    
+    func returnAnswer() -> String {
+        return textView.text
     }
     
 }
