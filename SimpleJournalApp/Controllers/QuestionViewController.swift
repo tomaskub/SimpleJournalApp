@@ -8,19 +8,19 @@
 import UIKit
 
 protocol QuestionViewControllerDelegate {
-    func saveAnswer(question: String, answer: String)
+    func saveDayLog(dayLog: DayLog)
 }
 
 class QuestionViewController: UIViewController {
     
-//  Constraint with constant to adjust based on keyboard height
-    private var navigationButtonBottomConstraint: NSLayoutConstraint?
+    //  Constraint with constant to adjust based on keyboard height
+    private var viewBottomConstraint: NSLayoutConstraint?
     
     var dayLog: DayLog?
     
     public var delegate: QuestionViewControllerDelegate?
-    public var isLastQuestion = false
     
+<<<<<<< Updated upstream
 //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
         var views: [QuestionView] = []
@@ -82,16 +82,37 @@ class QuestionViewController: UIViewController {
     
     
 //  MARK: View life-cycle
+=======
+    //  MARK: UI elements declarations
+    private let questionViews: [QuestionView] = {
+        var views: [QuestionView] = []
+        for question in K.questions {
+            let view = QuestionView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.configure(question: question)
+            views.append(view)
+        }
+        return views
+    }()
+    private let scrollView: QuestionView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isPagingEnabled = true
+        return
+    }()
+    
+    //  MARK: View life-cycle
+>>>>>>> Stashed changes
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for view in questionViews {
+            view.delegate = self
+        }
+        
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addSubviews()
         setUpConstraints()
-        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        finishButton.addTarget(self, action: #selector(finishButtonPressed), for: .touchUpInside)
-        textView.delegate = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,154 +125,78 @@ class QuestionViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        if let question = questionLabel.text, let answer = textView.text {
-            delegate?.saveAnswer(question: question, answer: answer)
+
+        if let log = dayLog {
+            delegate?.saveDayLog(dayLog: log)
         }
     }
     
-//  MARK: Selectors
+    
+    //  MARK: Selectors
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
-            navigationButtonBottomConstraint?.constant = -(keyboardHeight+10)
+            viewBottomConstraint?.constant = -(keyboardHeight+10)
         }
     }
     
     @objc func keyboardWillDissapear(_ notification: Notification) {
-        navigationButtonBottomConstraint?.constant = -30
+        viewBottomConstraint?.constant = -30
     }
     
-    @objc func backButtonPressed() {
-        //TODO: Clean up
-        //TODO: decide which way is better to present - changing VCs or properties (label, buton titles), maybe something else?
-        if let question = questionLabel.text, let answer = textView.text {
-            delegate?.saveAnswer(question: question, answer: answer)
-        }
-        
-        weak var presentingVC = self.presentingViewController
-        self.dismiss(animated: true, completion: {
-            let targetVC = QuestionViewController()
-            let e = K.questions.firstIndex(of: self.questionLabel.text!)!
-            if e == 0 {
-                return
-            } else {
-                targetVC.setLabelText(text: K.questions[e-1])
-                presentingVC?.present(targetVC, animated: true)
-                
-            }
-        })
-    }
-    
-    @objc func nextButtonPressed() {
-//        TODO: Clean up
-        if let question = questionLabel.text, let answer = textView.text {
-            delegate?.saveAnswer(question: question, answer: answer)
-        }
-        //present title for next question
-        let e = K.questions.firstIndex(of: questionLabel.text!)!
-        if e < K.questions.count - 2 {
-            let nextQuestion = K.questions[e+1]
-            self.setLabelText(text: nextQuestion)
-        } else if e == K.questions.count - 2 {
-            let nextQuestion = K.questions[e+1]
-            self.setLabelText(text: nextQuestion)
-            nextButton.removeFromSuperview()
-            self.view.addSubview(finishButton)
-            layoutFinishButton()
-            print("last question")
-        }
-        //empty text view for next answer
-        textView.text = nil
-    }
-    
-    @objc func finishButtonPressed() {
-        self.dismiss(animated: true)
-    }
-    
-//  MARK: UI layout methods
+    //  MARK: UI layout methods
     func addSubviews(){
-        view.addSubview(questionLabel)
-        view.addSubview(backButton)
-        view.addSubview(textView)
-        
-        if !isLastQuestion {
-            view.addSubview(nextButton)
-        } else {
-            view.addSubview(finishButton)
+        view.addSubview(scrollView)
+        for view in questionViews {
+            scrollView.addSubview(view)
         }
     }
     
     func setUpConstraints() {
         
-        nextButton.layer.cornerRadius = 10
-        backButton.layer.cornerRadius = 10
-        finishButton.layer.cornerRadius = 10
-        textView.layer.cornerRadius = 10
         
-        navigationButtonBottomConstraint = backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
-        if let constraint = navigationButtonBottomConstraint {
-            constraint.isActive = true
-        }
-
-        NSLayoutConstraint.activate([
-            //      layout question label
-            questionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            questionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            questionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            //      layout back button
-            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            backButton.heightAnchor.constraint(equalToConstant: 50),
-            backButton.widthAnchor.constraint(equalToConstant: view.frame.width/3),
-            //        layout text field
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            textView.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 10),
-            textView.bottomAnchor.constraint(equalTo: backButton.topAnchor, constant: -20),
-        ])
+        viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+        viewBottomConstraint?.isActive = true
         
-        if !isLastQuestion {
-            //        layout neck button
-            layoutNextButton()
-        } else {
-            //        layout finish button
-            layoutFinishButton()
+        NSLayoutConstraint.activate([
+            //      layout scrollView
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+        for i in 0...questionViews.count - 1 {
+            if i == 0{
+                questionViews[i].leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+            } else if i == questionViews.count - 1 {
+                questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+            }
+            questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
+            NSLayoutConstraint.activate([
+                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
+                questionViews[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height),
+                questionViews[i].widthAnchor.constraint(equalToConstant: scrollView.frame.width)
+            ])
+        }
+        
+        
+    }
+    
+    // MARK: configure view for data
+    func configure(forDisplaying dayLog: DayLog) {
+        self.dayLog = dayLog
+        let answers = dayLog.answers?.allObjects as! [Answer]
+        for (i, answer) in answers.enumerated() {
+            if let text = answer.text, let question = answer.question {
+                questionViews[i].configure(question: question, answer: text)
+            }
         }
     }
-    
-    func layoutNextButton() {
-        NSLayoutConstraint.activate([
-            nextButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            nextButton.heightAnchor.constraint(equalToConstant: 50),
-            nextButton.widthAnchor.constraint(equalToConstant: view.frame.width/3),
-            
-        ])
-    }
-    
-    func layoutFinishButton() {
-        NSLayoutConstraint.activate([
-            finishButton.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
-            finishButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            finishButton.heightAnchor.constraint(equalToConstant: 50),
-            finishButton.widthAnchor.constraint(equalToConstant: view.frame.width/3)
-        ])
-    }
-    
-    public func setLabelText(text: String){
-        questionLabel.text = text
-    }
-    
-    public func setTextFieldText(text: String) {
-        textView.text = text
-    }
-    
 }
-
 //MARK: UITextViewDelegate
 extension QuestionViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    
 }

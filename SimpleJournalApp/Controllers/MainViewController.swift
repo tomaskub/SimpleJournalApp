@@ -116,28 +116,10 @@ class MainViewController: UIViewController {
                 
                 let question = K.questions[indexPath.row]
                 
-                if indexPath.row + 1 == K.questions.count {
-                    targetVC.isLastQuestion = true
-                } else {
-                    targetVC.isLastQuestion = false
-                }
-                targetVC.setLabelText(text: question)
-                targetVC.delegate = self
                 
-                if let answers = selectedDayLog?.answers?.allObjects as? [Answer] {
-                    for answer in answers {
-                        if answer.question == question {
-                            if let text = answer.text {
-                                targetVC.setTextFieldText(text: text)
-                            }
-                        }
-                    }
-                } else {
-                    print("Failed to retrieve answer")
-                }
-            } else {
-                print("Error getting question text")
+                targetVC.delegate = self
             }
+                
         }
     }
 }
@@ -257,16 +239,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: QuestionViewControllerDelegate methods
 extension MainViewController: QuestionViewControllerDelegate {
-    func saveAnswer(question: String, answer: String) {
-        
-        //TODO: check if the selected day log already has an answer to this question
-        //TODO: if answer is avaliable, update the stored value
-        //TODO:
-        
-        let newAnswer = Answer(context: self.context)
-        newAnswer.question = question
-        newAnswer.text = answer
-        newAnswer.dayLog = selectedDayLog
+    func saveDayLog(dayLog: DayLog) {
+        print(dayLog.description)
         do {
             try context.save()
         } catch {
