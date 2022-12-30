@@ -20,7 +20,6 @@ class QuestionViewController: UIViewController {
     
     public var delegate: QuestionViewControllerDelegate?
     
-<<<<<<< Updated upstream
 //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
         var views: [QuestionView] = []
@@ -32,77 +31,16 @@ class QuestionViewController: UIViewController {
         }
         return views
     }()
-    private let scrollView: QuestionView = {
+    private let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isPagingEnabled = true
         return
     }()
-    
-    private let questionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Placeholder text"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(named: K.Colors.complement)
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        return label
-    }()
-    private let nextButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Next", for: .normal)
-        button.backgroundColor = UIColor(named: K.Colors.complement)
-        button.setTitleColor(UIColor(named: K.Colors.accent), for: .normal)
-        return button
-    }()
-    private let backButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("back", for: .normal)
-        button.backgroundColor = UIColor(named: K.Colors.complement)
-        button.setTitleColor(UIColor(named: K.Colors.accent), for: .normal)
-        return button
-    }()
-    private let finishButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Finish", for: .normal)
-        button.backgroundColor = UIColor(named: K.Colors.complement)
-        button.setTitleColor(UIColor(named: K.Colors.accent), for: .normal)
-        return button
-    }()
-    private let textView: UITextView = {
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = UIColor(named: K.Colors.complement)
-        textView.returnKeyType = .done
-        return textView
-    }()
-    
-    
-//  MARK: View life-cycle
-=======
-    //  MARK: UI elements declarations
-    private let questionViews: [QuestionView] = {
-        var views: [QuestionView] = []
-        for question in K.questions {
-            let view = QuestionView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.configure(question: question)
-            views.append(view)
-        }
-        return views
-    }()
-    private let scrollView: QuestionView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isPagingEnabled = true
-        return
-    }()
+       
     
     //  MARK: View life-cycle
->>>>>>> Stashed changes
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
