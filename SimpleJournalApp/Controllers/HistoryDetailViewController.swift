@@ -9,8 +9,9 @@ import UIKit
 
 class HistoryDetailViewController: UIViewController {
     
-    //MARK: UI elements
+    var dayLog: DayLog?
     
+    //MARK: UI elements
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +34,16 @@ class HistoryDetailViewController: UIViewController {
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addViews()
         layoutUI()
-        
+        if let dayLog = dayLog {
+            let answers: [Answer] = dayLog.answers?.allObjects as! [Answer]
+            for i in 0...answers.count - 1 {
+                if let answer = answers[i].text {
+                    questionCards[i].configure(question: K.questions[i], answer: answer)
+                } else {
+                    questionCards[i].configure(question: K.questions[i])
+                }
+            }
+        }
     }
     
     //MARK: UI layout
@@ -43,6 +53,7 @@ class HistoryDetailViewController: UIViewController {
         }
         view.addSubview(scrollView)
     }
+    
     private func layoutUI() {
         for card in questionCards {
             NSLayoutConstraint.activate([
