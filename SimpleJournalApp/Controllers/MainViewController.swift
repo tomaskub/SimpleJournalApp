@@ -115,7 +115,9 @@ class MainViewController: UIViewController {
             if let indexPath = tableView.indexPath(for: cell) {
                 
                 let question = K.questions[indexPath.row]
-                
+                if let dayLog = selectedDayLog {
+                    targetVC.configure(forDisplaying: dayLog)
+                }
                 
                 targetVC.delegate = self
             }
@@ -129,7 +131,7 @@ extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
         if let indexPath = tableView.indexPath(for: sender){
             let question = K.questions[indexPath.row]
-            print("Question button pressed for: \(question)")
+//            print("Question button pressed for: \(question)")
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         }
         
