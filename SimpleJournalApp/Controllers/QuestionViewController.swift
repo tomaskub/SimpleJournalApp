@@ -35,7 +35,7 @@ class QuestionViewController: UIViewController {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isPagingEnabled = true
-        return
+        return view
     }()
        
     
@@ -44,13 +44,15 @@ class QuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for view in questionViews {
-            view.delegate = self
-        }
-        
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addSubviews()
-        setUpConstraints()
+        layoutUI()
+        
+        for view in questionViews {
+            view.delegate = self
+            view.isEditable = true
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,14 +92,22 @@ class QuestionViewController: UIViewController {
         }
     }
     
-    func setUpConstraints() {
+    func layoutUI() {
         
         
-        viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
-        viewBottomConstraint?.isActive = true
+//        viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+//        viewBottomConstraint?.isActive = true
+        
+        for qview in questionViews {
+            NSLayoutConstraint.activate([
+                qview.heightAnchor.constraint(equalToConstant: view.frame.height),
+                qview.widthAnchor.constraint(equalToConstant: view.frame.width)])
+        }
+        
         
         NSLayoutConstraint.activate([
             //      layout scrollView
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -106,14 +116,16 @@ class QuestionViewController: UIViewController {
             if i == 0{
                 questionViews[i].leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
             } else if i == questionViews.count - 1 {
+                questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
                 questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+            } else {
+                questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
             }
-            questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
-            NSLayoutConstraint.activate([
-                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
-                questionViews[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height),
-                questionViews[i].widthAnchor.constraint(equalToConstant: scrollView.frame.width)
-            ])
+//            NSLayoutConstraint.activate([
+//                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
+//                questionViews[i].heightAnchor.constraint(equalToConstant: view.frame.height),
+//                questionViews[i].widthAnchor.constraint(equalToConstant: view.frame.width)
+//            ])
         }
         
         
