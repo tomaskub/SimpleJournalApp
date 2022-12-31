@@ -35,6 +35,7 @@ class HistoryDetailViewController: UIViewController {
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addViews()
         layoutUI()
+        //TODO: fix issue with out of bound on a placeholder item or remove placeholders?
         if let dayLog = dayLog {
             let answers: [Answer] = dayLog.answers?.allObjects as! [Answer]
             for i in 0...answers.count - 1 {
