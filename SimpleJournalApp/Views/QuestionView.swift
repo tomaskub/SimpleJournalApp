@@ -23,7 +23,6 @@ class QuestionView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.contentMode = .topLeft
-        view.isEditable = false
         view.textColor = UIColor(named: K.Colors.complement)
         return view
     }()
