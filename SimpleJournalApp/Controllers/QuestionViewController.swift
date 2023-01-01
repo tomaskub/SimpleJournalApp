@@ -24,7 +24,7 @@ class QuestionViewController: UIViewController {
     private let questionViews: [QuestionView] = {
         var views: [QuestionView] = []
         for question in K.questions {
-            let view = QuestionView()
+            let view = QuestionView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false
             view.configure(question: question)
             views.append(view)
@@ -49,8 +49,10 @@ class QuestionViewController: UIViewController {
         layoutUI()
         
         for view in questionViews {
-            view.delegate = self
-            view.isEditable = true
+            view.textView.isEditable = true
+            view.textView.delegate = self
+                
+            
         }
         
     }
