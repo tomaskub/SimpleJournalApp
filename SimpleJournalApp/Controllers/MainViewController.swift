@@ -116,7 +116,7 @@ class MainViewController: UIViewController {
                 
                 let question = K.questions[indexPath.row]
                 if let dayLog = selectedDayLog {
-                    targetVC.configure(forDisplaying: dayLog)
+                    targetVC.dayLog = dayLog
                 }
                 
                 targetVC.delegate = self
