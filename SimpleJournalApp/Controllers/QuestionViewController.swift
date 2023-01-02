@@ -16,8 +16,18 @@ class QuestionViewController: UIViewController {
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     
-    var dayLog: DayLog?
-    
+    var dayLog: DayLog? {
+        didSet {
+            guard let unwrappedDayLog = dayLog else { return }
+            let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
+            for (i, answer) in answers.enumerated() {
+                if let text = answer.text, let question = answer.question {
+                    questionViews[i].configure(question: question, answer: text)
+                }
+                
+            }
+        }
+    }
     public var delegate: QuestionViewControllerDelegate?
     
 //  MARK: UI elements declarations
@@ -134,15 +144,15 @@ class QuestionViewController: UIViewController {
     }
     
     // MARK: configure view for data
-    func configure(forDisplaying dayLog: DayLog) {
-        self.dayLog = dayLog
-        let answers = dayLog.answers?.allObjects as! [Answer]
-        for (i, answer) in answers.enumerated() {
-            if let text = answer.text, let question = answer.question {
-                questionViews[i].configure(question: question, answer: text)
-            }
-        }
-    }
+//    func configure(forDisplaying dayLog: DayLog) {
+//        self.dayLog = dayLog
+//        let answers = dayLog.answers?.allObjects as! [Answer]
+//        for (i, answer) in answers.enumerated() {
+//            if let text = answer.text, let question = answer.question {
+//                questionViews[i].configure(question: question, answer: text)
+//            }
+//        }
+//    }
 }
 //MARK: UITextViewDelegate
 extension QuestionViewController: UITextViewDelegate {
