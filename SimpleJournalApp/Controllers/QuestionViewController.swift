@@ -4,7 +4,7 @@
 //
 //  Created by Tomasz Kubiak on 12/16/22.
 //
-
+import CoreData
 import UIKit
 
 protocol QuestionViewControllerDelegate {
@@ -18,7 +18,7 @@ class QuestionViewController: UIViewController {
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     var delegate: QuestionViewControllerDelegate?
-    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     
     var dayLog: DayLog? {
         didSet {
@@ -31,7 +31,7 @@ class QuestionViewController: UIViewController {
                     answer.dayLog = unwrappedDayLog
                 }
             } else {
-            let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
+                let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
                 
                 for (i, answer) in answers.enumerated() {
                     if let text = answer.text, let question = answer.question {
@@ -40,11 +40,12 @@ class QuestionViewController: UIViewController {
                 }
             }
         }
+        
     }
     
     
     
-//  MARK: UI elements declarations
+    //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
         var views: [QuestionView] = []
         for question in K.questions {
@@ -61,10 +62,10 @@ class QuestionViewController: UIViewController {
         view.isPagingEnabled = true
         return view
     }()
-       
+    
     
     //  MARK: View life-cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,7 +80,7 @@ class QuestionViewController: UIViewController {
             //For testing the constraints
             view.textView.backgroundColor = UIColor(named: K.Colors.complement)
             view.textView.textColor = .black
-                
+            
             
         }
         
@@ -95,8 +96,9 @@ class QuestionViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        saveAnswers()
         if let log = dayLog {
+            
             delegate?.saveDayLog(dayLog: log)
         }
     }
@@ -137,7 +139,7 @@ class QuestionViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             //      layout scrollView
-//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+            //            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -151,14 +153,31 @@ class QuestionViewController: UIViewController {
             } else {
                 questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
             }
-//            NSLayoutConstraint.activate([
-//                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
-//                questionViews[i].heightAnchor.constraint(equalToConstant: view.frame.height),
-//                questionViews[i].widthAnchor.constraint(equalToConstant: view.frame.width)
-//            ])
+            //            NSLayoutConstraint.activate([
+            //                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
+            //                questionViews[i].heightAnchor.constraint(equalToConstant: view.frame.height),
+            //                questionViews[i].widthAnchor.constraint(equalToConstant: view.frame.width)
+            //            ])
         }
         
         
+    }
+    func saveAnswers() {
+        for view in questionViews {
+            //            check if the answer existis
+            if let question = view.question, let existingAnswers = dayLog?.answers?.allObjects as? [Answer] {
+                
+                if let i = existingAnswers.firstIndex(where: {$0.question == question}) {
+                    existingAnswers[i].text = view.returnAnswer()
+                } else {
+                    let answer = Answer(context: context)
+                    answer.question = view.question
+                    answer.text = view.returnAnswer()
+                    answer.dayLog = dayLog
+                }
+                
+            }
+        }
     }
 }
 //MARK: UITextViewDelegate

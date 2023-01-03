@@ -19,6 +19,7 @@ class HistoryDetailViewController: UIViewController {
             if answers.count == 1 {
                 if let answer = answers.first?.text, let question = answers.first?.question {
                     questionCards[0].configure(question: question, answer: answer)
+                }
             } else if answers.count > 1 {
                 for i in 0...answers.count - 1 {
                     if let answer = answers[i].text {
@@ -27,7 +28,6 @@ class HistoryDetailViewController: UIViewController {
                         questionCards[i].configure(question: K.questions[i])
                     }
                 }
-            }
         }
     }
 }
@@ -44,7 +44,6 @@ class HistoryDetailViewController: UIViewController {
         for question in K.questions {
             let card = QuestionView()
             card.translatesAutoresizingMaskIntoConstraints = false
-            card.configure(question: question)
             cards.append(card)
         }
         return cards

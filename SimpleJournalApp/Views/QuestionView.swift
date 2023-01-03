@@ -10,6 +10,12 @@ import UIKit
 class QuestionView: UIView {
     
     
+    var question: String? {
+        didSet {
+            questionLabel.text = question
+        }
+    }
+    
     
     private let questionLabel: UILabel = {
         let label = UILabel()
@@ -47,7 +53,7 @@ class QuestionView: UIView {
     }
     
     func configure(question: String, answer: String? = nil) {
-        questionLabel.text = question
+        self.question = question
         textView.text = answer
     }
     

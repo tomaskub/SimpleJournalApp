@@ -230,7 +230,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: QuestionViewControllerDelegate methods
 extension MainViewController: QuestionViewControllerDelegate {
     func saveDayLog(dayLog: DayLog) {
+        
         print(dayLog.description)
+        selectedDayLog = dayLog
         do {
             try context.save()
         } catch {
