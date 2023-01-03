@@ -48,6 +48,12 @@ class HistoryDetailViewController: UIViewController {
         }
         return cards
     }()
+    private let editButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Edit", for: .normal)
+        return button
+    }()
     
     //MARK: life cycle methods
     override func viewDidLoad() {
@@ -66,9 +72,17 @@ class HistoryDetailViewController: UIViewController {
             scrollView.addSubview(card)
         }
         view.addSubview(scrollView)
+        view.addSubview(editButton)
     }
     
     private func layoutUI() {
+        
+        NSLayoutConstraint.activate([
+            editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            editButton.widthAnchor.constraint(equalToConstant: view.frame.width / 5),
+            editButton.heightAnchor.constraint(equalToConstant: 50)])
+        
         for card in questionCards {
             NSLayoutConstraint.activate([
                 card.heightAnchor.constraint(equalToConstant: view.frame.height),
