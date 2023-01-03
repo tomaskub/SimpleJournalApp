@@ -92,7 +92,7 @@ import UIKit
         // Configure the view for the selected state
     }
     
-    public func configureCell(date: String, summary: String) {
+    public func configureCell(date: String, summary: String = "No summary was saved") {
         dateLabel.text = date
         summaryTextView.text = summary
     }

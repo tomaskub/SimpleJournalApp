@@ -34,12 +34,12 @@ class HistoryViewController: UIViewController {
     @objc func didSave(notification: Notification) {
         if let results = fetchAllDayLogs() {
             dayLogs = results
+            tableView.reloadData()
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
     }
     
     
@@ -86,11 +86,25 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: HistoryTableViewCell.identifier, for: indexPath) as! HistoryTableViewCell
         if let date = dayLogs[indexPath.row].date {
             if let answers = dayLogs[indexPath.row].answers?.allObjects as? [Answer] {
+                
+                let dateString = date.formatted(date: .abbreviated, time: .omitted)
+                var hasSummary = false
+                
                 for answer in answers {
+                    
                     if answer.question == K.questions[0] {
-                        cell.configureCell(date: date.formatted(date: .abbreviated, time: .omitted), summary: answer.text!)
+                        if let unwrappedText = answer.text {
+                            cell.configureCell(date: dateString, summary: unwrappedText)
+                        } else {
+                            cell.configureCell(date: dateString)
+                        }
                         cell.layoutIfNeeded()
+                        hasSummary = true
                     }
+                }
+                
+                if hasSummary == false {
+                    cell.configureCell(date: dateString)
                 }
             }
         }
