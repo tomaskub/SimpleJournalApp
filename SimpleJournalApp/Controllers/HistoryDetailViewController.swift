@@ -9,8 +9,28 @@ import UIKit
 
 class HistoryDetailViewController: UIViewController {
     
-    var dayLog: DayLog?
-    
+    var dayLog: DayLog? {
+        didSet {
+            guard let unwrappedDayLog = dayLog else { return }
+            guard let answers: [Answer] = unwrappedDayLog.answers?.allObjects as? [Answer] else {
+                print("Retrived day log does not have any q&a")
+                return
+            }
+            if answers.count == 1 {
+                if let answer = answers.first?.text, let question = answers.first?.question {
+                    questionCards[0].configure(question: question, answer: answer)
+            } else if answers.count > 1 {
+                for i in 0...answers.count - 1 {
+                    if let answer = answers[i].text {
+                        questionCards[i].configure(question: K.questions[i], answer: answer)
+                    } else {
+                        questionCards[i].configure(question: K.questions[i])
+                    }
+                }
+            }
+        }
+    }
+}
     
     //MARK: UI elements
     private let scrollView: UIScrollView = {
@@ -30,23 +50,16 @@ class HistoryDetailViewController: UIViewController {
         return cards
     }()
     
+    //MARK: life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addViews()
         layoutUI()
         //TODO: fix issue with out of bound on a placeholder item or remove placeholders?
-        if let dayLog = dayLog {
-            let answers: [Answer] = dayLog.answers?.allObjects as! [Answer]
-            for i in 0...answers.count - 1 {
-                if let answer = answers[i].text {
-                    questionCards[i].configure(question: K.questions[i], answer: answer)
-                } else {
-                    questionCards[i].configure(question: K.questions[i])
-                }
-            }
+        
         }
-    }
+    
     
     //MARK: UI layout
     private func addViews() {
