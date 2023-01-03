@@ -13,22 +13,36 @@ protocol QuestionViewControllerDelegate {
 
 class QuestionViewController: UIViewController {
     
+    //TODO: Add gesture recognizer to dismiss the keyboard or change the keyboard focus on swipe
+    
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
+    var delegate: QuestionViewControllerDelegate?
+    
     
     var dayLog: DayLog? {
         didSet {
             guard let unwrappedDayLog = dayLog else { return }
-            let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
-            for (i, answer) in answers.enumerated() {
-                if let text = answer.text, let question = answer.question {
-                    questionViews[i].configure(question: question, answer: text)
+            //TODO: FIX force uwrapping a possibly nil value when there is no existing answers in a new dayLog
+            if unwrappedDayLog.answers?.allObjects == nil {
+                for question in K.questions {
+                    let answer = Answer()
+                    answer.question = question
+                    answer.dayLog = unwrappedDayLog
                 }
+            } else {
+            let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
                 
+                for (i, answer) in answers.enumerated() {
+                    if let text = answer.text, let question = answer.question {
+                        questionViews[i].configure(question: question, answer: text)
+                    }
+                }
             }
         }
     }
-    public var delegate: QuestionViewControllerDelegate?
+    
+    
     
 //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
@@ -55,12 +69,16 @@ class QuestionViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: K.Colors.dominant)
+        
         addSubviews()
         layoutUI()
         
         for view in questionViews {
             view.textView.isEditable = true
             view.textView.delegate = self
+            //For testing the constraints
+            view.textView.backgroundColor = UIColor(named: K.Colors.complement)
+            view.textView.textColor = .black
                 
             
         }
@@ -107,8 +125,8 @@ class QuestionViewController: UIViewController {
     func layoutUI() {
         
         
-//        viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
-//        viewBottomConstraint?.isActive = true
+        viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+        viewBottomConstraint?.isActive = true
         
         for qview in questionViews {
             NSLayoutConstraint.activate([
@@ -119,7 +137,7 @@ class QuestionViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             //      layout scrollView
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
+//            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -142,17 +160,6 @@ class QuestionViewController: UIViewController {
         
         
     }
-    
-    // MARK: configure view for data
-//    func configure(forDisplaying dayLog: DayLog) {
-//        self.dayLog = dayLog
-//        let answers = dayLog.answers?.allObjects as! [Answer]
-//        for (i, answer) in answers.enumerated() {
-//            if let text = answer.text, let question = answer.question {
-//                questionViews[i].configure(question: question, answer: text)
-//            }
-//        }
-//    }
 }
 //MARK: UITextViewDelegate
 extension QuestionViewController: UITextViewDelegate {
