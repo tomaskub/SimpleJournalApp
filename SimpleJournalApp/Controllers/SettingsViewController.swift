@@ -102,8 +102,6 @@ extension SettingsViewController: SettingCellDelegate {
                 removeAllDayLogs()
             }
         }
-        
-        
     }
     
     func toggleSwitchPressed(sender: SettingCell) {
@@ -111,32 +109,29 @@ extension SettingsViewController: SettingCellDelegate {
         if let indexPath = tableView.indexPath(for: sender) {
             // retrieve key for the cell that called toggleSwitchPressed
             if let key = pref.settings[indexPath.section].settingInSection[indexPath.row].key {
-//              if key is for reminder:
-                if key == K.UserDefaultsKeys.isReminderEnabled {
-                    //                check the toggle button state
+                switch key {
+                case K.UserDefaultsKeys.isReminderEnabled:
                     if sender.getToggleButtonState() == true {
-                        //                    schedule a reminder for switch in on position
+                        
                         if let reminderTime = defaults.object(forKey: key) as? Date {
                             scheduleReminder(for: reminderTime )
                         }
                     } else {
-                        //                        remove existing reminder
+                        
                         removeReminder()
                     }
-                } else if key == K.UserDefaultsKeys.useDarkTheme {
+                case K.UserDefaultsKeys.useDarkTheme:
                     if sender.getToggleButtonState()! {
                         self.overrideUserInterfaceStyle = .dark
                     } else {
                         self.overrideUserInterfaceStyle = .unspecified
                     }
+                default:
+                    return
                 }
-                
                 defaults.setValue(sender.getToggleButtonState(), forKey: key)
-            } else {
-                print("getting index path for sender setting cell failed at toggleSwitchPressed(sender: \(sender.description)")
             }
         }
-        
     }
     
     func timePickerEditingDidEnd(sender: SettingCell) {
