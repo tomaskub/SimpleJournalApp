@@ -9,13 +9,14 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    //TODO: Create a custom view for this controller?
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
-    var dateButtonArray: [CalendarDayButton] = {
+    let dateButtonArray: [CalendarDayButton] = {
         
         var tempArray: [CalendarDayButton] = []
             
@@ -23,43 +24,37 @@ class MainViewController: UIViewController {
                 let button: CalendarDayButton = {
                     let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
                     let button = CalendarDayButton(date: date!)//, isToday: false)
-                    
                     if i == 7 {
                         button.isTodayButton = true
                         button.isSelected = true
                     }
-                    
                     button.translatesAutoresizingMaskIntoConstraints = false
-                    button.addTarget(/*MainViewController.*/self, action: #selector(setSelected(sender:)), for: .touchUpInside)
-                    
+                    button.addTarget(self, action: #selector(setSelected(sender:)), for: .touchUpInside)
                     return button
             }()
                 tempArray.append(button)
         }
         return tempArray
     }()
-
+    let actions = ["Add photo!", "Journal", "Add reminders for next day"]
+    
     var selectedDayLogDate = Date()
     var selectedDayLog: DayLog?
-    
+    //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        performFirstTimeSetUp()
         
         fetchDayLog(for: selectedDayLogDate)
+
+        layoutUI()
         
-        performFirstTimeSetUp()
-        configureView()
-        // set up table view apperance
-        tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
-        tableView.layer.cornerRadius = tableView.layer.bounds.width / 10
-        
-        //TODO: - make the automatic table view height work!
         tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,45 +78,41 @@ class MainViewController: UIViewController {
         
     }
     
-    func configureView(){
+//    MARK: UI layout
+    func layoutUI(){
+        //adjust tableview appearance
+        tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
+        tableView.layer.cornerRadius = tableView.layer.bounds.width / 10
         // configure date label text
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
         // TODO: set up calendar button constraints to work properly with scrollView - still has
         // set up constraints for calendar buttons
         for i in 0...dateButtonArray.count-1 {
             scrollView.addSubview(dateButtonArray[i])
-            switch i {
-            case 0:
+            if i == 0 {
                 dateButtonArray[i].leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 10).isActive = true
-            default:
+            } else {
                 dateButtonArray[i].leadingAnchor.constraint(equalTo: dateButtonArray[i-1].trailingAnchor, constant: 10).isActive = true
             }
-            dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-            dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-            dateButtonArray[i].widthAnchor.constraint(equalToConstant: scrollView.frame.height * 0.85).isActive = true
-            dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height).isActive = true
+            NSLayoutConstraint.activate([
+                dateButtonArray[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
+                dateButtonArray[i].bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                dateButtonArray[i].widthAnchor.constraint(equalToConstant: scrollView.frame.height * 0.85),
+                dateButtonArray[i].heightAnchor.constraint(equalToConstant: scrollView.frame.height)
+            ])
         }
-        
         dateButtonArray.last?.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 10).isActive = true
     }
 
     //MARK: - NAVIGATION
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // preparation fo a segue triggered by question cell button
-        if segue.identifier == K.SegueIdentifiers.toQuestionVC, let cell = sender as? QuestionCell {
-            
+        if segue.identifier == K.SegueIdentifiers.toQuestionVC {
             let targetVC = segue.destination as! QuestionViewController
-            
-            if let indexPath = tableView.indexPath(for: cell) {
-                
-                let question = K.questions[indexPath.row]
-                if let dayLog = selectedDayLog {
-                    targetVC.dayLog = dayLog
-                }
-                
-                targetVC.delegate = self
+            if let dayLog = selectedDayLog {
+                targetVC.dayLog = dayLog
             }
-                
+            targetVC.delegate = self
         }
     }
 }
@@ -129,11 +120,8 @@ class MainViewController: UIViewController {
 //MARK: QuestionCellDelegate methods
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
-        if let indexPath = tableView.indexPath(for: sender){
-            let question = K.questions[indexPath.row]
-//            print("Question button pressed for: \(question)")
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
-        }
+        
         
     }
 }
@@ -227,12 +215,12 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     //tableView method implementation
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return K.questions.count
+        return actions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
-        cell.configureCell(questionText: K.questions[indexPath.row])
+        cell.configureCell(questionText: actions[indexPath.row])
         cell.delegate = self
         cell.selectionStyle = .none
         return cell
@@ -250,17 +238,4 @@ extension MainViewController: QuestionViewControllerDelegate {
         }
         
     }
-    
-//    func backButtonPressed(question: String, answer: String) {
-//        let newAnswer = Answer(context: self.context)
-//        newAnswer.question = question
-//        newAnswer.text = answer
-//        newAnswer.dayLog = selectedDayLog
-//        do {
-//            try context.save()
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
-    
 }
