@@ -74,7 +74,7 @@ class MainViewController: UIViewController {
         }
         sender.isSelected = true
         selectedDayLogDate = (sender as! CalendarDayButton).getDate()
-        fetchDayLog(for: selectedDayLogDate)
+        
         
     }
     
@@ -120,6 +120,7 @@ class MainViewController: UIViewController {
 //MARK: QuestionCellDelegate methods
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
+        fetchDayLog(for: selectedDayLogDate)
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         
         
