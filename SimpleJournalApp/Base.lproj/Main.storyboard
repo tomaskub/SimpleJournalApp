@@ -117,14 +117,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous Entries" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fud-vF-U01">
-                                <rect key="frame" x="145.5" y="68" width="123" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dvC-lM-vcd">
+                                <rect key="frame" x="10" y="48" width="394" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="DDD, DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Hm-pg-6uf">
+                                        <rect key="frame" x="0.0" y="0.0" width="85" height="19.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="ComplementColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous Entries" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fud-vF-U01">
+                                        <rect key="frame" x="0.0" y="27.5" width="203.5" height="32.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
+                                        <color key="textColor" name="ComplementColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Dhe-wG-sIv"/>
+                                </constraints>
+                            </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="2bg-aX-YKB">
-                                <rect key="frame" x="0.0" y="109" width="414" height="704"/>
+                                <rect key="frame" x="0.0" y="118" width="414" height="695"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="120" id="q3K-ct-9Wo" customClass="HistoryTableViewCell" customModule="SimpleJournalApp" customModuleProvider="target">
@@ -144,13 +158,14 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Aeb-78-tDq"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="DominantColor"/>
                         <constraints>
+                            <constraint firstItem="2bg-aX-YKB" firstAttribute="top" secondItem="dvC-lM-vcd" secondAttribute="bottom" constant="10" id="60f-pK-VFn"/>
+                            <constraint firstItem="Aeb-78-tDq" firstAttribute="trailing" secondItem="dvC-lM-vcd" secondAttribute="trailing" constant="10" id="GwD-JL-O5i"/>
+                            <constraint firstItem="dvC-lM-vcd" firstAttribute="leading" secondItem="Aeb-78-tDq" secondAttribute="leading" constant="10" id="Gzd-Rn-Dre"/>
                             <constraint firstItem="Aeb-78-tDq" firstAttribute="trailing" secondItem="2bg-aX-YKB" secondAttribute="trailing" id="Vzb-rE-wgf"/>
-                            <constraint firstItem="2bg-aX-YKB" firstAttribute="top" secondItem="fud-vF-U01" secondAttribute="bottom" constant="20" id="YKs-ee-7V4"/>
-                            <constraint firstItem="fud-vF-U01" firstAttribute="centerX" secondItem="ewZ-rF-8Up" secondAttribute="centerX" id="dar-bK-EpV"/>
-                            <constraint firstItem="fud-vF-U01" firstAttribute="top" secondItem="Aeb-78-tDq" secondAttribute="top" constant="20" id="ddj-gH-vH2"/>
                             <constraint firstItem="2bg-aX-YKB" firstAttribute="leading" secondItem="Aeb-78-tDq" secondAttribute="leading" id="hiW-4x-n6c"/>
+                            <constraint firstItem="dvC-lM-vcd" firstAttribute="top" secondItem="Aeb-78-tDq" secondAttribute="top" id="jU9-jc-zK2"/>
                             <constraint firstItem="Aeb-78-tDq" firstAttribute="bottom" secondItem="2bg-aX-YKB" secondAttribute="bottom" id="q2k-Lu-HzP"/>
                         </constraints>
                     </view>
