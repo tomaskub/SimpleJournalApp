@@ -10,6 +10,7 @@ import UIKit
 class HistoryViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var dateLabel: UILabel!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     var dayLogs: [DayLog] = []
@@ -18,6 +19,8 @@ class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
+        tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 115
@@ -77,6 +80,7 @@ class HistoryViewController: UIViewController {
     
 
 }
+//MARK: tableView delegate and datasource methods
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dayLogs.count
