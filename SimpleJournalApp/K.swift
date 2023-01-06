@@ -46,5 +46,8 @@ struct K {
         case improve = "How can I improve on that?"
         case tested = "Where was my discipline and self-control tested?"
     }
+    struct SFSymbols {
+        static let edit = "square.and.pencil"
+    }
     
 }
