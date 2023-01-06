@@ -52,8 +52,22 @@ class HistoryDetailViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Edit", for: .normal)
+        button.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
         return button
     }()
+    //MARK: button actions
+    @objc func editPressed() {
+        for view in questionCards {
+            view.textView.isEditable = true
+            view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
+            view.textView.layer.borderWidth = 3
+            view.textView.layer.cornerRadius = 5
+            
+            
+        }
+    }
+    
+    
     
     //MARK: life cycle methods
     override func viewDidLoad() {
