@@ -48,13 +48,7 @@ class HistoryDetailViewController: UIViewController {
         }
         return cards
     }()
-    private let editButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Edit", for: .normal)
-        button.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
-        return button
-    }()
+    
     //MARK: button actions
     @objc func editPressed() {
         for view in questionCards {
@@ -75,6 +69,9 @@ class HistoryDetailViewController: UIViewController {
         view.backgroundColor = UIColor(named: K.Colors.dominant)
         addViews()
         layoutUI()
+        for view in questionCards {
+            view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
+        }
         //TODO: fix issue with out of bound on a placeholder item or remove placeholders?
         
         }
@@ -86,16 +83,10 @@ class HistoryDetailViewController: UIViewController {
             scrollView.addSubview(card)
         }
         view.addSubview(scrollView)
-        view.addSubview(editButton)
+        
     }
     
     private func layoutUI() {
-        
-        NSLayoutConstraint.activate([
-            editButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-            editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            editButton.widthAnchor.constraint(equalToConstant: view.frame.width / 5),
-            editButton.heightAnchor.constraint(equalToConstant: 50)])
         
         for card in questionCards {
             NSLayoutConstraint.activate([
