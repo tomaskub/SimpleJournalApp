@@ -73,7 +73,7 @@ class QuestionViewController: UIViewController {
         
         addSubviews()
         layoutUI()
-        
+        scrollView.delegate = self
         for view in questionViews {
             view.textView.isEditable = true
             view.textView.delegate = self
@@ -153,18 +153,12 @@ class QuestionViewController: UIViewController {
             } else {
                 questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
             }
-            //            NSLayoutConstraint.activate([
-            //                questionViews[i].topAnchor.constraint(equalTo: scrollView.topAnchor),
-            //                questionViews[i].heightAnchor.constraint(equalToConstant: view.frame.height),
-            //                questionViews[i].widthAnchor.constraint(equalToConstant: view.frame.width)
-            //            ])
         }
         
         
     }
     func saveAnswers() {
         for view in questionViews {
-            //            check if the answer existis
             if let question = view.question, let existingAnswers = dayLog?.answers?.allObjects as? [Answer] {
                 
                 if let i = existingAnswers.firstIndex(where: {$0.question == question}) {
@@ -180,6 +174,7 @@ class QuestionViewController: UIViewController {
         }
     }
 }
+
 //MARK: UITextViewDelegate
 extension QuestionViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -187,4 +182,15 @@ extension QuestionViewController: UITextViewDelegate {
         return true
     }
     
+}
+
+extension QuestionViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for view in questionViews {
+            if CGRectIntersectsRect(scrollView.bounds, view.frame) {
+                view.textView.becomeFirstResponder()
+            }
+        }
+    }
 }
