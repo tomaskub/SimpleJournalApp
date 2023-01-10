@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D629D50C296E1AF0004B6F5C /* GradingButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D629D50B296E1AF0004B6F5C /* GradingButtonView.swift */; };
 		D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63741962924154C00FFF9E5 /* SettingsViewController.swift */; };
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D629D50B296E1AF0004B6F5C /* GradingButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradingButtonView.swift; sourceTree = "<group>"; };
 		D63741962924154C00FFF9E5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				D63F453229216CCC008598C9 /* QuestionCell.swift */,
 				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
 				D68A5835295E661C00B5918F /* QuestionView.swift */,
+				D629D50B296E1AF0004B6F5C /* GradingButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6D827B7294CB038005AF563 /* QuestionViewController.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
+				D629D50C296E1AF0004B6F5C /* GradingButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

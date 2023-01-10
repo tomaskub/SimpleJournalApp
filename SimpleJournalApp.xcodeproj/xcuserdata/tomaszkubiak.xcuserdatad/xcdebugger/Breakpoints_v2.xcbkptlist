@@ -41,7 +41,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "403E4335-A8BB-42A0-A15E-207233AAC310"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleJournalApp/Controllers/QuestionViewController.swift"
