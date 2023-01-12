@@ -94,10 +94,10 @@
             </objects>
             <point key="canvasLocation" x="2071.0144927536235" y="144.64285714285714"/>
         </scene>
-        <!--Question View Controller-->
+        <!--Entry View Controller-->
         <scene sceneID="Dc0-M2-2Ey">
             <objects>
-                <viewController id="Jta-yh-WEv" customClass="QuestionViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Jta-yh-WEv" customClass="EntryViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SLW-NY-vbI">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="838"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

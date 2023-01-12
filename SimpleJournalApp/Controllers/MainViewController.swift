@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // preparation fo a segue triggered by question cell button
         if segue.identifier == K.SegueIdentifiers.toQuestionVC {
-            let targetVC = segue.destination as! QuestionViewController
+            let targetVC = segue.destination as! EntryViewController
             if let dayLog = selectedDayLog {
                 targetVC.dayLog = dayLog
             }

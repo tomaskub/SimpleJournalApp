@@ -11,7 +11,7 @@ protocol QuestionViewControllerDelegate {
     func saveDayLog(dayLog: DayLog)
 }
 
-class QuestionViewController: UIViewController {
+class EntryViewController: UIViewController {
     
     //TODO: Add gesture recognizer to dismiss the keyboard or change the keyboard focus on swipe
     
@@ -19,7 +19,29 @@ class QuestionViewController: UIViewController {
     private var viewBottomConstraint: NSLayoutConstraint?
     var delegate: QuestionViewControllerDelegate?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
-    
+    //MARK: day log declaration from historyDetailViewController
+    //    var dayLog: DayLog? {
+//        didSet {
+//            guard let unwrappedDayLog = dayLog else { return }
+//            guard let answers: [Answer] = unwrappedDayLog.answers?.allObjects as? [Answer] else {
+//                print("Retrived day log does not have any q&a")
+//                return
+//            }
+//            if answers.count == 1 {
+//                if let answer = answers.first?.text, let question = answers.first?.question {
+//                    questionCards[0].configure(question: question, answer: answer)
+//                }
+//            } else if answers.count > 1 {
+//                for i in 0...answers.count - 1 {
+//                    if let answer = answers[i].text {
+//                        questionCards[i].configure(question: K.questions[i], answer: answer)
+//                    } else {
+//                        questionCards[i].configure(question: K.questions[i])
+//                    }
+//                }
+//        }
+//    }
+//}
     var dayLog: DayLog? {
         didSet {
             guard let unwrappedDayLog = dayLog else { return }
@@ -56,6 +78,18 @@ class QuestionViewController: UIViewController {
         }
         return views
     }()
+    
+    //MARK: button actions
+    @objc func editPressed() {
+        for view in questionCards {
+            view.textView.isEditable = true
+            view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
+            view.textView.layer.borderWidth = 3
+            view.textView.layer.cornerRadius = 5
+            
+            
+        }
+    }
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -74,6 +108,13 @@ class QuestionViewController: UIViewController {
         addSubviews()
         layoutUI()
         scrollView.delegate = self
+        
+        //TODO: add strategy to work when the controller edits an existing entry or create a new entry
+        //from HistoryDetailViewController
+//        for view in questionCards {
+//            view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
+//        }
+        
         for view in questionViews {
             view.textView.isEditable = true
             view.textView.delegate = self
@@ -176,7 +217,7 @@ class QuestionViewController: UIViewController {
 }
 
 //MARK: UITextViewDelegate
-extension QuestionViewController: UITextViewDelegate {
+extension EntryViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -184,7 +225,7 @@ extension QuestionViewController: UITextViewDelegate {
     
 }
 
-extension QuestionViewController: UIScrollViewDelegate {
+extension EntryViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         for view in questionViews {
