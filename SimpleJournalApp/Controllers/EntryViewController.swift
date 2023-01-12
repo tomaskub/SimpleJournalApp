@@ -7,18 +7,28 @@
 import CoreData
 import UIKit
 
-protocol QuestionViewControllerDelegate {
+protocol EntryViewControllerDelegate {
     func saveDayLog(dayLog: DayLog)
 }
 
 class EntryViewController: UIViewController {
     
-    //TODO: Add gesture recognizer to dismiss the keyboard or change the keyboard focus on swipe
+    enum Strategy {
+    case isShowingOldEntry
+    case isCreatingNewEntry
+    }
+    
+    
+    
     
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
-    var delegate: QuestionViewControllerDelegate?
+    var delegate: EntryViewControllerDelegate?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    
+    var strategy: Strategy = .isCreatingNewEntry
+    
+    
     //MARK: day log declaration from historyDetailViewController
     //    var dayLog: DayLog? {
 //        didSet {
@@ -79,9 +89,17 @@ class EntryViewController: UIViewController {
         return views
     }()
     
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isPagingEnabled = true
+        return view
+    }()
+    
     //MARK: button actions
     @objc func editPressed() {
         for view in questionViews {
+            
             view.textView.isEditable = true
             view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
             view.textView.layer.borderWidth = 3
@@ -90,13 +108,6 @@ class EntryViewController: UIViewController {
             
         }
     }
-    private let scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isPagingEnabled = true
-        return view
-    }()
-    
     
     //  MARK: View life-cycle
     
@@ -109,14 +120,14 @@ class EntryViewController: UIViewController {
         layoutUI()
         scrollView.delegate = self
         
-        //TODO: add strategy to work when the controller edits an existing entry or create a new entry
-        //from HistoryDetailViewController
-//        for view in questionCards {
-//            view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
-//        }
-        
         for view in questionViews {
-            view.textView.isEditable = true
+            switch strategy {
+            case .isCreatingNewEntry:
+                view.textView.isEditable = true
+            case .isShowingOldEntry:
+                view.textView.isEditable = false
+                view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
+            }
             view.textView.delegate = self
             //For testing the constraints
             view.textView.backgroundColor = UIColor(named: K.Colors.complement)

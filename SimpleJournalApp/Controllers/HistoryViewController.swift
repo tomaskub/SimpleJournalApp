@@ -66,25 +66,16 @@ class HistoryViewController: UIViewController {
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        if segue.identifier == "toHistoryDetailViewController" , let cell = sender as? HistoryTableViewCell {
-            if let indexPath = tableView.indexPath(for: cell) {
-                let targetVC = segue.destination as! HistoryDetailViewController
-                targetVC.dayLog = dayLogs[indexPath.row]
-            }
-        }
         if segue.identifier == "toEntryViewController", let cell = sender as? HistoryTableViewCell {
             if let indexPath = tableView.indexPath(for: cell) {
                 let targetVC = segue.destination as! EntryViewController
                 targetVC.dayLog = dayLogs[indexPath.row]
+                targetVC.strategy = .isShowingOldEntry
             }
         }
     }
     
-
 }
 //MARK: tableView delegate and datasource methods
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
