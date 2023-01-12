@@ -104,6 +104,7 @@
                         <viewLayoutGuide key="safeArea" id="Mgo-Xo-SZU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="WX8-ix-Bbm"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nl6-oY-aRc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -175,28 +176,12 @@
                     <connections>
                         <outlet property="dateLabel" destination="0Hm-pg-6uf" id="oVX-cf-dhs"/>
                         <outlet property="tableView" destination="2bg-aX-YKB" id="ECV-t1-ZHz"/>
-                        <segue destination="f5A-rf-n7e" kind="show" identifier="toHistoryDetailViewController" id="vrK-sm-MJt"/>
+                        <segue destination="Jta-yh-WEv" kind="show" identifier="toEntryViewController" id="fLF-nH-aYp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bym-Ob-5js" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1893" y="1015"/>
-        </scene>
-        <!--History Detail View Controller-->
-        <scene sceneID="hVx-LB-hvo">
-            <objects>
-                <viewController id="f5A-rf-n7e" customClass="HistoryDetailViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oGZ-Nm-WFO">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="838"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="tJ3-CH-jvx"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="mF3-da-tju"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FMZ-2Z-bk7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2995" y="855"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="o7R-gA-uEm">
@@ -288,6 +273,9 @@
             <point key="canvasLocation" x="2765" y="-552"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="fLF-nH-aYp"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="chart.bar" catalog="system" width="128" height="89"/>
         <image name="chart.bar.fill" catalog="system" width="128" height="90"/>

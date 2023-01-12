@@ -81,7 +81,7 @@ class EntryViewController: UIViewController {
     
     //MARK: button actions
     @objc func editPressed() {
-        for view in questionCards {
+        for view in questionViews {
             view.textView.isEditable = true
             view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
             view.textView.layer.borderWidth = 3

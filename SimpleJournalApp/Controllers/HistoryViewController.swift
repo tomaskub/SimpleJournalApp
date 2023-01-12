@@ -70,9 +70,15 @@ class HistoryViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "toHistoryDetailViewController", let cell = sender as? HistoryTableViewCell {
+        if segue.identifier == "toHistoryDetailViewController" , let cell = sender as? HistoryTableViewCell {
             if let indexPath = tableView.indexPath(for: cell) {
                 let targetVC = segue.destination as! HistoryDetailViewController
+                targetVC.dayLog = dayLogs[indexPath.row]
+            }
+        }
+        if segue.identifier == "toEntryViewController", let cell = sender as? HistoryTableViewCell {
+            if let indexPath = tableView.indexPath(for: cell) {
+                let targetVC = segue.destination as! EntryViewController
                 targetVC.dayLog = dayLogs[indexPath.row]
             }
         }
@@ -115,6 +121,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "toHistoryDetailViewController", sender: tableView.cellForRow(at: indexPath))
+//        performSegue(withIdentifier: "toHistoryDetailViewController", sender: tableView.cellForRow(at: indexPath))
+        performSegue(withIdentifier: "toEntryViewController", sender: tableView.cellForRow(at: indexPath))
     }
 }
