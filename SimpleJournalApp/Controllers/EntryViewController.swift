@@ -21,6 +21,10 @@ class EntryViewController: UIViewController {
     
     var managedContext: NSManagedObjectContext!
     var strategy: Strategy = .isCreatingNewEntry
+    
+    
+    
+    
     var dayLog: DayLog? {
         didSet {
             guard let unwrappedDayLog = dayLog else { return }
@@ -31,14 +35,21 @@ class EntryViewController: UIViewController {
                     answer.question = question
                     answer.dayLog = unwrappedDayLog
                 }
+                populate(unwrappedDayLog.answers?.allObjects as! [Answer])
             } else {
                 let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
+                populate(answers)
                 
-                for (i, answer) in answers.enumerated() {
-                    if let text = answer.text, let question = answer.question {
-                        questionViews[i].configure(question: question, answer: text)
-                    }
-                }
+                
+                
+                
+                
+                
+//                for (i, answer) in answers.enumerated() {
+//                    if let text = answer.text, let question = answer.question {
+//                        questionViews[i].configure(question: question, answer: text)
+//                    }
+//                }
             }
         }
         
@@ -52,7 +63,7 @@ class EntryViewController: UIViewController {
         for question in K.questions {
             let view = QuestionView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.configure(question: question)
+//            view.configure(question: question)
             views.append(view)
         }
         return views
@@ -179,6 +190,30 @@ class EntryViewController: UIViewController {
         }
         
         
+    }
+
+    func populate(_ answers: [Answer]) {
+        // This probably needs to be extraxted to seperate method
+        // enumerate thorugh all question views
+        for (i, view) in questionViews.enumerated() {
+            // for question view, get question from k.questions
+            // set question for the question view
+            view.question = K.questions[i]
+            // enumerate though all answers
+            for answer in answers {
+                if let question = answer.question {
+                    // If question in answer matches question for view
+                    if question == view.question {
+                        //Check if question has an answer text
+                        if let text = answer.text {
+                            // set answer in text field
+                            view.textView.text = text
+                        }
+                    }
+                }
+            }
+            
+        }
     }
     
     func saveAnswers() {
