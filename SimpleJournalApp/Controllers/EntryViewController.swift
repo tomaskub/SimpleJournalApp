@@ -7,10 +7,6 @@
 import CoreData
 import UIKit
 
-protocol EntryViewControllerDelegate {
-    func saveDayLog(dayLog: DayLog)
-}
-
 class EntryViewController: UIViewController {
     
     enum Strategy {
@@ -20,38 +16,11 @@ class EntryViewController: UIViewController {
     
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
-    var delegate: EntryViewControllerDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     
     var managedContext: NSManagedObjectContext!
-    
     var strategy: Strategy = .isCreatingNewEntry
-    
-    
-    //MARK: day log declaration from historyDetailViewController
-    //    var dayLog: DayLog? {
-//        didSet {
-//            guard let unwrappedDayLog = dayLog else { return }
-//            guard let answers: [Answer] = unwrappedDayLog.answers?.allObjects as? [Answer] else {
-//                print("Retrived day log does not have any q&a")
-//                return
-//            }
-//            if answers.count == 1 {
-//                if let answer = answers.first?.text, let question = answers.first?.question {
-//                    questionCards[0].configure(question: question, answer: answer)
-//                }
-//            } else if answers.count > 1 {
-//                for i in 0...answers.count - 1 {
-//                    if let answer = answers[i].text {
-//                        questionCards[i].configure(question: K.questions[i], answer: answer)
-//                    } else {
-//                        questionCards[i].configure(question: K.questions[i])
-//                    }
-//                }
-//        }
-//    }
-//}
     var dayLog: DayLog? {
         didSet {
             guard let unwrappedDayLog = dayLog else { return }
@@ -98,14 +67,12 @@ class EntryViewController: UIViewController {
     
     //MARK: button actions
     @objc func editPressed() {
+        //Edit apperance of questionViews to show editable behaviour
         for view in questionViews {
-            
             view.textView.isEditable = true
             view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
             view.textView.layer.borderWidth = 3
             view.textView.layer.cornerRadius = 5
-            
-            
         }
     }
     
@@ -150,8 +117,11 @@ class EntryViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         saveAnswers()
         if let log = dayLog {
-            
-            delegate?.saveDayLog(dayLog: log)
+            do {
+                try managedContext.save()
+            } catch let error as NSError{
+                print("Failed to save: \(error), \(error.userInfo)")
+            }
         }
     }
     
@@ -209,6 +179,7 @@ class EntryViewController: UIViewController {
         
         
     }
+    
     func saveAnswers() {
         for view in questionViews {
             if let question = view.question, let existingAnswers = dayLog?.answers?.allObjects as? [Answer] {
@@ -216,7 +187,7 @@ class EntryViewController: UIViewController {
                 if let i = existingAnswers.firstIndex(where: {$0.question == question}) {
                     existingAnswers[i].text = view.returnAnswer()
                 } else {
-                    let answer = Answer(context: context)
+                    let answer = Answer(context: managedContext)
                     answer.question = view.question
                     answer.text = view.returnAnswer()
                     answer.dayLog = dayLog

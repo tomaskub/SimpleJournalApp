@@ -114,7 +114,6 @@ class MainViewController: UIViewController {
                 targetVC.managedContext = managedContext
                 targetVC.strategy = .isCreatingNewEntry
             }
-            targetVC.delegate = self
         }
     }
 }
@@ -230,17 +229,3 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: QuestionViewControllerDelegate methods
-extension MainViewController: EntryViewControllerDelegate {
-    func saveDayLog(dayLog: DayLog) {
-        
-        print(dayLog.description)
-        selectedDayLog = dayLog
-        do {
-            try managedContext.save()
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-    }
-}
