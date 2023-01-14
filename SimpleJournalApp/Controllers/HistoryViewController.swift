@@ -12,7 +12,7 @@ class HistoryViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     var dayLogs: [DayLog] = []
     
     let didSaveNotification = NSManagedObjectContext.didSaveObjectsNotification
@@ -56,7 +56,7 @@ class HistoryViewController: UIViewController {
         
         var results: [DayLog]?
         do {
-            results = try context.fetch(request)
+            results = try managedContext.fetch(request)
         } catch {
             print(error.localizedDescription)
             return nil
@@ -70,6 +70,7 @@ class HistoryViewController: UIViewController {
         if segue.identifier == "toEntryViewController", let cell = sender as? HistoryTableViewCell {
             if let indexPath = tableView.indexPath(for: cell) {
                 let targetVC = segue.destination as! EntryViewController
+                targetVC.managedContext = managedContext
                 targetVC.dayLog = dayLogs[indexPath.row]
                 targetVC.strategy = .isShowingOldEntry
             }

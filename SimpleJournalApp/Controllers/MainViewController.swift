@@ -14,7 +14,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     let dateButtonArray: [CalendarDayButton] = {
         
@@ -111,6 +111,8 @@ class MainViewController: UIViewController {
             let targetVC = segue.destination as! EntryViewController
             if let dayLog = selectedDayLog {
                 targetVC.dayLog = dayLog
+                targetVC.managedContext = managedContext
+                targetVC.strategy = .isCreatingNewEntry
             }
             targetVC.delegate = self
         }
@@ -144,7 +146,7 @@ extension MainViewController {
         request.predicate = datePredicate
         //Retrive day log for that date
         do {
-            let retrivedDayLogs = try context.fetch(request)
+            let retrivedDayLogs = try managedContext.fetch(request)
             if retrivedDayLogs.isEmpty {
                 print("There is no logs for current day, creating a new DayLog")
                 //If there is no retrived day logs for particular day, create an empty day log
@@ -162,13 +164,13 @@ extension MainViewController {
     }
     
     func createNewDayLog() -> DayLog {
-        let newDayLog = DayLog(context: self.context)
+        let newDayLog = DayLog(context: self.managedContext)
         
         newDayLog.date = Calendar.current.startOfDay(for: selectedDayLogDate)
         newDayLog.id = UUID()
         
         do {
-            try self.context.save()
+            try self.managedContext.save()
         } catch {
             print(error)
         }
@@ -235,7 +237,7 @@ extension MainViewController: EntryViewControllerDelegate {
         print(dayLog.description)
         selectedDayLog = dayLog
         do {
-            try context.save()
+            try managedContext.save()
         } catch {
             print(error.localizedDescription)
         }

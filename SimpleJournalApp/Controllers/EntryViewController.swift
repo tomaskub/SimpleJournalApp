@@ -18,13 +18,13 @@ class EntryViewController: UIViewController {
     case isCreatingNewEntry
     }
     
-    
-    
-    
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     var delegate: EntryViewControllerDelegate?
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    
+    var managedContext: NSManagedObjectContext!
     
     var strategy: Strategy = .isCreatingNewEntry
     
