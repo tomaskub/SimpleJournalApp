@@ -91,6 +91,7 @@ class EntryViewController: UIViewController {
             switch strategy {
             case .isCreatingNewEntry:
                 view.textView.isEditable = true
+                view.editButton.removeFromSuperview()
             case .isShowingOldEntry:
                 view.textView.isEditable = false
                 view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
