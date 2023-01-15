@@ -14,7 +14,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    var managedContext: NSManagedObjectContext!
+    
+//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     let dateButtonArray: [CalendarDayButton] = {
         

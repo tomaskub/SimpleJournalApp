@@ -12,6 +12,7 @@
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
 		D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453229216CCC008598C9 /* QuestionCell.swift */; };
 		D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A996C29294DC3000DEBD4 /* SettingCell.swift */; };
+		D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D669ECC22974474100C7CC2A /* CoreDataStack.swift */; };
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
 		D68A5836295E661C00B5918F /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68A5835295E661C00B5918F /* QuestionView.swift */; };
@@ -57,6 +58,7 @@
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D63F453229216CCC008598C9 /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
 		D64A996C29294DC3000DEBD4 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingCell.swift; path = SimpleJournalApp/Views/SettingCell.swift; sourceTree = SOURCE_ROOT; };
+		D669ECC22974474100C7CC2A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
 		D68A5835295E661C00B5918F /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
 				D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */,
 				D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */,
+				D669ECC22974474100C7CC2A /* CoreDataStack.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
 				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
+				D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */,
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6D827B7294CB038005AF563 /* EntryViewController.swift in Sources */,

@@ -17,7 +17,7 @@ class EntryViewController: UIViewController {
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     
     var managedContext: NSManagedObjectContext!
     var strategy: Strategy = .isCreatingNewEntry
@@ -27,8 +27,12 @@ class EntryViewController: UIViewController {
     
     var dayLog: DayLog? {
         didSet {
-            guard let unwrappedDayLog = dayLog else { return }
-            //TODO: FIX force uwrapping a possibly nil value when there is no existing answers in a new dayLog
+            
+            guard let unwrappedDayLog = dayLog else {
+                print("failed to unwrap day log passed to entryViewController by \(String(describing: self.parent))")
+                return
+            }
+        
             if unwrappedDayLog.answers?.allObjects == nil {
                 for question in K.questions {
                     let answer = Answer()
@@ -39,17 +43,6 @@ class EntryViewController: UIViewController {
             } else {
                 let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
                 populate(answers)
-                
-                
-                
-                
-                
-                
-//                for (i, answer) in answers.enumerated() {
-//                    if let text = answer.text, let question = answer.question {
-//                        questionViews[i].configure(question: question, answer: text)
-//                    }
-//                }
             }
         }
         

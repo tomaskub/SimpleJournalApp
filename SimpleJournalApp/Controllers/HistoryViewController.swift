@@ -12,7 +12,7 @@ class HistoryViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     
-    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    var managedContext: NSManagedObjectContext! //= (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     var dayLogs: [DayLog] = []
     
     let didSaveNotification = NSManagedObjectContext.didSaveObjectsNotification

@@ -12,7 +12,8 @@ class SettingsViewController: UIViewController {
     
     let pref = Preferences()
     let defaults = UserDefaults.standard
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    var managedContext: NSManagedObjectContext!
+    
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -215,12 +216,12 @@ extension SettingsViewController {
         
         let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
         do {
-            var retrivedDayLogs = try context.fetch(request)
+            var retrivedDayLogs = try managedContext.fetch(request)
             for dayLog in retrivedDayLogs {
-                self.context.delete(dayLog)
+                self.managedContext.delete(dayLog)
             }
             do {
-                try context.save()
+                try managedContext.save()
             } catch {
                 print(error.localizedDescription)
             }

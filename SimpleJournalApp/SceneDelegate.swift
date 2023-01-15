@@ -11,12 +11,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
+    lazy var coreDataStack = CoreDataStack(modelName: "Model")
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let navigationController = window?.rootViewController as? TabBarViewController,
+              let mainController = navigationController.viewControllers?.first as? MainViewController,
+        let historyController = navigationController.viewControllers?[1] as? HistoryViewController,
+        let settingsController = navigationController.viewControllers?[2] as? SettingsViewController else {
+            print("Did not manage to get MainViewController")
+            return
+        }
+        mainController.managedContext = coreDataStack.managedContext
+        historyController.managedContext = coreDataStack.managedContext
+        settingsController.managedContext = coreDataStack.managedContext
+        
+        
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
