@@ -14,7 +14,7 @@ class HistoryViewController: UIViewController {
     
     var managedContext: NSManagedObjectContext! //= (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     var dayLogs: [DayLog] = []
-    
+    var asyncFetchRequest: NSAsynchronousFetchRequest<DayLog>?
     let didSaveNotification = NSManagedObjectContext.didSaveObjectsNotification
     
     override func viewDidLoad() {
@@ -26,19 +26,12 @@ class HistoryViewController: UIViewController {
         tableView.estimatedRowHeight = 115
         tableView.delegate = self
         tableView.dataSource = self
-        
-        if let results = fetchAllDayLogs() {
-            dayLogs = results
-            tableView.reloadData()
-        }
+        fetchAllDayLogs()
         NotificationCenter.default.addObserver(self, selector: #selector(didSave(notification:)), name: didSaveNotification, object: nil)
     }
     
     @objc func didSave(notification: Notification) {
-        if let results = fetchAllDayLogs() {
-            dayLogs = results
-            tableView.reloadData()
-        }
+        fetchAllDayLogs()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,19 +42,25 @@ class HistoryViewController: UIViewController {
     
     
     //MARK: - CoreData
-    func fetchAllDayLogs() -> [DayLog]? {
+    func fetchAllDayLogs() {
         let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
         let sort = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [sort]
         
-        var results: [DayLog]?
-        do {
-            results = try managedContext.fetch(request)
-        } catch {
-            print(error.localizedDescription)
-            return nil
+        asyncFetchRequest = NSAsynchronousFetchRequest<DayLog>(fetchRequest: request) {
+            [unowned self] (result: NSAsynchronousFetchResult) in
+            guard let dayLogs = result.finalResult else {
+                return
+            }
+            self.dayLogs = dayLogs
+            self.tableView.reloadData()
         }
-        return results
+        do {
+            guard let asyncFetchRequest = asyncFetchRequest else { return }
+            try managedContext.execute(asyncFetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
     }
     
     // MARK: - Navigation
