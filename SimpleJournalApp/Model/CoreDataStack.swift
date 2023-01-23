@@ -8,14 +8,14 @@
 import Foundation
 import CoreData
 
-class CoreDataStack {
-    private let modelName: String
+open class CoreDataStack {
+    let modelName: String
     
     init(modelName: String) {
         self.modelName = modelName
     }
     
-    private lazy var storeContainer: NSPersistentContainer = {
+    lazy var storeContainer: NSPersistentContainer = {
         
         let container = NSPersistentContainer(name: self.modelName)
         

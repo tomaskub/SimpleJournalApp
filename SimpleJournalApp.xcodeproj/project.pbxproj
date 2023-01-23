@@ -15,7 +15,10 @@
 		D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D669ECC22974474100C7CC2A /* CoreDataStack.swift */; };
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
+		D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */; };
 		D68A5836295E661C00B5918F /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68A5835295E661C00B5918F /* QuestionView.swift */; };
+		D6965A6E297F03A400199EC7 /* JournalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6D297F03A400199EC7 /* JournalManager.swift */; };
+		D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
 		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
@@ -61,7 +64,10 @@
 		D669ECC22974474100C7CC2A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
+		D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		D68A5835295E661C00B5918F /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		D6965A6D297F03A400199EC7 /* JournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManager.swift; sourceTree = "<group>"; };
+		D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerTests.swift; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,7 +157,9 @@
 		D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */,
 				D6B43039291FB0B800E9C791 /* SimpleJournalAppTests.swift */,
+				D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */,
 			);
 			path = SimpleJournalAppTests;
 			sourceTree = "<group>";
@@ -174,6 +182,7 @@
 				D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */,
 				D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */,
 				D669ECC22974474100C7CC2A /* CoreDataStack.swift */,
+				D6965A6D297F03A400199EC7 /* JournalManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -353,6 +362,7 @@
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6D827B7294CB038005AF563 /* EntryViewController.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,
+				D6965A6E297F03A400199EC7 /* JournalManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +370,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */,
 				D6B4303A291FB0B800E9C791 /* SimpleJournalAppTests.swift in Sources */,
+				D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
