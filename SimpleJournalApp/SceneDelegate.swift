@@ -26,8 +26,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("Did not manage to get MainViewController")
             return
         }
+        mainController.coreDataStack = coreDataStack
         mainController.managedContext = coreDataStack.managedContext
+        
         historyController.managedContext = coreDataStack.managedContext
+        
         settingsController.managedContext = coreDataStack.managedContext
         
         

@@ -14,8 +14,9 @@ class MainViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
-    
+    var journalManager: JournalManager?
 //    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     let dateButtonArray: [CalendarDayButton] = {
@@ -46,6 +47,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         performFirstTimeSetUp()
+        
+        journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
         fetchDayLog(for: selectedDayLogDate)
 
