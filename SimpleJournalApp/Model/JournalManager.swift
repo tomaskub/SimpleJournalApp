@@ -24,7 +24,7 @@ public final class JournalManager {
 }
 
 extension JournalManager {
-    public func addEntry(_ date: Date) -> DayLog {
+    func addEntry(_ date: Date) -> DayLog {
         let dayLog = DayLog(context: managedObjectContext)
         
         //TODO: Add date implementation
@@ -36,24 +36,42 @@ extension JournalManager {
         return dayLog
     }
     
-    public func deleteEntry(for date: Date) {
+    func updateEntry(for date: Date, with dayLog: DayLog){
+        
+    }
+    
+    func deleteEntry(for date: Date) {
             //TODO: add function to delete entry
     }
     
-    public func deleteEntry(with id: UUID) {
+    func deleteEntry(with id: UUID) {
         //TODO: add function to delete entry
     }
     
-    public func deleteEntry(entry: DayLog) {
+    func deleteEntry(entry: DayLog) {
         //TODO: add function to delete entry
     }
     
-    public func getEntry(for date: Date) -> DayLog? {
+    func deleteAllEntries() {
+        
+    }
+    
+    func getEntry(for date: Date) -> DayLog? {
         return nil
     }
     
-    public func getAllEntries() -> [DayLog] {
+    func getAllEntries() -> [DayLog] {
         return []
+    }
+    
+    func addAnswer(to dayLog: DayLog, for question: String, answer: String) {
+        
+    }
+    func deleteAnswer(answer: Answer) {
+        
+    }
+    func updateAnswer(of: DayLog, for question: String, with answer: String){
+        
     }
 }
 
