@@ -74,23 +74,45 @@ extension JournalManagerTests {
 extension JournalManagerTests {
     
     func testGetEntryForDateWhenEntryExists() {
+        
         let date = Date()
-        _ = journalManager.addEntry(date)
+        let dayLog = journalManager.addEntry(date)
         
-        let resultDayLog = journalManager.getEntry(for: date)
+        let resultsFromGet = journalManager.getEntry(for: date)
         
-        XCTAssertNotNil(resultDayLog, "Retrieved day log should not be nil")
-        XCTAssertNotNil(resultDayLog?.id, "Retrieved day log should have id")
-        XCTAssertTrue(resultDayLog?.date == Calendar.current.startOfDay(for: date), "Retrived day log should have date equal to start of the day")
+        XCTAssertNil(resultsFromGet.error, "Retrived results should not have error")
+        XCTAssertNotNil(resultsFromGet.dayLogs, "Retrieved day logs should not be nil")
+        XCTAssertTrue(resultsFromGet.dayLogs.count == 1, "Retrived day logs should have 1 element")
+        XCTAssertTrue(resultsFromGet.dayLogs.first?.date == Calendar.current.startOfDay(for: date), "Date should be start of today")
+        XCTAssertTrue(resultsFromGet.dayLogs.first?.id == dayLog.id, "ID should match the created dayLog id")
         
     }
     
     func testGetEntryForDateWhenNoEntry() {
+        
+        let resultsFromGet = journalManager.getEntry(for: Date())
+        
+        XCTAssertNotNil(resultsFromGet.error, "Retrived results should have error")
+        XCTAssertNotNil(resultsFromGet.dayLogs, "Retrieved day logs should not be nil")
+        XCTAssertTrue(resultsFromGet.dayLogs.isEmpty, "Retrived day logs should be empty")
+        XCTAssertTrue(resultsFromGet.error?.domain == "JournalManager", "Error domain should be JournalManager")
+        XCTAssertTrue(resultsFromGet.error?.code == 4865, "Error code should be 4865")
+    }
+    
+    func testGetEntryForDateWhenMultipleEntries() {
+        
         let date = Date()
+        let firstDayLog = journalManager.addEntry(date)
+        let secondDayLog = journalManager.addEntry(date)
         
-        let resultDayLog = journalManager.getEntry(for: date)
+        let results = journalManager.getEntry(for: date)
         
-        XCTAssertNil(resultDayLog, "Retrived day log should be nil")
+        XCTAssertNotNil(results.error, "Retrived results should have error")
+        XCTAssertNotNil(results.dayLogs, "Retrieved day logs should not be nil")
+        XCTAssertTrue(results.dayLogs.count == 2, "Retrived day logs should have 2 entries")
+        XCTAssertTrue(results.error?.domain == "JournalManager", "Error domain should be JournalManager")
+        XCTAssertTrue(results.error?.code == 5, "Error code should be 5")
+        
     }
 }
 

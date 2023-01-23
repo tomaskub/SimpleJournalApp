@@ -56,8 +56,33 @@ extension JournalManager {
         
     }
     
-    func getEntry(for date: Date) -> DayLog? {
-        return nil
+    func getEntry(for date: Date) -> (dayLogs: [DayLog], error: NSError?) {
+        //Create request
+        let request: NSFetchRequest<DayLog> = DayLog.fetchRequest()
+        //Create dates for begining of the day and end of a day
+        let dateFrom = Calendar.current.startOfDay(for: date)
+        let dateTo = Calendar.current.date(byAdding: .day, value: 1, to: dateFrom)
+        //Create sub predicates and compond predicate
+        let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
+        let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
+        let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
+        //add predicate to the request
+        request.predicate = datePredicate
+        
+        var error: NSError?
+        var retrivedDayLogs: [DayLog] = []
+        //Retrive day logs for that date and create error
+        do {
+            retrivedDayLogs = try managedObjectContext.fetch(request)
+            if retrivedDayLogs.isEmpty {
+                error = NSError(domain: "JournalManager", code: 4865, userInfo: ["Problem" : "Day log log date not found"])
+            } else if retrivedDayLogs.count > 1 {
+                error = NSError(domain: "JournalManager", code: 5, userInfo: ["Problem" : "Retrived multiple day logs"])
+            }
+        } catch let _error as NSError {
+            error = _error
+        }
+        return (retrivedDayLogs, error)
     }
     
     func getAllEntries() -> [DayLog] {
