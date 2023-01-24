@@ -8,7 +8,15 @@
 import Foundation
 import CoreData
 
+enum JournalManagerNSError: Error {
+    case noResultsRetrived
+    case multipleResultsRetrived
+    case asyncFetchFailed
+}
+
 public final class JournalManager {
+    
+    
     
     //MARK: Properties
     
@@ -90,10 +98,46 @@ extension JournalManager {
         return (retrivedDayLogs, error)
     }
     
+    /// Fetch all dayLogs in context of the journal manager
+    /// - Returns: an array of DayLog objects
     func getAllEntries() -> [DayLog] {
+        let request : NSFetchRequest<DayLog> = DayLog.fetchRequest()
+        let sort = NSSortDescriptor(key: #keyPath(DayLog.date), ascending: false)
+        request.sortDescriptors = [sort]
+        var results: [DayLog] = []
         
-        return []
+        do {
+            results = try managedObjectContext.fetch(request)
+        } catch let error as NSError {
+            print("Could not fetch \(error)m \(error.userInfo)")
+        }
+        return results
+        
+        
     }
+    
+    
+    func getAllEntriesAsync(completionHandler: @escaping((NSAsynchronousFetchResult<DayLog>) -> Void)) -> NSError? {
+        
+        var asyncFetchRequest: NSAsynchronousFetchRequest<DayLog>?
+        let request : NSFetchRequest<DayLog> = DayLog.fetchRequest()
+        let sort = NSSortDescriptor(key: #keyPath(DayLog.date), ascending: false)
+        
+        request.sortDescriptors = [sort]
+        
+        asyncFetchRequest = NSAsynchronousFetchRequest<DayLog>(fetchRequest: request) {
+            (result: NSAsynchronousFetchResult) in
+            completionHandler(result)
+        }
+        do {
+            guard let asyncFetchRequest = asyncFetchRequest else { return JournalManagerNSError.asyncFetchFailed as NSError }
+            try managedObjectContext.execute(asyncFetchRequest)
+        } catch let error as NSError {
+            return error
+        }
+        return nil
+    }
+        
     
     func addAnswer(to dayLog: DayLog, for question: String, answer: String) {
         

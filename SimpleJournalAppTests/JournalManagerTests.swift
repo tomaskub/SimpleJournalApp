@@ -102,8 +102,8 @@ extension JournalManagerTests {
     func testGetEntryForDateWhenMultipleEntries() {
         
         let date = Date()
-        let firstDayLog = journalManager.addEntry(date)
-        let secondDayLog = journalManager.addEntry(date)
+        _ = journalManager.addEntry(date)
+        _ = journalManager.addEntry(date)
         
         let results = journalManager.getEntry(for: date)
         
@@ -118,12 +118,33 @@ extension JournalManagerTests {
         let startingDate = Date()
         for i in 0...5 {
             let logDate = Calendar.current.date(byAdding: .day, value: i, to: startingDate)
-            let dayLog = journalManager.addEntry(logDate!)
+            _ = journalManager.addEntry(logDate!)
         }
         let results = journalManager.getAllEntries()
         
         XCTAssertNotNil(results, "Results should not be nil")
         XCTAssertTrue(results.count == 6, "There should be 6 results")
+    }
+    func testGetAllEntriesAsync() {
+        
+        let startingDate = Date()
+        for i in 0...5 {
+            let logDate = Calendar.current.date(byAdding: .day, value: i, to: startingDate)
+            _ = journalManager.addEntry(logDate!)
+        }
+        var testResults: [DayLog]?
+        let expectation = self.expectation(description: "ClosureTriggered")
+        
+        let error = journalManager.getAllEntriesAsync(completionHandler: {
+            result in
+            guard let finalResults = result.finalResult else { return }
+            testResults = finalResults
+            expectation.fulfill()
+        })
+        
+        waitForExpectations(timeout: 2.0)
+        
+        XCTAssertTrue(testResults?.count == 6, "There should be 6 dayLogs")
     }
 }
 
