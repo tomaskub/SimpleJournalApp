@@ -114,6 +114,17 @@ extension JournalManagerTests {
         XCTAssertTrue(results.error?.code == 5, "Error code should be 5")
         
     }
+    func testGetAllEntries() {
+        let startingDate = Date()
+        for i in 0...5 {
+            let logDate = Calendar.current.date(byAdding: .day, value: i, to: startingDate)
+            let dayLog = journalManager.addEntry(logDate!)
+        }
+        let results = journalManager.getAllEntries()
+        
+        XCTAssertNotNil(results, "Results should not be nil")
+        XCTAssertTrue(results.count == 6, "There should be 6 results")
+    }
 }
 
 //MARK: Tests for delete methods

@@ -56,6 +56,11 @@ extension JournalManager {
         
     }
     
+    
+    /// Retrive all dayLogs for a given day containing a date based on the current calenar of the user
+    /// - Parameter date: Any date, in a specific day
+    /// - Returns: dayLogs: an array of DayLogs retrieved
+    /// error: NSError if any present
     func getEntry(for date: Date) -> (dayLogs: [DayLog], error: NSError?) {
         //Create request
         let request: NSFetchRequest<DayLog> = DayLog.fetchRequest()
@@ -86,6 +91,7 @@ extension JournalManager {
     }
     
     func getAllEntries() -> [DayLog] {
+        
         return []
     }
     

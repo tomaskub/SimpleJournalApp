@@ -16,8 +16,8 @@ class MainViewController: UIViewController {
     
     var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
+    
     var journalManager: JournalManager?
-//    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
     //Declare calendar buttons
     let dateButtonArray: [CalendarDayButton] = {
         
