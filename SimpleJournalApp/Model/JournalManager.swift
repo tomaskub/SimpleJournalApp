@@ -131,6 +131,35 @@ extension JournalManager {
         return (retrivedDayLogs, error)
     }
     
+    func getEntry(with id: UUID) -> (dayLog: DayLog?, error: NSError? ) {
+        var dayLog: DayLog?
+        var error: NSError?
+        
+        //Create request
+        let request: NSFetchRequest<DayLog> = DayLog.fetchRequest()
+        
+        let predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        //add predicate to the request
+        request.predicate = predicate
+        
+        
+        var retrivedDayLogs: [DayLog] = []
+        //Retrive day logs for that ID and create error
+        do {
+            retrivedDayLogs = try managedObjectContext.fetch(request)
+            if retrivedDayLogs.isEmpty {
+                error = JournalManagerNSError.noResultsRetrived as NSError
+            } else if retrivedDayLogs.count > 1 {
+                error = JournalManagerNSError.multipleResultsRetrived as NSError
+            }
+            dayLog = retrivedDayLogs.first
+        } catch let _error as NSError {
+            error = _error
+        }
+        return (dayLog, error)
+        
+    }
+    
     /// Fetch all dayLogs in context of the journal manager
     /// - Returns: an array of DayLog objects
     func getAllEntries() -> [DayLog] {
