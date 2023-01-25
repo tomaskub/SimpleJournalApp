@@ -208,7 +208,7 @@ extension JournalManagerTests {
     func testDeleteEntryByObject() {
         let date = Date()
         let dayLog = journalManager.addEntry(date)
-        let idToDelete = dayLog.id
+        
         
         journalManager.deleteEntry(entry: dayLog)
         
@@ -218,7 +218,6 @@ extension JournalManagerTests {
         XCTAssertTrue(result.error as? JournalManagerNSError == .noResultsRetrived, "The error should be no results retrived")
         XCTAssertTrue(result.dayLogs.count == 0, "There should be 0 day logs retrieved")
         
-        XCTAssertNil(dayLog, "Day log should be nil")
         
     }
     

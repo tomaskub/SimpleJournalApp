@@ -73,11 +73,33 @@ extension JournalManager {
     }
     
     func deleteEntry(with id: UUID) {
-        //TODO: add function to delete entry
+        
+        let response = getEntry(with: id)
+        
+        if let error = response.error as? JournalManagerNSError {
+            if error == .noResultsRetrived { return }
+            else if error == .multipleResultsRetrived {
+                print("Multiple ID for the entries - this is serious problem")
+            }
+        }
+        
+        let entryToDelete = response.dayLog
+        do {
+            self.managedObjectContext.delete(entryToDelete!)
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Error occured: \(error), \(error.userInfo)")
+        }
     }
     
     func deleteEntry(entry: DayLog) {
-        //TODO: add function to delete entry
+        do {
+            self.managedObjectContext.delete(entry)
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Error occured: \(error), \(error.userInfo)")
+        }
+        
     }
     
     func deleteAllEntries() {
