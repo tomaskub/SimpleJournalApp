@@ -32,6 +32,7 @@ final class JournalManagerTests: XCTestCase {
     }
     
 }
+
 //MARK: TESTS FOR ADD METHODS
 extension JournalManagerTests {
     
@@ -93,10 +94,9 @@ extension JournalManagerTests {
         let resultsFromGet = journalManager.getEntry(for: Date())
         
         XCTAssertNotNil(resultsFromGet.error, "Retrived results should have error")
-        XCTAssertNotNil(resultsFromGet.dayLogs, "Retrieved day logs should not be nil")
         XCTAssertTrue(resultsFromGet.dayLogs.isEmpty, "Retrived day logs should be empty")
-        XCTAssertTrue(resultsFromGet.error?.domain == "JournalManager", "Error domain should be JournalManager")
-        XCTAssertTrue(resultsFromGet.error?.code == 4865, "Error code should be 4865")
+        XCTAssertTrue(resultsFromGet.error as? JournalManagerNSError == JournalManagerNSError.noResultsRetrived , "Error should be no results retrived")
+        
     }
     
     func testGetEntryForDateWhenMultipleEntries() {
@@ -108,10 +108,9 @@ extension JournalManagerTests {
         let results = journalManager.getEntry(for: date)
         
         XCTAssertNotNil(results.error, "Retrived results should have error")
-        XCTAssertNotNil(results.dayLogs, "Retrieved day logs should not be nil")
         XCTAssertTrue(results.dayLogs.count == 2, "Retrived day logs should have 2 entries")
-        XCTAssertTrue(results.error?.domain == "JournalManager", "Error domain should be JournalManager")
-        XCTAssertTrue(results.error?.code == 5, "Error code should be 5")
+        XCTAssertTrue(results.error as? JournalManagerNSError == JournalManagerNSError.multipleResultsRetrived, "Error should be multiple results retrived")
+        
         
     }
     func testGetAllEntries() {
@@ -144,20 +143,91 @@ extension JournalManagerTests {
         
         waitForExpectations(timeout: 2.0)
         
+        XCTAssertNil(error, "There should be no error")
+        XCTAssertNotNil(testResults, "There should be DayLogs retrieved")
         XCTAssertTrue(testResults?.count == 6, "There should be 6 dayLogs")
+    }
+    
+    func testGetEntryWithID() {
+        let date = Date()
+        let dayLog = journalManager.addEntry(date)
+        let idToFind = dayLog.id!
+        let resultsFromGet = journalManager.getEntry(with: idToFind)
+        
+        XCTAssertNil(resultsFromGet.error, "Retrived results should not have error")
+        XCTAssertNotNil(resultsFromGet.dayLog, "Retrieved day log should not be nil")
+        XCTAssertTrue(resultsFromGet.dayLog?.id == dayLog.id, "ID should match the created dayLog id")
+        
     }
 }
 
 //MARK: Tests for delete methods
 extension JournalManagerTests {
+    
     func testDeleteEntryByDate() {
         let date = Date()
-        let dayLog = journalManager.addEntry(date)
+        _ = journalManager.addEntry(date)
         
         journalManager.deleteEntry(for: date)
         
-        XCTAssertNotNil(dayLog, "Day log should not be nil")
-        XCTAssertTrue(dayLog.date == date)
-        XCTAssertNotNil(dayLog.id, "Day log should have id")
+        let result = journalManager.getEntry(for: date)
+        
+        XCTAssertNotNil(result.error, "There should be an error returned")
+        XCTAssertTrue(result.error as? JournalManagerNSError == .noResultsRetrived, "The error should be no results retrived")
+        XCTAssertTrue(result.dayLogs.count == 0, "There should be 0 day logs retrieved")
+        
     }
+    
+    func testDeleteEntryByDateWhenNoDayLogs() {
+        let date = Date()
+        journalManager.deleteEntry(for: date)
+        
+        let result = journalManager.getEntry(for: date)
+        
+        XCTAssertNotNil(result.error, "There should be an error returned")
+        XCTAssertTrue(result.error as? JournalManagerNSError == .noResultsRetrived, "The error should be no results retrived")
+        XCTAssertTrue(result.dayLogs.count == 0, "There should be 0 day logs retrieved")
+        
+    }
+    
+    func testDeleteEntryByID() {
+        let date = Date()
+        let dayLog = journalManager.addEntry(date)
+        let idToDelete = dayLog.id
+        
+        journalManager.deleteEntry(with: idToDelete!)
+        
+        let result = journalManager.getEntry(for: date)
+        
+        XCTAssertNotNil(result.error, "There should be an error returned")
+        XCTAssertTrue(result.error as? JournalManagerNSError == .noResultsRetrived, "The error should be no results retrived")
+        XCTAssertTrue(result.dayLogs.count == 0, "There should be 0 day logs retrieved")
+        
+    }
+    
+    func testDeleteEntryByObject() {
+        let date = Date()
+        let dayLog = journalManager.addEntry(date)
+        let idToDelete = dayLog.id
+        
+        journalManager.deleteEntry(entry: dayLog)
+        
+        let result = journalManager.getEntry(for: date)
+        
+        XCTAssertNotNil(result.error, "There should be an error returned")
+        XCTAssertTrue(result.error as? JournalManagerNSError == .noResultsRetrived, "The error should be no results retrived")
+        XCTAssertTrue(result.dayLogs.count == 0, "There should be 0 day logs retrieved")
+        
+        XCTAssertNil(dayLog, "Day log should be nil")
+        
+    }
+    
+    func testDeleteAllEntries() {
+        let startingDate = Date()
+        for i in 0...5 {
+            let logDate = Calendar.current.date(byAdding: .day, value: i, to: startingDate)
+            _ = journalManager.addEntry(logDate!)
+        }
+    }
+    
 }
