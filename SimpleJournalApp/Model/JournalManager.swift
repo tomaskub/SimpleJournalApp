@@ -33,13 +33,27 @@ public final class JournalManager {
 
 extension JournalManager {
     func addEntry(_ date: Date) -> DayLog {
-        let dayLog = DayLog(context: managedObjectContext)
+        var dayLog: DayLog!
+        let results = getEntry(for: date)
         
-        dayLog.date = Calendar.current.startOfDay(for: date)
-        dayLog.id = UUID()
-        
-        coreDataStack.saveContext()
-        
+        guard let error = results.error as? JournalManagerNSError else {
+            dayLog = results.dayLogs.first
+            return dayLog
+        }
+        switch error {
+        case .noResultsRetrived:
+            dayLog = DayLog(context: managedObjectContext)
+            
+            dayLog.date = Calendar.current.startOfDay(for: date)
+            dayLog.id = UUID()
+            
+            coreDataStack.saveContext()
+        case .multipleResultsRetrived:
+            print("Multiple dayLogs retrived, return 1st")
+            dayLog = results.dayLogs.first
+        default:
+            print("error occured: \(error), \(error.userInfo)")
+        }
         return dayLog
     }
     
