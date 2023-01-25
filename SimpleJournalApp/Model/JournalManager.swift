@@ -235,11 +235,15 @@ extension JournalManager {
         }
         return nil
     }
-        
     
-    func addAnswer(to dayLog: DayLog, for question: String, answer: String) {
-        
+    func addAnswer(to dayLog: DayLog, for question: String, text: String) {
+        let answerToAdd = Answer(context: managedObjectContext)
+        answerToAdd.question = question
+        answerToAdd.text = text
+        answerToAdd.dayLog = dayLog
+        coreDataStack.saveContext()
     }
+    
     func deleteAnswer(answer: Answer) {
         
     }

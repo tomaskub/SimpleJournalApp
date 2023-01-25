@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(Answer)
+//@objc(Answer)
 public class Answer: NSManagedObject {
 
 }

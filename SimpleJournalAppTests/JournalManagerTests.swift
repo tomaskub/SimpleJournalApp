@@ -59,15 +59,15 @@ extension JournalManagerTests {
         let dayLog = journalManager.addEntry(date)
         
         let question = "This is question"
-        let answer = "This is answer"
-        
-        journalManager.addAnswer(to: dayLog, for: question, answer: answer)
+        let text = "This is answer"
+        journalManager.addAnswer(to: dayLog, for: question, text: text)
+//        journalManager.addAnswer(to: dayLog, for: question, answer: text)
         
         XCTAssertNotNil(dayLog.answers?.allObjects.first, "Answer in day log should not be nil")
         XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.question, "Question in answer in day log should not be nil")
         XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.text, "Text in answer in day log should not be nil")
         XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.question == question, "Question should be 'This is question'")
-        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.text == answer, "Answer text property should be 'This is answer'")
+        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.text == text, "Answer text property should be 'This is answer'")
     }
 }
 
