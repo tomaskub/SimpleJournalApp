@@ -35,7 +35,6 @@ extension JournalManager {
     func addEntry(_ date: Date) -> DayLog {
         let dayLog = DayLog(context: managedObjectContext)
         
-        //TODO: Add date implementation
         dayLog.date = Calendar.current.startOfDay(for: date)
         dayLog.id = UUID()
         
@@ -49,7 +48,28 @@ extension JournalManager {
     }
     
     func deleteEntry(for date: Date) {
-            //TODO: add function to delete entry
+        
+        let results = getEntry(for: date)
+        
+        if let error = results.error as? JournalManagerNSError {
+            switch error {
+            case .noResultsRetrived:
+                return
+            case .multipleResultsRetrived:
+                print("Error occured while searching for logs to delete: \(error): \(error.userInfo)")
+            default:
+                print("An error occured: \(error)")
+            }
+        }
+        
+        for log in results.dayLogs {
+            do{
+                self.managedObjectContext.delete(log)
+                try managedObjectContext.save()
+            } catch let error as NSError {
+                print("Error occured: \(error), \(error.userInfo)")
+            }
+        }
     }
     
     func deleteEntry(with id: UUID) {
@@ -61,6 +81,19 @@ extension JournalManager {
     }
     
     func deleteAllEntries() {
+        let request: NSFetchRequest<DayLog> = DayLog.fetchRequest()
+        
+        var retrivedDayLogs: [DayLog]
+        
+        do {
+            retrivedDayLogs = try managedObjectContext.fetch(request)
+            for log in retrivedDayLogs {
+                self.managedObjectContext.delete(log)
+            }
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Error occured: \(error), \(error.userInfo)")
+        }
         
     }
     
@@ -88,9 +121,9 @@ extension JournalManager {
         do {
             retrivedDayLogs = try managedObjectContext.fetch(request)
             if retrivedDayLogs.isEmpty {
-                error = NSError(domain: "JournalManager", code: 4865, userInfo: ["Problem" : "Day log log date not found"])
+                error = JournalManagerNSError.noResultsRetrived as NSError
             } else if retrivedDayLogs.count > 1 {
-                error = NSError(domain: "JournalManager", code: 5, userInfo: ["Problem" : "Retrived multiple day logs"])
+                error = JournalManagerNSError.multipleResultsRetrived as NSError
             }
         } catch let _error as NSError {
             error = _error
