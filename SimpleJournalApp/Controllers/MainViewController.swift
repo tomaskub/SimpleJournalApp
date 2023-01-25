@@ -16,8 +16,8 @@ class MainViewController: UIViewController {
     
     var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
-    
     var journalManager: JournalManager?
+    
     //Declare calendar buttons
     let dateButtonArray: [CalendarDayButton] = {
         
@@ -39,25 +39,31 @@ class MainViewController: UIViewController {
         }
         return tempArray
     }()
+    
     let actions = ["Add photo!", "Journal", "Add reminders for next day"]
     
     var selectedDayLogDate = Date()
     var selectedDayLog: DayLog?
+    
     //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         performFirstTimeSetUp()
-        
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
-        fetchDayLog(for: selectedDayLogDate)
+        let results = journalManager?.getEntry(for: selectedDayLogDate)
+        
+        if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
+            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+        } else {
+            selectedDayLog = results?.dayLogs.first
+        }
 
         layoutUI()
         
         tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
-        
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.reloadData()
     }
@@ -79,8 +85,13 @@ class MainViewController: UIViewController {
         }
         sender.isSelected = true
         selectedDayLogDate = (sender as! CalendarDayButton).getDate()
+        let results = journalManager?.getEntry(for: selectedDayLogDate)
         
-        
+        if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
+            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+        } else {
+            selectedDayLog = results?.dayLogs.first
+        }
     }
     
 //    MARK: UI layout
@@ -117,6 +128,7 @@ class MainViewController: UIViewController {
             if let dayLog = selectedDayLog {
                 targetVC.dayLog = dayLog
                 targetVC.managedContext = managedContext
+                targetVC.journalManager = journalManager
                 targetVC.strategy = .isCreatingNewEntry
             }
         }
@@ -126,66 +138,11 @@ class MainViewController: UIViewController {
 //MARK: QuestionCellDelegate methods
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
-        fetchDayLog(for: selectedDayLogDate)
+        
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         
         
     }
-}
-
-//MARK: CoreData methods
-extension MainViewController {
-    
-    func fetchDayLog(for date: Date) {
-        //Create request
-        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
-        //Create dates for begining of the day and end of a day
-        let dateFrom = Calendar.current.startOfDay(for: date)
-        let dateTo = Calendar.current.date(byAdding: .day, value: 1, to: dateFrom)
-        //Create sub predicates and compond predicate
-        let fromPredicate = NSPredicate(format: "date >= %@", dateFrom as NSDate)
-        let toPredicate = NSPredicate(format: "date < %@", dateTo! as NSDate)
-        let datePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fromPredicate, toPredicate])
-        //add predicate to the request
-        request.predicate = datePredicate
-        //Retrive day log for that date
-        do {
-            let retrivedDayLogs = try managedContext.fetch(request)
-            if retrivedDayLogs.isEmpty {
-                print("There is no logs for current day, creating a new DayLog")
-                //If there is no retrived day logs for particular day, create an empty day log
-                selectedDayLog = createNewDayLog()
-            } else if retrivedDayLogs.count > 1 {
-                print("Retrived multiple day logs = \(retrivedDayLogs.count) - this should not be possible, something is wrong")
-                selectedDayLog = retrivedDayLogs.first!
-            } else {
-                print("Retrived 1 day log succesfully")
-                selectedDayLog = retrivedDayLogs.first!
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    func createNewDayLog() -> DayLog {
-        let newDayLog = DayLog(context: self.managedContext)
-        
-        newDayLog.date = Calendar.current.startOfDay(for: selectedDayLogDate)
-        newDayLog.id = UUID()
-        
-        do {
-            try self.managedContext.save()
-        } catch {
-            print(error)
-        }
-        
-        return newDayLog
-        
-    }
-    
-    
-    
-    
 }
 
 //MARK: initial setup
