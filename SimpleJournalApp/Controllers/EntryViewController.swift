@@ -17,17 +17,12 @@ class EntryViewController: UIViewController {
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     
-//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
-    
+    var journalManager: JournalManager!
     var managedContext: NSManagedObjectContext!
     var strategy: Strategy = .isCreatingNewEntry
     
-    
-    
-    
     var dayLog: DayLog? {
         didSet {
-            
             guard let unwrappedDayLog = dayLog else {
                 print("failed to unwrap day log passed to entryViewController by \(String(describing: self.parent))")
                 return
@@ -120,14 +115,13 @@ class EntryViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        saveAnswers()
+        
         if let log = dayLog {
-            do {
-                try managedContext.save()
-            } catch let error as NSError{
-                print("Failed to save: \(error), \(error.userInfo)")
+            for view in questionViews {
+                journalManager.addAnswer(to: log, for: view.question!, text: view.returnAnswer())
             }
         }
+        
     }
     
     
@@ -206,23 +200,6 @@ class EntryViewController: UIViewController {
                 }
             }
             
-        }
-    }
-    
-    func saveAnswers() {
-        for view in questionViews {
-            if let question = view.question, let existingAnswers = dayLog?.answers?.allObjects as? [Answer] {
-                
-                if let i = existingAnswers.firstIndex(where: {$0.question == question}) {
-                    existingAnswers[i].text = view.returnAnswer()
-                } else {
-                    let answer = Answer(context: managedContext)
-                    answer.question = view.question
-                    answer.text = view.returnAnswer()
-                    answer.dayLog = dayLog
-                }
-                
-            }
         }
     }
 }
