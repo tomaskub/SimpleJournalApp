@@ -236,11 +236,24 @@ extension JournalManager {
         return nil
     }
     
-    func addAnswer(to dayLog: DayLog, for question: String, text: String) {
-        let answerToAdd = Answer(context: managedObjectContext)
-        answerToAdd.question = question
-        answerToAdd.text = text
-        answerToAdd.dayLog = dayLog
+    func addAnswer(to dayLog: DayLog, for question: String, text: String, updateExistingAnswers: Bool = true) {
+        //TODO: add parameter to recognize when updating answer is wanted or to create a second answer
+        if updateExistingAnswers == true {
+            let existingAnswers = dayLog.answers?.allObjects as! [Answer]
+            if let i = existingAnswers.firstIndex(where: {$0.question == question}) {
+                existingAnswers[i].text = text
+            } else {
+                let answerToAdd = Answer(context: managedObjectContext)
+                answerToAdd.question = question
+                answerToAdd.text = text
+                answerToAdd.dayLog = dayLog
+            }
+        } else {
+            let answerToAdd = Answer(context: managedObjectContext)
+            answerToAdd.question = question
+            answerToAdd.text = text
+            answerToAdd.dayLog = dayLog
+        }
         coreDataStack.saveContext()
     }
     

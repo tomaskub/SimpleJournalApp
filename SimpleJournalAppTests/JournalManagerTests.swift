@@ -69,6 +69,24 @@ extension JournalManagerTests {
         XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.question == question, "Question should be 'This is question'")
         XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.text == text, "Answer text property should be 'This is answer'")
     }
+    func testAddAsnwerToDayLogWhenAnswerExistis() {
+        let date = Date()
+        let dayLog = journalManager.addEntry(date)
+        
+        let question = "This is question"
+        let text = "This is answer"
+        let updatedText = "This is updated answer"
+        
+        journalManager.addAnswer(to: dayLog, for: question, text: text)
+        journalManager.addAnswer(to: dayLog, for: question, text: updatedText, updateExistingAnswers: true)
+        
+        XCTAssertNotNil(dayLog.answers?.allObjects.first, "Answer in day log should not be nil")
+        XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.question, "Question in answer in day log should not be nil")
+        XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.text, "Text in answer in day log should not be nil")
+        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.question == question, "Question should be 'This is question'")
+        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.text == updatedText, "Answer text property should be 'This is updated answer'")
+    
+    }
 }
 
 //MARK: tests for get methods
