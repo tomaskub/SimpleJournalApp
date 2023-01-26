@@ -30,8 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         mainController.managedContext = coreDataStack.managedContext
         
         historyController.managedContext = coreDataStack.managedContext
+        historyController.coreDataStack = coreDataStack
         
         settingsController.managedContext = coreDataStack.managedContext
+        settingsController.coreDataStack = coreDataStack
         
         
         
