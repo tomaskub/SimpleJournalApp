@@ -13,13 +13,16 @@ class SettingsViewController: UIViewController {
     let pref = Preferences()
     let defaults = UserDefaults.standard
     var managedContext: NSManagedObjectContext!
-    
+    var coreDataStack: CoreDataStack!
+    var journalManager: JournalManager?
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
         // Display date
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
@@ -214,21 +217,7 @@ extension SettingsViewController {
     
     func removeAllEntries(){
         
-        let request = DayLog.fetchRequest() as NSFetchRequest<DayLog>
-        do {
-            var retrivedDayLogs = try managedContext.fetch(request)
-            for dayLog in retrivedDayLogs {
-                self.managedContext.delete(dayLog)
-            }
-            do {
-                try managedContext.save()
-            } catch {
-                print(error.localizedDescription)
-            }
-            
-        } catch {
-            print(error.localizedDescription)
-        }
+        guard let journalManager = journalManager else { return }
+        journalManager.deleteAllEntries()
     }
-    
 }
