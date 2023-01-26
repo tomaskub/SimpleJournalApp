@@ -12,13 +12,19 @@ class HistoryViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     
-    var managedContext: NSManagedObjectContext! //= (UIApplication.shared.delegate as! AppDelegate).persistentContainter.viewContext
+    var managedContext: NSManagedObjectContext!
+    var coreDataStack: CoreDataStack!
+    var journalManager: JournalManager?
+    
     var dayLogs: [DayLog] = []
     var asyncFetchRequest: NSAsynchronousFetchRequest<DayLog>?
     let didSaveNotification = NSManagedObjectContext.didSaveObjectsNotification
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
+        
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
         tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
@@ -26,12 +32,33 @@ class HistoryViewController: UIViewController {
         tableView.estimatedRowHeight = 115
         tableView.delegate = self
         tableView.dataSource = self
-        fetchAllDayLogs()
+        //Old approach
+//        fetchAllDayLogs()
+        //New Approach
+        _ = journalManager?.getAllEntriesAsync(completionHandler: {
+            result in
+            guard let finalResults = result.finalResult else { return }
+            self.dayLogs = finalResults
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
         NotificationCenter.default.addObserver(self, selector: #selector(didSave(notification:)), name: didSaveNotification, object: nil)
     }
     
     @objc func didSave(notification: Notification) {
-        fetchAllDayLogs()
+        //old approach
+//        fetchAllDayLogs()
+        //new approach
+        _ = journalManager?.getAllEntriesAsync(completionHandler: {
+            result in
+            guard let finalResults = result.finalResult else { return }
+            self.dayLogs = finalResults
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +99,7 @@ class HistoryViewController: UIViewController {
                 targetVC.managedContext = managedContext
                 targetVC.dayLog = dayLogs[indexPath.row]
                 targetVC.strategy = .isShowingOldEntry
+                targetVC.journalManager = journalManager
             }
         }
     }
