@@ -121,7 +121,7 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 for answer in answers {
                     
-                    if answer.question == K.questions[0] {
+                    if answer.question == Question.summary {
                         if let unwrappedText = answer.text {
                             cell.configureCell(date: dateString, summary: unwrappedText)
                         } else {
