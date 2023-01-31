@@ -57,6 +57,7 @@ extension JournalManager {
         return dayLog
     }
     
+    //TODO: add update entry function??
     func updateEntry(for date: Date, with dayLog: DayLog){
         
     }
@@ -236,7 +237,7 @@ extension JournalManager {
         return nil
     }
     
-    func addAnswer(to dayLog: DayLog, for question: String, text: String, updateExistingAnswers: Bool = true) {
+    func addAnswer(to dayLog: DayLog, for question: Question, text: String, updateExistingAnswers: Bool = true) {
         //TODO: add parameter to recognize when updating answer is wanted or to create a second answer
         if updateExistingAnswers == true {
             let existingAnswers = dayLog.answers?.allObjects as! [Answer]
