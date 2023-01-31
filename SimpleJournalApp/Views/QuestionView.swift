@@ -10,9 +10,9 @@ import UIKit
 class QuestionView: UIView {
     
     
-    var question: String? {
+    var question: Question? {
         didSet {
-            questionLabel.text = question
+            questionLabel.text = question?.rawValue
         }
     }
     var answer: String? {
@@ -68,7 +68,7 @@ class QuestionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(question: String, answer: String? = nil) {
+    func configure(question: Question, answer: String? = nil) {
         self.question = question
         self.answer = answer
     }
