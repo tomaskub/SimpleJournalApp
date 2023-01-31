@@ -15,11 +15,21 @@ extension Answer {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Answer> {
         return NSFetchRequest<Answer>(entityName: "Answer")
     }
-
-    @NSManaged public var question: String?
     @NSManaged public var text: String?
     @NSManaged public var dayLog: DayLog?
-
+    
+    @NSManaged fileprivate var questionValue: String
+    
+    public var question: Question {
+        get {
+            return Question(rawValue: questionValue) ?? .summary
+        }
+        set {
+            questionValue = newValue.rawValue
+        }
+    }
+    
+    
 }
 
 extension Answer : Identifiable {
