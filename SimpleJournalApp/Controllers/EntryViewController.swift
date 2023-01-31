@@ -29,7 +29,7 @@ class EntryViewController: UIViewController {
             }
         
             if unwrappedDayLog.answers?.allObjects == nil {
-                for question in K.questions {
+                for question in Question.allCases {
                     let answer = Answer()
                     answer.question = question
                     answer.dayLog = unwrappedDayLog
@@ -48,7 +48,7 @@ class EntryViewController: UIViewController {
     //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
         var views: [QuestionView] = []
-        for question in K.questions {
+        for question in Question.allCases {
             let view = QuestionView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false
 //            view.configure(question: question)
@@ -118,7 +118,7 @@ class EntryViewController: UIViewController {
         
         if let log = dayLog {
             for view in questionViews {
-                journalManager.addAnswer(to: log, for: view.question!, text: view.returnAnswer())
+                journalManager.addAnswer(to: log, for: view.question ?? .summary, text: view.returnAnswer())
             }
         }
         
@@ -180,27 +180,37 @@ class EntryViewController: UIViewController {
     }
 
     func populate(_ answers: [Answer]) {
-        // This probably needs to be extraxted to seperate method
-        // enumerate thorugh all question views
-        for (i, view) in questionViews.enumerated() {
-            // for question view, get question from k.questions
-            // set question for the question view
-            view.question = K.questions[i]
-            // enumerate though all answers
-            for answer in answers {
-                if let question = answer.question {
-                    // If question in answer matches question for view
-                    if question == view.question {
-                        //Check if question has an answer text
-                        if let text = answer.text {
-                            // set answer in text field
-                            view.textView.text = text
-                        }
-                    }
-                }
-            }
+        
+        for (i, questionString) in Question.allCases.enumerated() {
+            questionViews[i].question = questionString
+            questionViews[i].textView.text = answers.first(where: { $0.question == questionString })?.text
             
         }
+        
+        
+        
+        
+        
+        // enumerate thorugh all question views
+//        for (i, view) in questionViews.enumerated() {
+//            // for question view, get question from k.questions
+//            // set question for the question view
+//            view.question = K.questions[i]
+//            // enumerate though all answers
+//            for answer in answers {
+//                if let Question.allCases[i] = answer.question {
+//                    // If question in answer matches question for view
+//                    if question == view.question {
+//                        //Check if question has an answer text
+//                        if let text = answer.text {
+//                            // set answer in text field
+//                            view.textView.text = text
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
     }
 }
 
