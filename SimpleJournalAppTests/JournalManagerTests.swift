@@ -58,7 +58,7 @@ extension JournalManagerTests {
         let date = Date()
         let dayLog = journalManager.addEntry(date)
         
-        let question = "This is question"
+        let question = Question.summary
         let text = "This is answer"
         journalManager.addAnswer(to: dayLog, for: question, text: text)
 //        journalManager.addAnswer(to: dayLog, for: question, answer: text)
@@ -73,7 +73,7 @@ extension JournalManagerTests {
         let date = Date()
         let dayLog = journalManager.addEntry(date)
         
-        let question = "This is question"
+        let question = Question.good
         let text = "This is answer"
         let updatedText = "This is updated answer"
         
@@ -83,7 +83,7 @@ extension JournalManagerTests {
         XCTAssertNotNil(dayLog.answers?.allObjects.first, "Answer in day log should not be nil")
         XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.question, "Question in answer in day log should not be nil")
         XCTAssertNotNil((dayLog.answers?.allObjects.first as? Answer)?.text, "Text in answer in day log should not be nil")
-        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.question == question, "Question should be 'This is question'")
+        XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.question == question, "Question should be Question.good")
         XCTAssertTrue((dayLog.answers?.allObjects.first as? Answer)?.text == updatedText, "Answer text property should be 'This is updated answer'")
     
     }
@@ -116,7 +116,7 @@ extension JournalManagerTests {
         XCTAssertTrue(resultsFromGet.error as? JournalManagerNSError == JournalManagerNSError.noResultsRetrived , "Error should be no results retrived")
         
     }
-    
+    // TODO: Rework test - add entry now covers the test when multiple entries are retrived and is fail safe
     func testGetEntryForDateWhenMultipleEntries() {
         
         let date = Date()
@@ -125,9 +125,9 @@ extension JournalManagerTests {
         
         let results = journalManager.getEntry(for: date)
         
-        XCTAssertNotNil(results.error, "Retrived results should have error")
-        XCTAssertTrue(results.dayLogs.count == 2, "Retrived day logs should have 2 entries")
-        XCTAssertTrue(results.error as? JournalManagerNSError == JournalManagerNSError.multipleResultsRetrived, "Error should be multiple results retrived")
+        XCTAssertNil(results.error, "Retrived results should not have error")
+        XCTAssertTrue(results.dayLogs.count == 1, "Retrived day logs should have 1 entry")
+        
         
         
     }

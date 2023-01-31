@@ -32,6 +32,10 @@ public final class JournalManager {
 }
 
 extension JournalManager {
+    
+    /// Add entry for a specific date and return it - if a entry for a date already exists, return existing dayLog
+    /// - Parameter date: date for the DayLog
+    /// - Returns: created or retrived DayLog
     func addEntry(_ date: Date) -> DayLog {
         var dayLog: DayLog!
         let results = getEntry(for: date)
@@ -55,10 +59,6 @@ extension JournalManager {
             print("error occured: \(error), \(error.userInfo)")
         }
         return dayLog
-    }
-    
-    func updateEntry(for date: Date, with dayLog: DayLog){
-        
     }
     
     func deleteEntry(for date: Date) {
@@ -236,7 +236,7 @@ extension JournalManager {
         return nil
     }
     
-    func addAnswer(to dayLog: DayLog, for question: String, text: String, updateExistingAnswers: Bool = true) {
+    func addAnswer(to dayLog: DayLog, for question: Question, text: String, updateExistingAnswers: Bool = true) {
         //TODO: add parameter to recognize when updating answer is wanted or to create a second answer
         if updateExistingAnswers == true {
             let existingAnswers = dayLog.answers?.allObjects as! [Answer]
