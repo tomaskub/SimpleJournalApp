@@ -18,6 +18,7 @@ extension DayLog {
 
     @NSManaged public var date: Date?
     @NSManaged public var id: UUID?
+    @NSManaged public var photo: Data?
     @NSManaged public var answers: NSSet?
 
 }
