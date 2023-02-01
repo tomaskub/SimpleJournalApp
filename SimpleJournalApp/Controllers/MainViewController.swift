@@ -138,8 +138,18 @@ class MainViewController: UIViewController {
 //MARK: QuestionCellDelegate methods
 extension MainViewController: QuestionCellDelegate {
     func buttonPressed(sender: QuestionCell) {
+        if let selection = tableView.indexPath(for: sender)?.row {
+            if selection == 1 {
+                performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
+            } else if selection == 0 {
+                let vc = UIImagePickerController()
+                vc.sourceType = .photoLibrary
+                vc.delegate = self
+                vc.allowsEditing = true
+                self.present(vc, animated: true)
+            }
+        }
         
-            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         
         
     }
@@ -188,6 +198,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         cell.selectionStyle = .none
         return cell
+    }
+}
+
+extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            journalManager?.addPhoto(jpegData: image.jpegData(self: image, compressionQuality: 1.0), to: selectedDayLog)
+        }
+            picker.dismiss(animated: true) }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        picker.dismiss(animated: true)
     }
 }
 
