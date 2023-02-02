@@ -65,6 +65,7 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
+        tableView.register(TableCell.self, forCellReuseIdentifier: TableCell.identifier)
         tableView.reloadData()
     }
     
@@ -193,11 +194,39 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
-        cell.configureCell(questionText: actions[indexPath.row])
-        cell.delegate = self
-        cell.selectionStyle = .none
-        return cell
+        if indexPath.row != 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
+            cell.configureCell(with: actions[indexPath.row])
+            cell.selectionStyle = .none
+            return cell
+            
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
+            cell.configureCell(with: actions[indexPath.row])
+            cell.selectionStyle = .none
+            return cell
+        }
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            
+            let vc = UIImagePickerController()
+            vc.sourceType = .photoLibrary
+            vc.delegate = self
+            vc.allowsEditing = true
+            self.present(vc, animated: true)
+            
+        case 1:
+            let sender = tableView.cellForRow(at: indexPath)
+            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
+        default:
+            print("Add reminders function tapped!")
+        }
+        if indexPath.row == 0 {
+            
+        }
+            
     }
 }
 
@@ -206,10 +235,13 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            journalManager?.addPhoto(jpegData: image.jpegData(self: image, compressionQuality: 1.0), to: selectedDayLog)
+           print("Photo retrived succsesfully")
+            // journalManager?.addPhoto(jpegData: image.jpegData(self: image, compressionQuality: 1.0), to: selectedDayLog)
         }
-            picker.dismiss(animated: true) }
+            picker.dismiss(animated: true)
+        
     }
+    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         picker.dismiss(animated: true)
