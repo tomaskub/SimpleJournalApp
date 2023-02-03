@@ -45,6 +45,13 @@ class MainViewController: UIViewController {
     var selectedDayLogDate = Date()
     var selectedDayLog: DayLog?
     
+//    var imageForFirstTableViewCell: UIImage? {
+//        didSet {
+//            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableCell
+//            cell.myImageView.image = imageForFirstTableViewCell
+//            tableView.reloadData()
+//        }
+//    }
     //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +68,9 @@ class MainViewController: UIViewController {
 
         layoutUI()
         
-        tableView.rowHeight = tableView.frame.height / 7
+//        tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
         tableView.register(TableCell.self, forCellReuseIdentifier: TableCell.identifier)
         tableView.reloadData()
     }
@@ -93,6 +99,7 @@ class MainViewController: UIViewController {
         } else {
             selectedDayLog = results?.dayLogs.first
         }
+        tableView.reloadData()
     }
     
 //    MARK: UI layout
@@ -136,26 +143,6 @@ class MainViewController: UIViewController {
     }
 }
 
-//MARK: QuestionCellDelegate methods
-extension MainViewController: QuestionCellDelegate {
-    func buttonPressed(sender: QuestionCell) {
-        if let selection = tableView.indexPath(for: sender)?.row {
-            if selection == 1 {
-                performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
-            } else if selection == 0 {
-                let vc = UIImagePickerController()
-                vc.sourceType = .photoLibrary
-                vc.delegate = self
-                vc.allowsEditing = true
-                self.present(vc, animated: true)
-            }
-        }
-        
-        
-        
-    }
-}
-
 //MARK: initial setup
 extension MainViewController {
     
@@ -189,19 +176,34 @@ extension MainViewController {
 //MARK: Table view methods
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     //tableView method implementation
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        print("Calculating height for rows")
+        var result: CGFloat = tableView.frame.height / 7
+        if indexPath.row == 0 && selectedDayLog?.photo != nil {
+            result = tableView.frame.width - 20
+        }
+        return result
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return actions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row != 0 {
+        print("Cell for row. IP - s: \(indexPath.section), r: \(indexPath.row). With text \(actions[indexPath.row])")
+        if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
             cell.configureCell(with: actions[indexPath.row])
+            if let data = selectedDayLog?.photo {
+                cell.myImageView.image = UIImage(data: data)
+            }
             cell.selectionStyle = .none
             return cell
             
+            
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
+//            cell.myImageView.removeFromSuperview()
             cell.configureCell(with: actions[indexPath.row])
             cell.selectionStyle = .none
             return cell
@@ -209,8 +211,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0:
-            
+        case 2:
             let vc = UIImagePickerController()
             vc.sourceType = .photoLibrary
             vc.delegate = self
@@ -223,22 +224,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         default:
             print("Add reminders function tapped!")
         }
-        if indexPath.row == 0 {
-            
-        }
-            
     }
 }
 
 extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
+        picker.dismiss(animated: true)
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-           print("Photo retrived succsesfully")
-            // journalManager?.addPhoto(jpegData: image.jpegData(self: image, compressionQuality: 1.0), to: selectedDayLog)
+            guard let data = image.jpegData(compressionQuality: 1.0),
+                    let log = selectedDayLog,
+                  let manager = journalManager else { return }
+            manager.addPhoto(jpegData: data, to: log)
         }
-            picker.dismiss(animated: true)
+        tableView.reloadData()
+            
         
     }
     
@@ -246,5 +246,8 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         picker.dismiss(animated: true)
     }
+    
+    
+    
 }
 
