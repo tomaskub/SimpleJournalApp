@@ -8,6 +8,7 @@
     <entity name="DayLog" representedClassName=".DayLog" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="photo" optional="YES" attributeType="Binary"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Answer" inverseName="dayLog" inverseEntity="Answer"/>
     </entity>
 </model>

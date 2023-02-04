@@ -7,16 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323394298C21550024E0D7 /* PhotoCell.swift */; };
+		D6323397298C21810024E0D7 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323396298C21810024E0D7 /* LabelCell.swift */; };
+		D635C53C298EE21700F962BF /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635C53B298EE21700F962BF /* QuestionView.swift */; };
+		D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635C53D298EE9EF00F962BF /* PhotoView.swift */; };
 		D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63741962924154C00FFF9E5 /* SettingsViewController.swift */; };
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
-		D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453229216CCC008598C9 /* QuestionCell.swift */; };
 		D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A996C29294DC3000DEBD4 /* SettingCell.swift */; };
 		D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D669ECC22974474100C7CC2A /* CoreDataStack.swift */; };
+		D67E689E298AF56200633487 /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */; };
+		D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */; };
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
 		D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */; };
-		D68A5836295E661C00B5918F /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68A5835295E661C00B5918F /* QuestionView.swift */; };
 		D6965A6E297F03A400199EC7 /* JournalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6D297F03A400199EC7 /* JournalManager.swift */; };
 		D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */; };
 		D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */; };
@@ -35,8 +39,6 @@
 		D6E04BF82989AB1100AA26BD /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E04BF72989AB1100AA26BD /* Question.swift */; };
 		D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */; };
 		D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */; };
-		D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */; };
-		D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */; };
 		D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,16 +60,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D6323394298C21550024E0D7 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		D6323396298C21810024E0D7 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		D635C53B298EE21700F962BF /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		D635C53D298EE9EF00F962BF /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		D63741962924154C00FFF9E5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		D63F453229216CCC008598C9 /* QuestionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCell.swift; sourceTree = "<group>"; };
 		D64A996C29294DC3000DEBD4 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingCell.swift; path = SimpleJournalApp/Views/SettingCell.swift; sourceTree = SOURCE_ROOT; };
 		D669ECC22974474100C7CC2A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
 		D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
-		D68A5835295E661C00B5918F /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		D6965A6D297F03A400199EC7 /* JournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManager.swift; sourceTree = "<group>"; };
 		D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerTests.swift; sourceTree = "<group>"; };
 		D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerNSError.swift; sourceTree = "<group>"; };
@@ -90,8 +96,6 @@
 		D6E04BF72989AB1100AA26BD /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,6 +153,7 @@
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
 				D6B58AEB293276AA00A89B19 /* K.swift */,
+				D635C53D298EE9EF00F962BF /* PhotoView.swift */,
 				D6B43028291FB0B500E9C791 /* Main.storyboard */,
 				D6B4302B291FB0B800E9C791 /* Assets.xcassets */,
 				D6B4302D291FB0B800E9C791 /* LaunchScreen.storyboard */,
@@ -184,8 +189,8 @@
 				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
 				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
-				D6E8D62F2958DE9300433DCB /* DayLog+CoreDataClass.swift */,
-				D6E8D6302958DE9300433DCB /* DayLog+CoreDataProperties.swift */,
+				D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */,
+				D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */,
 				D669ECC22974474100C7CC2A /* CoreDataStack.swift */,
 				D6965A6D297F03A400199EC7 /* JournalManager.swift */,
 				D6E04BF72989AB1100AA26BD /* Question.swift */,
@@ -210,9 +215,10 @@
 			children = (
 				D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */,
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
-				D63F453229216CCC008598C9 /* QuestionCell.swift */,
 				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
-				D68A5835295E661C00B5918F /* QuestionView.swift */,
+				D6323396298C21810024E0D7 /* LabelCell.swift */,
+				D6323394298C21550024E0D7 /* PhotoCell.swift */,
+				D635C53B298EE21700F962BF /* QuestionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -348,22 +354,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D68A5836295E661C00B5918F /* QuestionView.swift in Sources */,
 				D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */,
 				D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */,
+				D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */,
+				D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */,
+				D67E689E298AF56200633487 /* DayLog+CoreDataClass.swift in Sources */,
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
 				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
+				D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
 				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
 				D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
 				D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */,
-				D6E8D6342958DE9300433DCB /* DayLog+CoreDataProperties.swift in Sources */,
-				D6E8D6332958DE9300433DCB /* DayLog+CoreDataClass.swift in Sources */,
+				D6323397298C21810024E0D7 /* LabelCell.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,
-				D63F453329216CCC008598C9 /* QuestionCell.swift in Sources */,
+				D635C53C298EE21700F962BF /* QuestionView.swift in Sources */,
 				D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */,
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D6E04BF82989AB1100AA26BD /* Question.swift in Sources */,

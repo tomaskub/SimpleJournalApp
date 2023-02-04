@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    //TODO: Create a custom view for this controller?
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -17,17 +17,17 @@ class MainViewController: UIViewController {
     var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
     var journalManager: JournalManager?
-    
-    //Declare calendar buttons
+    var selectedDayLog: DayLog?
+    //Declare calendar buttons in an array
     let dateButtonArray: [CalendarDayButton] = {
         
         var tempArray: [CalendarDayButton] = []
             
-        for i in 0...13 {
+        for i in 0...7 {
                 let button: CalendarDayButton = {
-                    let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
+                    let date = Calendar.current.date(byAdding: .day, value: -4+i, to: Date.now)
                     let button = CalendarDayButton(date: date!)//, isToday: false)
-                    if i == 7 {
+                    if i == 4 {
                         button.isTodayButton = true
                         button.isSelected = true
                     }
@@ -40,37 +40,33 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
-    let actions = ["Add photo!", "Journal", "Add reminders for next day"]
-    
-    var selectedDayLogDate = Date()
-    var selectedDayLog: DayLog?
-    
     //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         performFirstTimeSetUp()
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
-        let results = journalManager?.getEntry(for: selectedDayLogDate)
+        let results = journalManager?.getEntry(for: Date())
         
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+            selectedDayLog = journalManager?.addEntry(Date())
         } else {
             selectedDayLog = results?.dayLogs.first
         }
 
         layoutUI()
         
-        tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(QuestionCell.self, forCellReuseIdentifier: QuestionCell.identifier)
+        tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
+        tableView.register(PhotoCell.self, forCellReuseIdentifier: PhotoCell.identifier)
         tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scrollView.setContentOffset(CGPoint(x: 5 * 105 , y: 0 ), animated: true)
+        let offsetX = scrollView.contentSize.width / 2
+        scrollView.setContentOffset(CGPoint(x: offsetX , y: 0 ), animated: true)
         if UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.useDarkTheme) {
             overrideUserInterfaceStyle = .dark
         } else {
@@ -84,14 +80,15 @@ class MainViewController: UIViewController {
             button.isSelected = false
         }
         sender.isSelected = true
-        selectedDayLogDate = (sender as! CalendarDayButton).getDate()
-        let results = journalManager?.getEntry(for: selectedDayLogDate)
+        let date = (sender as! CalendarDayButton).getDate()
+        let results = journalManager?.getEntry(for: date)
         
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+            selectedDayLog = journalManager?.addEntry(date)
         } else {
             selectedDayLog = results?.dayLogs.first
         }
+        tableView.reloadData()
     }
     
 //    MARK: UI layout
@@ -126,22 +123,13 @@ class MainViewController: UIViewController {
         if segue.identifier == K.SegueIdentifiers.toQuestionVC {
             let targetVC = segue.destination as! EntryViewController
             if let dayLog = selectedDayLog {
+                targetVC.isShowingPhoto = true
                 targetVC.dayLog = dayLog
                 targetVC.managedContext = managedContext
                 targetVC.journalManager = journalManager
                 targetVC.strategy = .isCreatingNewEntry
             }
         }
-    }
-}
-
-//MARK: QuestionCellDelegate methods
-extension MainViewController: QuestionCellDelegate {
-    func buttonPressed(sender: QuestionCell) {
-        
-            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
-        
-        
     }
 }
 
@@ -178,16 +166,88 @@ extension MainViewController {
 //MARK: Table view methods
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     //tableView method implementation
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        var result: CGFloat = tableView.frame.height / 8
+        if indexPath.row == 0 && selectedDayLog?.photo != nil {
+            result = 5 * tableView.frame.height / 8
+        }
+        return result
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return actions.count
+        return K.actions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as! QuestionCell
-        cell.configureCell(questionText: actions[indexPath.row])
-        cell.delegate = self
-        cell.selectionStyle = .none
-        return cell
+        
+        if indexPath.row == 0, let data = selectedDayLog?.photo  {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: PhotoCell.identifier, for: indexPath) as! PhotoCell
+            cell.delegate = self
+            cell.myImageView.image = UIImage(data: data)
+            cell.cornerRadius = 20
+            cell.selectionStyle = .none
+            return cell
+            
+        } else {
+        
+            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
+            cell.configureCell(with: K.actions[indexPath.row])
+            cell.selectionStyle = .none
+            cell.cornerRadius = 20
+            return cell
+            
+        }
+    }
+    
+    fileprivate func presentPhotoPicker() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        self.present(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            presentPhotoPicker()
+        case 1:
+            let sender = tableView.cellForRow(at: indexPath)
+            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
+        default:
+            print("Add reminders cell tapped!")
+        }
     }
 }
 
+extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            guard let data = image.jpegData(compressionQuality: 1.0),
+                    let log = selectedDayLog,
+                  let manager = journalManager else { return }
+            manager.addPhoto(jpegData: data, to: log)
+        }
+        tableView.reloadData()
+    }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        picker.dismiss(animated: true)
+    }
+}
+
+extension MainViewController: PhotoCellDelegate {
+    func leftButtonTapped() {
+        presentPhotoPicker()
+    }
+    func rightButtonTapped() {
+        guard let entry = selectedDayLog, let _journalManager = journalManager else { return }
+        _journalManager.deletePhoto(entry: entry)
+        tableView.reloadData()
+    }
+}

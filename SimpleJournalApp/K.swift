@@ -39,6 +39,10 @@ struct K {
         "How can I improve on that?",
         "Where was my discipline and self-control tested?"
     ]
+    static let actions: [String] = [
+    "Add photo",
+    "Add journal entry",
+    "Add reminders for next day"]
     
     struct SFSymbols {
         static let edit = "square.and.pencil"

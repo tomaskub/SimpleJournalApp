@@ -257,10 +257,28 @@ extension JournalManager {
         coreDataStack.saveContext()
     }
     
+    func addPhoto(jpegData: Data, to dayLog: DayLog) {
+        dayLog.photo = jpegData
+        coreDataStack.saveContext()
+    }
+    
+    func getPhoto(for dayLog: DayLog) -> Data? {
+        return dayLog.photo
+    }
+    func deletePhoto(entry: DayLog) {
+        do {
+            entry.photo = nil
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Error occured: \(error), \(error.userInfo)")
+        }
+    }
+    
     func deleteAnswer(answer: Answer) {
         
     }
-    func updateAnswer(of: DayLog, for question: String, with answer: String){
+    
+    func updateAnswer(of: DayLog, for question: Question, with answer: String){
         
     }
 }

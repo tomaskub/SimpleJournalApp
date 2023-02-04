@@ -13,7 +13,7 @@ class EntryViewController: UIViewController {
     case isShowingOldEntry
     case isCreatingNewEntry
     }
-    
+    var isShowingPhoto = false
     //  Constraint with constant to adjust based on keyboard height
     private var viewBottomConstraint: NSLayoutConstraint?
     
@@ -27,7 +27,6 @@ class EntryViewController: UIViewController {
                 print("failed to unwrap day log passed to entryViewController by \(String(describing: self.parent))")
                 return
             }
-        
             if unwrappedDayLog.answers?.allObjects == nil {
                 for question in Question.allCases {
                     let answer = Answer()
@@ -36,6 +35,9 @@ class EntryViewController: UIViewController {
                 }
                 populate(unwrappedDayLog.answers?.allObjects as! [Answer])
             } else {
+                if isShowingPhoto, let data = unwrappedDayLog.photo, let image = UIImage(data: data) {
+                    photoView.setImage(image)
+                }
                 let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
                 populate(answers)
             }
@@ -55,6 +57,12 @@ class EntryViewController: UIViewController {
             views.append(view)
         }
         return views
+    }()
+    
+    private let photoView: PhotoView = {
+        let view = PhotoView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let scrollView: UIScrollView = {
@@ -143,10 +151,12 @@ class EntryViewController: UIViewController {
         for view in questionViews {
             scrollView.addSubview(view)
         }
+        if isShowingPhoto {
+            scrollView.addSubview(photoView)
+        }
     }
     
     func layoutUI() {
-        
         
         viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
         viewBottomConstraint?.isActive = true
@@ -157,10 +167,7 @@ class EntryViewController: UIViewController {
                 qview.widthAnchor.constraint(equalToConstant: view.frame.width)])
         }
         
-        
         NSLayoutConstraint.activate([
-            //      layout scrollView
-            //            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -169,8 +176,20 @@ class EntryViewController: UIViewController {
             if i == 0{
                 questionViews[i].leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
             } else if i == questionViews.count - 1 {
-                questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
-                questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+                
+                if isShowingPhoto {
+                    NSLayoutConstraint.activate([
+                        photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
+                        photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
+                        questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
+                        questionViews[i].trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
+                        photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+                    ])
+                } else {
+                    questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
+                    questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+                }
+                
             } else {
                 questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
             }
@@ -184,33 +203,7 @@ class EntryViewController: UIViewController {
         for (i, questionString) in Question.allCases.enumerated() {
             questionViews[i].question = questionString
             questionViews[i].textView.text = answers.first(where: { $0.question == questionString })?.text
-            
         }
-        
-        
-        
-        
-        
-        // enumerate thorugh all question views
-//        for (i, view) in questionViews.enumerated() {
-//            // for question view, get question from k.questions
-//            // set question for the question view
-//            view.question = K.questions[i]
-//            // enumerate though all answers
-//            for answer in answers {
-//                if let Question.allCases[i] = answer.question {
-//                    // If question in answer matches question for view
-//                    if question == view.question {
-//                        //Check if question has an answer text
-//                        if let text = answer.text {
-//                            // set answer in text field
-//                            view.textView.text = text
-//                        }
-//                    }
-//                }
-//            }
-//
-//        }
     }
 }
 
@@ -224,7 +217,7 @@ extension EntryViewController: UITextViewDelegate {
 }
 
 extension EntryViewController: UIScrollViewDelegate {
-    
+    //used to switch responders for keyboard
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         for view in questionViews {
             if CGRectIntersectsRect(scrollView.bounds, view.frame) {

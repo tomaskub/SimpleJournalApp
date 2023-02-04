@@ -4,7 +4,6 @@
 //
 //  Created by Tomasz Kubiak on 12/30/22.
 //
-
 import UIKit
 
 class QuestionView: UIView {
@@ -30,7 +29,7 @@ class QuestionView: UIView {
     let textView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isEditable = false 
+        view.isEditable = false
         view.backgroundColor = .clear
         view.contentMode = .topLeft
         view.textColor = UIColor(named: K.Colors.complement)
@@ -79,4 +78,3 @@ class QuestionView: UIView {
     
     
 }
-
