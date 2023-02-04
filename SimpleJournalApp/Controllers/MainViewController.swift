@@ -68,10 +68,9 @@ class MainViewController: UIViewController {
 
         layoutUI()
         
-//        tableView.rowHeight = tableView.frame.height / 7
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(TableCell.self, forCellReuseIdentifier: TableCell.identifier)
+        tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
         tableView.reloadData()
     }
     
@@ -177,10 +176,10 @@ extension MainViewController {
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     //tableView method implementation
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("Calculating height for rows")
-        var result: CGFloat = tableView.frame.height / 7
+        
+        var result: CGFloat = tableView.frame.height / 8
         if indexPath.row == 0 && selectedDayLog?.photo != nil {
-            result = tableView.frame.width - 20
+            result = 5 * tableView.frame.height / 8
         }
         return result
     }
@@ -190,28 +189,30 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("Cell for row. IP - s: \(indexPath.section), r: \(indexPath.row). With text \(actions[indexPath.row])")
+        
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
             cell.configureCell(with: actions[indexPath.row])
             if let data = selectedDayLog?.photo {
                 cell.myImageView.image = UIImage(data: data)
+                cell.isShowingImage = true
+                cell.cornerRadius = 20
             }
             cell.selectionStyle = .none
             return cell
             
             
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TableCell.identifier, for: indexPath) as! TableCell
-//            cell.myImageView.removeFromSuperview()
+            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
             cell.configureCell(with: actions[indexPath.row])
             cell.selectionStyle = .none
+            cell.cornerRadius = 20
             return cell
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 2:
+        case 0:
             let vc = UIImagePickerController()
             vc.sourceType = .photoLibrary
             vc.delegate = self
@@ -222,7 +223,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             let sender = tableView.cellForRow(at: indexPath)
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         default:
-            print("Add reminders function tapped!")
+            print("Add reminders cell tapped!")
         }
     }
 }
@@ -238,16 +239,11 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
             manager.addPhoto(jpegData: data, to: log)
         }
         tableView.reloadData()
-            
-        
     }
     
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         picker.dismiss(animated: true)
     }
-    
-    
-    
 }
 

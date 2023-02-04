@@ -7,16 +7,19 @@
 
 import UIKit
 
-class TableCell: UITableViewCell {
+class LabelCell: UITableViewCell {
     
     
     
-    class var identifier: String {
-        return "TableCell"
-    }
+    let identifier = "TableCell"
     
-    var constraintsWithImage: [NSLayoutConstraint]?
-    var constraintsWithoutImage: [NSLayoutConstraint]?
+    
+    var isShowingImage: Bool = false
+    
+    
+    var constraintsWithImage: [NSLayoutConstraint] = []
+    var constraintsWithoutImage: [NSLayoutConstraint] = []
+    var cornerRadius: CGFloat = 10
     
     let label: UILabel = {
         let label = UILabel()
@@ -32,18 +35,19 @@ class TableCell: UITableViewCell {
     let myImageView: UIImageView = {
        let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = ContentMode.scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        initConstraints()
         
         contentView.backgroundColor = UIColor(named: "DominantColor")
-        contentView.layer.cornerRadius = contentView.bounds.height * 0.5
         contentView.addSubview(label)
         contentView.addSubview(myImageView)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -54,17 +58,25 @@ class TableCell: UITableViewCell {
         // Initialization code
     }
     func initConstraints() {
+        let height = contentView.frame.height
+        
+        constraintsWithImage = []
+        constraintsWithoutImage = []
         
         constraintsWithImage = [
-            myImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -contentView.frame.width / 7 - 10),
-            myImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            myImageView.widthAnchor.constraint(equalToConstant: contentView.frame.width - 20),
-            myImageView.heightAnchor.constraint(equalToConstant: 6 * contentView.frame.height / 7),
-            label.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 10),
-            label.heightAnchor.constraint(equalToConstant: contentView.frame.height * 0.85),
+            myImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            myImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            myImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+//            myImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -140 ),
+            label.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: height * 0.04) ,
+            label.heightAnchor.constraint(equalToConstant: height * 0.12),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -height * 0.04),
             label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ]
+        
         constraintsWithoutImage = [
+            myImageView.widthAnchor.constraint(equalToConstant: 0),
+            myImageView.heightAnchor.constraint(equalToConstant: 0),
             label.heightAnchor.constraint(equalToConstant: contentView.frame.height * 0.6),
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
@@ -72,17 +84,21 @@ class TableCell: UITableViewCell {
     }
     override func layoutSubviews() {
         super.layoutSubviews()
-        //        Inset the content view frame of the cell
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10.0, left: 10, bottom: 10, right: 10))
-        if let cwoi = constraintsWithoutImage, let cwi = constraintsWithImage {
-            if myImageView.image != nil {
-                NSLayoutConstraint.deactivate(cwoi)
-                NSLayoutConstraint.activate(cwi)
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5.0, left: 10, bottom: 5, right: 10))
+        
+//        if constraintsWithImage.isEmpty || constraintsWithoutImage.isEmpty {
+            initConstraints()
+//        }
+        
+            if isShowingImage {
+                NSLayoutConstraint.deactivate(constraintsWithoutImage)
+                NSLayoutConstraint.activate(constraintsWithImage)
             } else {
-                NSLayoutConstraint.deactivate(cwi)
-                NSLayoutConstraint.activate(cwoi)
+                NSLayoutConstraint.deactivate(constraintsWithImage)
+                NSLayoutConstraint.activate(constraintsWithoutImage)
             }
-        }
+        contentView.layer.cornerRadius = cornerRadius
+        myImageView.layer.cornerRadius = contentView.layer.cornerRadius - 10
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -93,6 +109,7 @@ class TableCell: UITableViewCell {
         super.prepareForReuse()
         label.text = nil
         myImageView.image = nil
+        isShowingImage = false
         
     }
     public func configureCell(with text: String) {
