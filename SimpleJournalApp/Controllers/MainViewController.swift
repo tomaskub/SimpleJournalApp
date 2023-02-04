@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    //TODO: Create a custom view for this controller?
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -17,17 +17,17 @@ class MainViewController: UIViewController {
     var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
     var journalManager: JournalManager?
-    
-    //Declare calendar buttons
+    var selectedDayLog: DayLog?
+    //Declare calendar buttons in an array
     let dateButtonArray: [CalendarDayButton] = {
         
         var tempArray: [CalendarDayButton] = []
             
-        for i in 0...13 {
+        for i in 0...7 {
                 let button: CalendarDayButton = {
-                    let date = Calendar.current.date(byAdding: .day, value: -7+i, to: Date.now)
+                    let date = Calendar.current.date(byAdding: .day, value: -4+i, to: Date.now)
                     let button = CalendarDayButton(date: date!)//, isToday: false)
-                    if i == 7 {
+                    if i == 4 {
                         button.isTodayButton = true
                         button.isSelected = true
                     }
@@ -40,28 +40,16 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
-    let actions = ["Add photo!", "Journal", "Add reminders for next day"]
-    
-    var selectedDayLogDate = Date()
-    var selectedDayLog: DayLog?
-    
-//    var imageForFirstTableViewCell: UIImage? {
-//        didSet {
-//            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TableCell
-//            cell.myImageView.image = imageForFirstTableViewCell
-//            tableView.reloadData()
-//        }
-//    }
     //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         performFirstTimeSetUp()
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
-        let results = journalManager?.getEntry(for: selectedDayLogDate)
+        let results = journalManager?.getEntry(for: Date())
         
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+            selectedDayLog = journalManager?.addEntry(Date())
         } else {
             selectedDayLog = results?.dayLogs.first
         }
@@ -77,7 +65,8 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scrollView.setContentOffset(CGPoint(x: 5 * 105 , y: 0 ), animated: true)
+        let offsetX = scrollView.contentSize.width / 2
+        scrollView.setContentOffset(CGPoint(x: offsetX , y: 0 ), animated: true)
         if UserDefaults.standard.bool(forKey: K.UserDefaultsKeys.useDarkTheme) {
             overrideUserInterfaceStyle = .dark
         } else {
@@ -91,11 +80,11 @@ class MainViewController: UIViewController {
             button.isSelected = false
         }
         sender.isSelected = true
-        selectedDayLogDate = (sender as! CalendarDayButton).getDate()
-        let results = journalManager?.getEntry(for: selectedDayLogDate)
+        let date = (sender as! CalendarDayButton).getDate()
+        let results = journalManager?.getEntry(for: date)
         
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(selectedDayLogDate)
+            selectedDayLog = journalManager?.addEntry(date)
         } else {
             selectedDayLog = results?.dayLogs.first
         }
@@ -134,6 +123,7 @@ class MainViewController: UIViewController {
         if segue.identifier == K.SegueIdentifiers.toQuestionVC {
             let targetVC = segue.destination as! EntryViewController
             if let dayLog = selectedDayLog {
+                targetVC.isShowingPhoto = true
                 targetVC.dayLog = dayLog
                 targetVC.managedContext = managedContext
                 targetVC.journalManager = journalManager
@@ -186,7 +176,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return actions.count
+        return K.actions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -203,10 +193,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
         
             let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
-            cell.configureCell(with: actions[indexPath.row])
+            cell.configureCell(with: K.actions[indexPath.row])
             cell.selectionStyle = .none
             cell.cornerRadius = 20
             return cell
+            
         }
     }
     

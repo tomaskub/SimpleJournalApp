@@ -10,6 +10,7 @@
 		D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323394298C21550024E0D7 /* PhotoCell.swift */; };
 		D6323397298C21810024E0D7 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323396298C21810024E0D7 /* LabelCell.swift */; };
 		D635C53C298EE21700F962BF /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635C53B298EE21700F962BF /* QuestionView.swift */; };
+		D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635C53D298EE9EF00F962BF /* PhotoView.swift */; };
 		D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63741962924154C00FFF9E5 /* SettingsViewController.swift */; };
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
@@ -62,6 +63,7 @@
 		D6323394298C21550024E0D7 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		D6323396298C21810024E0D7 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D635C53B298EE21700F962BF /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
+		D635C53D298EE9EF00F962BF /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		D63741962924154C00FFF9E5 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
 				D6B58AEB293276AA00A89B19 /* K.swift */,
+				D635C53D298EE9EF00F962BF /* PhotoView.swift */,
 				D6B43028291FB0B500E9C791 /* Main.storyboard */,
 				D6B4302B291FB0B800E9C791 /* Assets.xcassets */,
 				D6B4302D291FB0B800E9C791 /* LaunchScreen.storyboard */,
@@ -359,6 +362,7 @@
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
 				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
+				D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
 				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
