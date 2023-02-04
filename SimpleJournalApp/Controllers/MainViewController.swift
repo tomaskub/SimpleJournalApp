@@ -71,6 +71,7 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
+        tableView.register(PhotoCell.self, forCellReuseIdentifier: PhotoCell.identifier)
         tableView.reloadData()
     }
     
@@ -190,19 +191,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
-            cell.configureCell(with: actions[indexPath.row])
-            if let data = selectedDayLog?.photo {
-                cell.myImageView.image = UIImage(data: data)
-                cell.isShowingImage = true
-                cell.cornerRadius = 20
-            }
+        if indexPath.row == 0, let data = selectedDayLog?.photo  {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: PhotoCell.identifier, for: indexPath) as! PhotoCell
+            cell.delegate = self
+            cell.myImageView.image = UIImage(data: data)
+            cell.cornerRadius = 20
             cell.selectionStyle = .none
             return cell
             
-            
         } else {
+        
             let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
             cell.configureCell(with: actions[indexPath.row])
             cell.selectionStyle = .none
@@ -210,15 +209,19 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
     }
+    
+    fileprivate func presentPhotoPicker() {
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        self.present(vc, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let vc = UIImagePickerController()
-            vc.sourceType = .photoLibrary
-            vc.delegate = self
-            vc.allowsEditing = true
-            self.present(vc, animated: true)
-            
+            presentPhotoPicker()
         case 1:
             let sender = tableView.cellForRow(at: indexPath)
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
@@ -247,3 +250,13 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 }
 
+extension MainViewController: PhotoCellDelegate {
+    func leftButtonTapped() {
+        presentPhotoPicker()
+    }
+    func rightButtonTapped() {
+        guard let entry = selectedDayLog, let _journalManager = journalManager else { return }
+        _journalManager.deletePhoto(entry: entry)
+        tableView.reloadData()
+    }
+}

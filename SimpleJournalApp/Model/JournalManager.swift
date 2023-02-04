@@ -265,6 +265,14 @@ extension JournalManager {
     func getPhoto(for dayLog: DayLog) -> Data? {
         return dayLog.photo
     }
+    func deletePhoto(entry: DayLog) {
+        do {
+            entry.photo = nil
+            try managedObjectContext.save()
+        } catch let error as NSError {
+            print("Error occured: \(error), \(error.userInfo)")
+        }
+    }
     
     func deleteAnswer(answer: Answer) {
         
