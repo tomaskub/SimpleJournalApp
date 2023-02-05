@@ -110,6 +110,26 @@
             </objects>
             <point key="canvasLocation" x="2978" y="145"/>
         </scene>
+        <!--Item-->
+        <scene sceneID="Smk-0g-t0g">
+            <objects>
+                <tableViewController id="EhR-IN-TlG" customClass="RemindersTableViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="dE4-je-dng">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="EhR-IN-TlG" id="Zz2-OJ-vvB"/>
+                            <outlet property="delegate" destination="EhR-IN-TlG" id="jm1-wx-sZu"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Item" id="9np-PU-3oX"/>
+                    <navigationItem key="navigationItem" id="47H-eX-y2m"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yP3-u5-q22" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1278" y="1015"/>
+        </scene>
         <!--History View Controller-->
         <scene sceneID="XtN-YL-4wz">
             <objects>
@@ -181,7 +201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bym-Ob-5js" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1893" y="1015"/>
+            <point key="canvasLocation" x="2071" y="866"/>
         </scene>
         <!--Tab Bar View Controller-->
         <scene sceneID="o7R-gA-uEm">
@@ -199,6 +219,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pOo-ET-mMa"/>
                         <segue destination="R6N-g6-tHS" kind="relationship" relationship="viewControllers" id="hQ5-Fm-cmd"/>
                         <segue destination="Bha-bv-caT" kind="relationship" relationship="viewControllers" id="mqQ-ng-3dO"/>
+                        <segue destination="EhR-IN-TlG" kind="relationship" relationship="viewControllers" id="dco-Kt-ZZ6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vsb-sq-GRX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -238,10 +259,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingCell" id="vWe-O4-Td8" customClass="SettingCell" customModule="SimpleJournalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vWe-O4-Td8" id="Zsp-jw-AdF">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="10"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -274,7 +295,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="esz-mM-Klu"/>
+        <segue reference="fLF-nH-aYp"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chart.bar" catalog="system" width="128" height="89"/>

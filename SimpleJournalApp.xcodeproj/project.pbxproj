@@ -29,6 +29,7 @@
 		D69F20B029900847003A44D8 /* ReminderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AF29900847003A44D8 /* ReminderError.swift */; };
 		D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B129900D48003A44D8 /* EKEventStore.swift */; };
 		D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B32990178B003A44D8 /* EKReminder.swift */; };
+		D69F20B8299021AD003A44D8 /* RemindersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
 		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
@@ -87,6 +88,7 @@
 		D69F20AF29900847003A44D8 /* ReminderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderError.swift; sourceTree = "<group>"; };
 		D69F20B129900D48003A44D8 /* EKEventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventStore.swift; sourceTree = "<group>"; };
 		D69F20B32990178B003A44D8 /* EKReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder.swift; sourceTree = "<group>"; };
+		D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewController.swift; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,6 +136,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D69F20B52990195E003A44D8 /* ReminderModels */ = {
+			isa = PBXGroup;
+			children = (
+				D69F20AF29900847003A44D8 /* ReminderError.swift */,
+				D69F20AB29900636003A44D8 /* Reminder.swift */,
+				D69F20AD2990070F003A44D8 /* ReminderStore.swift */,
+				D69F20B129900D48003A44D8 /* EKEventStore.swift */,
+				D69F20B32990178B003A44D8 /* EKReminder.swift */,
+			);
+			path = ReminderModels;
+			sourceTree = "<group>";
+		};
+		D69F20B629901976003A44D8 /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */,
+				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
+				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
+				D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */,
+				D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */,
+				D669ECC22974474100C7CC2A /* CoreDataStack.swift */,
+				D6965A6D297F03A400199EC7 /* JournalManager.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
@@ -159,7 +187,7 @@
 			children = (
 				D6B43054291FB38A00E9C791 /* Views */,
 				D6B43053291FB37D00E9C791 /* Controllers */,
-				D6B43052291FB37300E9C791 /* Model */,
+				D6B43052291FB37300E9C791 /* Models */,
 				D6B43022291FB0B500E9C791 /* AppDelegate.swift */,
 				D6B43024291FB0B500E9C791 /* SceneDelegate.swift */,
 				D6B58AEB293276AA00A89B19 /* K.swift */,
@@ -191,25 +219,15 @@
 			path = SimpleJournalAppUITests;
 			sourceTree = "<group>";
 		};
-		D6B43052291FB37300E9C791 /* Model */ = {
+		D6B43052291FB37300E9C791 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */,
-				D69F20AF29900847003A44D8 /* ReminderError.swift */,
-				D69F20AB29900636003A44D8 /* Reminder.swift */,
-				D69F20AD2990070F003A44D8 /* ReminderStore.swift */,
-				D69F20B129900D48003A44D8 /* EKEventStore.swift */,
-				D69F20B32990178B003A44D8 /* EKReminder.swift */,
 				D6B58AED2932919800A89B19 /* Preferenes.swift */,
-				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
-				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
-				D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */,
-				D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */,
-				D669ECC22974474100C7CC2A /* CoreDataStack.swift */,
-				D6965A6D297F03A400199EC7 /* JournalManager.swift */,
 				D6E04BF72989AB1100AA26BD /* Question.swift */,
+				D69F20B629901976003A44D8 /* CoreDataModels */,
+				D69F20B52990195E003A44D8 /* ReminderModels */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D6B43053291FB37D00E9C791 /* Controllers */ = {
@@ -220,6 +238,7 @@
 				D6D827B6294CB038005AF563 /* EntryViewController.swift */,
 				D681AF0B29200288001B415C /* HistoryViewController.swift */,
 				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
+				D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -372,6 +391,7 @@
 				D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */,
 				D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */,
 				D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */,
+				D69F20B8299021AD003A44D8 /* RemindersTableViewController.swift in Sources */,
 				D69F20B029900847003A44D8 /* ReminderError.swift in Sources */,
 				D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */,
 				D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */,
@@ -580,6 +600,8 @@
 				DEVELOPMENT_TEAM = 73N45UT488;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SimpleJournalApp/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow permision to Photos to enable adding photos to journal entries";
+				INFOPLIST_KEY_NSRemindersUsageDescription = "Please allow permission to Reminders to enable link to Reminders";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -608,6 +630,8 @@
 				DEVELOPMENT_TEAM = 73N45UT488;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SimpleJournalApp/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow permision to Photos to enable adding photos to journal entries";
+				INFOPLIST_KEY_NSRemindersUsageDescription = "Please allow permission to Reminders to enable link to Reminders";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
