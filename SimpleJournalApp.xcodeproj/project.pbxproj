@@ -26,6 +26,9 @@
 		D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */; };
 		D69F20AC29900636003A44D8 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AB29900636003A44D8 /* Reminder.swift */; };
 		D69F20AE2990070F003A44D8 /* ReminderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AD2990070F003A44D8 /* ReminderStore.swift */; };
+		D69F20B029900847003A44D8 /* ReminderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AF29900847003A44D8 /* ReminderError.swift */; };
+		D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B129900D48003A44D8 /* EKEventStore.swift */; };
+		D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B32990178B003A44D8 /* EKReminder.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
 		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
@@ -81,6 +84,9 @@
 		D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerNSError.swift; sourceTree = "<group>"; };
 		D69F20AB29900636003A44D8 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		D69F20AD2990070F003A44D8 /* ReminderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStore.swift; sourceTree = "<group>"; };
+		D69F20AF29900847003A44D8 /* ReminderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderError.swift; sourceTree = "<group>"; };
+		D69F20B129900D48003A44D8 /* EKEventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventStore.swift; sourceTree = "<group>"; };
+		D69F20B32990178B003A44D8 /* EKReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder.swift; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -189,8 +195,11 @@
 			isa = PBXGroup;
 			children = (
 				D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */,
+				D69F20AF29900847003A44D8 /* ReminderError.swift */,
 				D69F20AB29900636003A44D8 /* Reminder.swift */,
 				D69F20AD2990070F003A44D8 /* ReminderStore.swift */,
+				D69F20B129900D48003A44D8 /* EKEventStore.swift */,
+				D69F20B32990178B003A44D8 /* EKReminder.swift */,
 				D6B58AED2932919800A89B19 /* Preferenes.swift */,
 				D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */,
 				D6E8D62E2958DE9300433DCB /* Answer+CoreDataProperties.swift */,
@@ -361,8 +370,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */,
+				D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */,
 				D6FF7A9B295DDFDB00A13453 /* HistoryTableViewCell.swift in Sources */,
+				D69F20B029900847003A44D8 /* ReminderError.swift in Sources */,
 				D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */,
+				D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */,
 				D69F20AE2990070F003A44D8 /* ReminderStore.swift in Sources */,
 				D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */,
 				D67E689E298AF56200633487 /* DayLog+CoreDataClass.swift in Sources */,
