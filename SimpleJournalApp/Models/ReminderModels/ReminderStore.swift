@@ -34,6 +34,14 @@ class ReminderStore {
             throw ReminderError.unknown
         }
     }
+    
+    private func read(with id: Reminder.ID) throws -> EKReminder {
+        guard let ekReminder = ekStore.calendarItem(withIdentifier: id) as? EKReminder else {
+            throw ReminderError.failedReadingCalendarItem
+        }
+        return ekReminder
+    }
+    
     func readAll() async throws -> [Reminder] {
         guard isAvaliable else { throw ReminderError.accessDenied }
         
@@ -50,4 +58,23 @@ class ReminderStore {
         return reminders
     }
     
+    func save(_ reminder: Reminder) throws -> Reminder.ID {
+        guard isAvaliable else { throw ReminderError.accessDenied }
+        
+        let ekReminder: EKReminder
+        do {
+            ekReminder = try read(with: reminder.id)
+        } catch {
+            ekReminder = EKReminder(eventStore: ekStore)
+        }
+        ekReminder.update(using: reminder, in: ekStore)
+        try ekStore.save(ekReminder, commit: true)
+        return ekReminder.calendarItemIdentifier
+    }
+    
+    func remove(with id: Reminder.ID) throws {
+        guard isAvaliable else { throw ReminderError.accessDenied }
+        let ekRemidner = try read(with: id)
+        try ekStore.remove(ekRemidner, commit: true)
+    }
 }
