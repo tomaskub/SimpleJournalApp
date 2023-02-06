@@ -21,6 +21,7 @@
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
 		D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */; };
+		D68CE7B12991690B003B54CF /* ReminderStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */; };
 		D6965A6E297F03A400199EC7 /* JournalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6D297F03A400199EC7 /* JournalManager.swift */; };
 		D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */; };
 		D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */; };
@@ -80,6 +81,7 @@
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
 		D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
+		D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStoreTests.swift; sourceTree = "<group>"; };
 		D6965A6D297F03A400199EC7 /* JournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManager.swift; sourceTree = "<group>"; };
 		D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerTests.swift; sourceTree = "<group>"; };
 		D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerNSError.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */,
 				D6B43039291FB0B800E9C791 /* SimpleJournalAppTests.swift */,
 				D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */,
+				D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */,
 			);
 			path = SimpleJournalAppTests;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */,
+				D68CE7B12991690B003B54CF /* ReminderStoreTests.swift in Sources */,
 				D6B4303A291FB0B800E9C791 /* SimpleJournalAppTests.swift in Sources */,
 				D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */,
 			);

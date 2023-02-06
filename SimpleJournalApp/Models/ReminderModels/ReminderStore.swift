@@ -35,7 +35,7 @@ class ReminderStore {
         }
     }
     
-    private func read(with id: Reminder.ID) throws -> EKReminder {
+    func read(with id: Reminder.ID) throws -> EKReminder {
         guard let ekReminder = ekStore.calendarItem(withIdentifier: id) as? EKReminder else {
             throw ReminderError.failedReadingCalendarItem
         }
@@ -77,4 +77,5 @@ class ReminderStore {
         let ekRemidner = try read(with: id)
         try ekStore.remove(ekRemidner, commit: true)
     }
+    
 }
