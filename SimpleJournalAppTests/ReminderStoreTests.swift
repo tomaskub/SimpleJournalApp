@@ -20,7 +20,7 @@ final class ReminderStoreTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
     }
     
     //Have to set the access to allowed in simulator settings before
@@ -117,7 +117,21 @@ final class ReminderStoreTests: XCTestCase {
         }
         
         XCTAssert(expectedError == .failedReadingCalendarItem, "Error type should be failedReadingCalendarError")
+    }
+    func testRemoveAll() async throws {
+        var expectedError: ReminderError?
+        var reminders: [Reminder]?
+        do {
+            try await sut.removeAll()
+            reminders = try await sut.readAll()
+        } catch let error as ReminderError {
+            expectedError = error
+        } catch {
+            throw error
+        }
         
+        XCTAssertNil(expectedError, "Error type should be nil")
+        XCTAssert(reminders?.count == 0, "There should be not items in reminders")
         
     }
 }

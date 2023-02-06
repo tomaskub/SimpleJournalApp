@@ -44,7 +44,7 @@ class ReminderStore {
     
     func readAll() async throws -> [Reminder] {
         guard isAvaliable else { throw ReminderError.accessDenied }
-        
+        //in shoul be a custom calendar created for the app
         let predicate = ekStore.predicateForReminders(in: nil)
         let ekReminders = try await ekStore.reminders(matching: predicate)
         let reminders: [Reminder] = try ekReminders.compactMap({
@@ -76,6 +76,16 @@ class ReminderStore {
         guard isAvaliable else { throw ReminderError.accessDenied }
         let ekRemidner = try read(with: id)
         try ekStore.remove(ekRemidner, commit: true)
+    }
+    //For use in tearing down the results of the tests when no mocks are done. All data will be lost
+    func removeAll() async throws {
+        guard isAvaliable else { throw ReminderError.accessDenied }
+        let predicate = ekStore.predicateForReminders(in: nil)
+        let ekReminders = try await ekStore.reminders(matching: predicate)
+        for ekReminder in ekReminders {
+            try ekStore.remove(ekReminder, commit: false)
+        }
+        try ekStore.commit()
     }
     
 }

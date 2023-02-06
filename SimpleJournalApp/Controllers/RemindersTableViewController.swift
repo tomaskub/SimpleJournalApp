@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKitUI
 
 class RemindersTableViewController: UITableViewController {
     
@@ -67,6 +68,17 @@ class RemindersTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let vc = EKEventViewController()
+//        vc.allowsEditing = true
+//        vc.event = reminderStore.read(with: reminders[indexPath.row].id)
+        do {
+            let ekReminder = try reminderStore.read(with: reminders[indexPath.row].id)
+            print(ekReminder)
+        } catch {
+            displayAlert(error)
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
