@@ -45,11 +45,11 @@ class RemindersTableViewController: UITableViewController {
                 displayAlert(error)
             }
             
-            do {
-               _ = try reminderStore.reminderCategory()
-            } catch {
-                displayAlert(error)
-            }
+//            do {
+//               _ = try reminderStore.reminderCategory()
+//            } catch {
+//                displayAlert(error)
+//            }
             tableView.reloadData()
         }
     }
@@ -94,7 +94,7 @@ class RemindersTableViewController: UITableViewController {
     }
     */
 
-    
+    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -109,7 +109,29 @@ class RemindersTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    
+    */
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: nil, handler: {
+            (_, _, completionHandler) in
+            do {
+                try self.reminderStore.remove(with: self.reminders[indexPath.row].id)
+            } catch {
+                self.displayAlert(error)
+            }
+            self.reminders.remove(at: indexPath.row)
+        })
+        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.backgroundColor = .systemRed
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {
+            (_, _, completionHandler) in
+            //push new vc that allows for editing the reminder
+        })
+        editAction.backgroundColor = UIColor(named: K.Colors.accent)
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        return configuration
+    }
 
     /*
     // Override to support rearranging the table view.
