@@ -13,8 +13,14 @@ class ReminderStore {
     
     private let ekStore = EKEventStore()
     
+    var ekCalendar: EKCalendar!
+    
     var isAvaliable: Bool {
         EKEventStore.authorizationStatus(for: .reminder) == .authorized
+    }
+    
+    init() {
+        do { try self.reminderCategory() } catch { }
     }
     
     func requestAccess() async throws {
@@ -88,4 +94,15 @@ class ReminderStore {
         try ekStore.commit()
     }
     
+    func reminderCategory() throws {
+        let calendars = ekStore.calendars(for: .reminder)
+        let bundleName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
+        if let bundleCalendar = calendars.first(where: {$0.title == bundleName}) { ekCalendar = bundleCalendar }
+
+        let calendar = EKCalendar(for: .reminder, eventStore: ekStore)
+        calendar.title = bundleName
+        calendar.source = ekStore.defaultCalendarForNewReminders()?.source
+        try ekStore.saveCalendar(calendar, commit: true)
+        ekCalendar = calendar
+    }
 }

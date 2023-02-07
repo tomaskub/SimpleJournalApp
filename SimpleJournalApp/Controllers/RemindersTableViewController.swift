@@ -44,6 +44,12 @@ class RemindersTableViewController: UITableViewController {
             } catch {
                 displayAlert(error)
             }
+            
+            do {
+               _ = try reminderStore.reminderCategory()
+            } catch {
+                displayAlert(error)
+            }
             tableView.reloadData()
         }
     }
@@ -88,17 +94,22 @@ class RemindersTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            do {
+                try reminderStore.remove(with: reminders[indexPath.row].id)
+            } catch {
+                displayAlert(error)
+            }
+            reminders.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

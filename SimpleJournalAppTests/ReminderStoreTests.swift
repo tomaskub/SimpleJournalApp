@@ -42,23 +42,23 @@ final class ReminderStoreTests: XCTestCase {
     }
     
     //Have to set the access to denied in simulator settings before
-    func testRequestAccess_whenAccessDenied(){
-        
-        let expectation = self.expectation(description: "RequestedAcess")
-        
-        Task {
-            do {
-                try await sut.requestAccess()
-            } catch {
-                expectation.fulfill()
-            }
-        }
-        
-        waitForExpectations(timeout: 1.0)
-        
-        XCTAssert(sut.isAvaliable == false, "isAvaliable should be false")
-        
-    }
+//    func testRequestAccess_whenAccessDenied(){
+//
+//        let expectation = self.expectation(description: "RequestedAcess")
+//
+//        Task {
+//            do {
+//                try await sut.requestAccess()
+//            } catch {
+//                expectation.fulfill()
+//            }
+//        }
+//
+//        waitForExpectations(timeout: 1.0)
+//
+//        XCTAssert(sut.isAvaliable == false, "isAvaliable should be false")
+//
+//    }
     
     func testReadAll() async throws {
         let reminders = try await sut.readAll()
@@ -118,14 +118,15 @@ final class ReminderStoreTests: XCTestCase {
         
         XCTAssert(expectedError == .failedReadingCalendarItem, "Error type should be failedReadingCalendarError")
     }
+    
+    //Cleans all of the reminders created during testing the app on simulator.
+    #if targetEnvironment(simulator)
     func testRemoveAll() async throws {
         var expectedError: ReminderError?
         var reminders: [Reminder]?
         do {
             try await sut.removeAll()
             reminders = try await sut.readAll()
-        } catch let error as ReminderError {
-            expectedError = error
         } catch {
             throw error
         }
@@ -134,4 +135,5 @@ final class ReminderStoreTests: XCTestCase {
         XCTAssert(reminders?.count == 0, "There should be not items in reminders")
         
     }
+    #endif
 }
