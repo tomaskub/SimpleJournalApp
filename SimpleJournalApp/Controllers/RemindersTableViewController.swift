@@ -30,7 +30,7 @@ class RemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         
-        return reminders.count
+        return reminders.count+1
     }
     
     func prepareReminderStore() {
@@ -67,7 +67,11 @@ class RemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath)
         if let cell = cell as? LabelCell {
-            cell.configureCell(with: reminders[indexPath.row].title)
+            if indexPath.row == reminders.count {
+                cell.configureCell(with: "Add new reminder")
+            } else {
+                cell.configureCell(with: reminders[indexPath.row].title)
+            }
         }
         
 
@@ -78,21 +82,38 @@ class RemindersTableViewController: UITableViewController {
 //        let vc = EKEventViewController()
 //        vc.allowsEditing = true
 //        vc.event = reminderStore.read(with: reminders[indexPath.row].id)
+        if indexPath.row == reminders.count {
+            print("Adding new reminder")
+            guard let newReminder = Reminder.sampleData.first else {
+                print("Failed to get first of sample data")
+                return
+            }
+            do {
+                _ = try reminderStore.save(newReminder)
+            } catch {
+                displayAlert(error)
+            }
+        } else {
         do {
             let ekReminder = try reminderStore.read(with: reminders[indexPath.row].id)
             print(ekReminder)
         } catch {
             displayAlert(error)
         }
+        }
+        
     }
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        if indexPath.row == reminders.count {
+            return false
+        } else {
+            return true
+        }
     }
-    */
+    
 
     /*
     // Override to support editing the table view.
