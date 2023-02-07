@@ -61,7 +61,15 @@ class RemindersTableViewController: UITableViewController {
         }
     }
     func displayAlert(_ error: Error) {
-    //TODO: show alert containing error and ok button
+        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
+        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
+        let alertAction = UIAlertAction(title: alertTitle, style: .default, handler: {
+            [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+        alert.addAction(alertAction)
+        present(alert, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
