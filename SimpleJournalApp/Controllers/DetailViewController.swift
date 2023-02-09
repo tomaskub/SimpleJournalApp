@@ -11,6 +11,9 @@ class DetailViewController: UIViewController {
     
     var isAddingNewReminder = true
     var reminder: Reminder!
+    
+    var reminderStore = ReminderStore.shared
+    
     fileprivate var viewBottomConstraint: NSLayoutConstraint?
     
     let detailView: DetailView = {
@@ -31,6 +34,22 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    func addTargets(to view: DetailView){
+        view.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
+        view.okButton.addTarget(self, action: #selector(okAction), for: .touchUpInside)
+    }
+    
+    
+    func updateReminder() {
+        guard let view = view as? DetailView,
+              let title = view.titleTextField.text else { return }
+        
+        reminder.title = title
+        reminder.notes = view.notesTextField.text
+        reminder.dueDate = view.datePicker.date
+            
+        
+    }
     /*
      // MARK: - Navigation
      
@@ -40,5 +59,22 @@ class DetailViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+}
+
+extension DetailViewController {
     
+    @objc func cancelAction() {
+        self.dismiss(animated: true)
+    }
+    
+    @objc func okAction() {
+        updateReminder()
+        do {
+            _ = try reminderStore.save(reminder)
+        } catch {
+            print(error)
+        }
+        self.dismiss(animated: true)
+        
+    }
 }
