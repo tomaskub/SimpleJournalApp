@@ -64,7 +64,7 @@ class RemindersTableViewController: UITableViewController {
         let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
         let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
         let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
-        let alertAction = UIAlertAction(title: alertTitle, style: .default, handler: {
+        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: {
             [weak self] _ in
             self?.dismiss(animated: true)
         })
@@ -102,12 +102,10 @@ class RemindersTableViewController: UITableViewController {
                 displayAlert(error)
             }
         } else {
-        do {
-            let ekReminder = try reminderStore.read(with: reminders[indexPath.row].id)
-            print(ekReminder)
-        } catch {
-            displayAlert(error)
-        }
+        
+            let vc = DetailViewController()
+            vc.reminder = reminders[indexPath.row]
+            present(vc, animated: true)
         }
         
     }
