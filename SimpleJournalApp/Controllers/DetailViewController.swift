@@ -30,7 +30,9 @@ class DetailViewController: UIViewController {
             let title = isAddingNewReminder ? "Add new reminder" : "Edit reminder"
             view.configureView(title: title , titleText: reminder.title, notesText: reminder.notes)
             view.setDisplayedDate(date: reminder.dueDate)
+            addTargets(to: view)
         }
+        
         // Do any additional setup after loading the view.
     }
     

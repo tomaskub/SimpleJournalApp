@@ -87,27 +87,17 @@ class RemindersTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let vc = EKEventViewController()
-//        vc.allowsEditing = true
-//        vc.event = reminderStore.read(with: reminders[indexPath.row].id)
+        //        let vc = EKEventViewController()
+        //        vc.allowsEditing = true
+        //        vc.event = reminderStore.read(with: reminders[indexPath.row].id)
+        let vc = DetailViewController()
+        
         if indexPath.row == reminders.count {
-            print("Adding new reminder")
-            guard let newReminder = Reminder.sampleData.first else {
-                print("Failed to get first of sample data")
-                return
-            }
-            do {
-                _ = try reminderStore.save(newReminder)
-            } catch {
-                displayAlert(error)
-            }
+            vc.reminder = Reminder()
         } else {
-        
-            let vc = DetailViewController()
             vc.reminder = reminders[indexPath.row]
-            present(vc, animated: true)
         }
-        
+        present(vc, animated: true)
     }
 
     

@@ -70,10 +70,11 @@ class ReminderStore {
         let ekReminder: EKReminder
         do {
             ekReminder = try read(with: reminder.id)
+            ekReminder.update(using: reminder, in: ekStore, using: ekCalendar)
         } catch {
             ekReminder = EKReminder(eventStore: ekStore)
+            ekReminder.update(using: reminder, in: ekStore)
         }
-        ekReminder.update(using: reminder, in: ekStore)
         try ekStore.save(ekReminder, commit: true)
         return ekReminder.calendarItemIdentifier
     }

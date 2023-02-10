@@ -30,6 +30,10 @@ extension Reminder {
         notes = ekReminder.notes
         isComplete = ekReminder.isCompleted
     }
+    init(){
+        self.title = "Please enter a title"
+        self.dueDate = Date()
+    }
 }
 extension Reminder {
     static var sampleData = [
