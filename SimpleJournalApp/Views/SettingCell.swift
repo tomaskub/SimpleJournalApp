@@ -195,7 +195,7 @@ protocol SettingCellDelegate {
     func setUpConstraintsForThirdView(view: UIView){
         view.centerYAnchor.constraint(equalTo: cellContentView.centerYAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -10).isActive = true
-        if let view = view as? UISwitch {
+        if let _ = view as? UISwitch {
             return
         } else {
             view.heightAnchor.constraint(equalToConstant: contentView.frame.height).isActive = true
