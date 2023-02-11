@@ -29,7 +29,7 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
                 try await reminderStore.requestAccess()
 //                let unprocessedReminders
                 reminders = try await reminderStore.readAll()
-                processedReminders = processReminders(Reminder.sampleData)
+                processedReminders = processReminders(reminders)//Reminder.sampleData)
                 print(processedReminders)
                 
                 
@@ -55,16 +55,18 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
                     today.append(reminder)
                 } else if Calendar.current.isDateInTomorrow(dueDate) {
                     tomorrow.append(reminder)
-                }
+                } //add case for future calendar items that have
             } else {
                 if !reminder.isComplete {
-                    //this will also append past reminders
+                    //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
                     future.append(reminder)
                 }
             }
+            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
             for (i, reminder) in today.enumerated() {
                 temp[IndexPath(row: i, section: 0)] = reminder
             }
+            
             for (i, reminder) in tomorrow.enumerated() {
                 temp[IndexPath(row: i, section: 1)] = reminder
             }
@@ -77,6 +79,7 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
     @objc func eventStoreChanged (_ notification: NSNotification){
         Task {
             reminders = try await reminderStore.readAll()
+            processedReminders = processReminders(reminders)
             tableView.reloadData()
         }
     }
@@ -84,16 +87,44 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+//        return 1
+        return 3
+    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Today"
+        case 1:
+            return "Tomorrow"
+        case 2:
+            return "Future"
+        default:
+            return "Unknown"
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return reminders.count+1
+        var count: Int = 0
+        for key in processedReminders.keys{
+            if key.section == section {
+                count += 1
+            }
+        }
+        return count
+//        return reminders.count+1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
+        guard let reminder = processedReminders[indexPath] else { return cell }
+        cell.configureCell(with: reminder.title)
+        cell.updateDoneButtonConfiguration(for: reminder)
+        cell.delegate = self
+        return cell
         
+        
+        /*
         if indexPath.row == reminders.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
             cell.configureCell(with: "Add new reminder")
@@ -105,14 +136,13 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
                     cell.updateDoneButtonConfiguration(for: reminder)
                     cell.delegate = self
             return cell
-        }
+        }*/
     }
     
     func doneButtonTapped(sender: ReminderTableViewCell) {
         if let indexPath = tableView.indexPath(for: sender) {
             reminders[indexPath.row].isComplete.toggle()
             sender.updateDoneButtonConfiguration(for: reminders[indexPath.row])
-            
             do {
                 _ = try reminderStore.save(reminders[indexPath.row])
             } catch {
@@ -127,11 +157,11 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         present(vc, animated: true)
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == reminders.count {
-            runEditingVC(for: Reminder())
-        } else {
-            runEditingVC(for: reminders[indexPath.row])
-        }
+//        if indexPath.row == reminders.count {
+//            runEditingVC(for: Reminder())
+//        } else {
+            runEditingVC(for: processedReminders[indexPath]!)
+//        }
         
     }
     // Override to support conditional editing of the table view.
