@@ -14,6 +14,9 @@ class DetailViewController: UIViewController {
     
     var reminderStore = ReminderStore.shared
     
+    
+    var dateComponents: DateComponents?
+    
     fileprivate var viewBottomConstraint: NSLayoutConstraint?
     
     let detailView: DetailView = {
@@ -29,8 +32,11 @@ class DetailViewController: UIViewController {
         if let view  = view as? DetailView {
             let title = isAddingNewReminder ? "Add new reminder" : "Edit reminder"
             view.configureView(title: title , titleText: reminder.title, notesText: reminder.notes)
-            view.setDisplayedDate(date: reminder.dueDate)
+            if let dueDate = reminder.dueDate {
+                view.setDisplayedDate(date: dueDate)
+            }
             addTargets(to: view)
+            
         }
         
         // Do any additional setup after loading the view.
@@ -39,18 +45,21 @@ class DetailViewController: UIViewController {
     func addTargets(to view: DetailView){
         view.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         view.okButton.addTarget(self, action: #selector(okAction), for: .touchUpInside)
+        //Using .editingDidEndOnExit to trigger only on finish of the editing
+        view.datePicker.addTarget(self, action: #selector(datePickerDidEndEditing), for: .editingDidEndOnExit)
+        view.timePicker.addTarget(self, action: #selector(timePickerDidEndEditing), for: .editingDidEndOnExit)
     }
     
+    //TODO: write UI tests
     
     func updateReminder() {
         guard let view = view as? DetailView,
               let title = view.titleTextField.text else { return }
-        
         reminder.title = title
         reminder.notes = view.notesTextField.text
-        reminder.dueDate = view.datePicker.date
-            
-        
+        if let dateComponents = dateComponents {
+            reminder.dueDate = Calendar.current.date(from: dateComponents)
+        }
     }
     /*
      // MARK: - Navigation
@@ -77,6 +86,15 @@ extension DetailViewController {
             print(error)
         }
         self.dismiss(animated: true)
+    }
+    
+    @objc func datePickerDidEndEditing() {
+        guard let view = view as? DetailView else { return }
         
+        dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: view.datePicker.date)
+    }
+    @objc func timePickerDidEndEditing() {
+        guard let view = view as? DetailView else { return }
+        dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: view.datePicker.date)
     }
 }
