@@ -19,15 +19,18 @@ extension EKReminder {
         } else {
             calendar = store.defaultCalendarForNewReminders()
         }
+        
         alarms?.forEach({ alarm in
-            guard let absoluteDate = alarm.absoluteDate else { return }
-            let comparision = Locale.current.calendar.compare(reminder.dueDate, to: absoluteDate, toGranularity: .minute)
+            guard let absoluteDate = alarm.absoluteDate,
+            let reminderDueDate = reminder.dueDate else { return }
+            let comparision = Locale.current.calendar.compare(reminderDueDate, to: absoluteDate, toGranularity: .minute)
             if comparision != .orderedSame {
                 removeAlarm(alarm)
             }
         })
         if !hasAlarms {
-            addAlarm(EKAlarm(absoluteDate: reminder.dueDate))
+            guard let reminderDueDate = reminder.dueDate else { return }
+            addAlarm(EKAlarm(absoluteDate: reminderDueDate))
         }
     }
 }
