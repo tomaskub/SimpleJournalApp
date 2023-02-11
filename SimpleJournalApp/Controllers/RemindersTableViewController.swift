@@ -74,8 +74,8 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
     func doneButtonTapped(sender: ReminderTableViewCell) {
         if let indexPath = tableView.indexPath(for: sender) {
             reminders[indexPath.row].isComplete.toggle()
-//            reminderToUpdate.isComplete.toggle()
             sender.updateDoneButtonConfiguration(for: reminders[indexPath.row])
+            
             do {
                 _ = try reminderStore.save(reminders[indexPath.row])
             } catch {

@@ -60,7 +60,6 @@ class ReminderTableViewCell: LabelCell {
     
     func updateDoneButtonConfiguration(for reminder: Reminder) {
         let symbolName = reminder.isComplete ? "circle.fill" : "circle"
-//        self.doneButton.setImage(nil, for: .normal)
         let image = UIImage(systemName: symbolName)
         self.doneButton.setImage(image, for: .normal)
     }

@@ -23,10 +23,11 @@ extension [Reminder] {
 }
 extension Reminder {
     init(with ekReminder: EKReminder) throws {
-        guard let dueDate = ekReminder.alarms?.first?.absoluteDate else { throw ReminderError.reminderHasNoDueDate }
         id = ekReminder.calendarItemIdentifier
         title = ekReminder.title
-        self.dueDate = dueDate
+        if let dueDate = ekReminder.alarms?.first?.absoluteDate {
+            self.dueDate = dueDate
+        }
         notes = ekReminder.notes
         isComplete = ekReminder.isCompleted
     }
