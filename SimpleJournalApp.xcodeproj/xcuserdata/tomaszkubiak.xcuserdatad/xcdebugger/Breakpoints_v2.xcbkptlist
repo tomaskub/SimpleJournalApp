@@ -143,8 +143,8 @@
             filePath = "SimpleJournalApp/Controllers/RemindersTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "doneButtonTapped(sender:)"
             landmarkType = "7">
          </BreakpointContent>

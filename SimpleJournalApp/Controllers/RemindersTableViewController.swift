@@ -13,6 +13,7 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
     private var reminderStore: ReminderStore { ReminderStore.shared }
     
     var reminders: [Reminder] = []
+    var processedReminders: [IndexPath : Reminder] = [ : ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,12 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         Task {
             do {
                 try await reminderStore.requestAccess()
+//                let unprocessedReminders
                 reminders = try await reminderStore.readAll()
+                processedReminders = processReminders(Reminder.sampleData)
+                print(processedReminders)
+                
+                
                 NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
             } catch ReminderError.accessDenied, ReminderError.accessRestricted {
                 
@@ -36,7 +42,38 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
             tableView.reloadData()
         }
     }
-    
+    func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
+        
+        var temp: [IndexPath : Reminder] = [:]
+        var future: [Reminder] = []
+        var today: [Reminder] = []
+        var tomorrow: [Reminder] = []
+        
+        for reminder in reminders {
+            if let dueDate = reminder.dueDate {
+                if Calendar.current.isDateInToday(dueDate) {
+                    today.append(reminder)
+                } else if Calendar.current.isDateInTomorrow(dueDate) {
+                    tomorrow.append(reminder)
+                }
+            } else {
+                if !reminder.isComplete {
+                    //this will also append past reminders
+                    future.append(reminder)
+                }
+            }
+            for (i, reminder) in today.enumerated() {
+                temp[IndexPath(row: i, section: 0)] = reminder
+            }
+            for (i, reminder) in tomorrow.enumerated() {
+                temp[IndexPath(row: i, section: 1)] = reminder
+            }
+            for (i, reminder) in future.enumerated() {
+                temp[IndexPath(row: i, section: 2)] = reminder
+            }
+        }
+        return temp
+    }
     @objc func eventStoreChanged (_ notification: NSNotification){
         Task {
             reminders = try await reminderStore.readAll()
