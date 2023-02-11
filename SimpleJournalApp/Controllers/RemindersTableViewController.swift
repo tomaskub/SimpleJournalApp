@@ -8,31 +8,20 @@
 import UIKit
 import EventKitUI
 
-class RemindersTableViewController: UITableViewController {
+class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate {
     
     private var reminderStore: ReminderStore { ReminderStore.shared }
     
-    var reminders: [Reminder] = Reminder.sampleData
+    var reminders: [Reminder] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
         tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
+        tableView.rowHeight = 50
         prepareReminderStore()
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
-        return reminders.count+1
-    }
-    
+    //MARK: EventKit Reminders
     func prepareReminderStore() {
         Task {
             do {
@@ -44,12 +33,6 @@ class RemindersTableViewController: UITableViewController {
             } catch {
                 displayAlert(error)
             }
-            
-//            do {
-//               _ = try reminderStore.reminderCategory()
-//            } catch {
-//                displayAlert(error)
-//            }
             tableView.reloadData()
         }
     }
@@ -60,47 +43,60 @@ class RemindersTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-    func displayAlert(_ error: Error) {
-        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
-        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
-        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
-        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: {
-            [weak self] _ in
-            self?.dismiss(animated: true)
-        })
-        alert.addAction(alertAction)
-        present(alert, animated: true)
+    // MARK: - Table view data source
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return reminders.count+1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath)
-        if let cell = cell as? LabelCell {
-            if indexPath.row == reminders.count {
-                cell.configureCell(with: "Add new reminder")
-            } else {
-                cell.configureCell(with: reminders[indexPath.row].title)
-            }
-        }
-        
-
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        let vc = EKEventViewController()
-        //        vc.allowsEditing = true
-        //        vc.event = reminderStore.read(with: reminders[indexPath.row].id)
-        let vc = DetailViewController()
         
         if indexPath.row == reminders.count {
-            vc.reminder = Reminder()
+            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
+            cell.configureCell(with: "Add new reminder")
+            return cell
         } else {
-            vc.reminder = reminders[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
+                    let reminder = reminders[indexPath.row]
+                    cell.configureCell(with: reminder.title)
+                    cell.updateDoneButtonConfiguration(for: reminder)
+                    cell.delegate = self
+            return cell
         }
+    }
+    
+    func doneButtonTapped(sender: ReminderTableViewCell) {
+        if let indexPath = tableView.indexPath(for: sender) {
+            reminders[indexPath.row].isComplete.toggle()
+//            reminderToUpdate.isComplete.toggle()
+            sender.updateDoneButtonConfiguration(for: reminders[indexPath.row])
+            do {
+                _ = try reminderStore.save(reminders[indexPath.row])
+            } catch {
+                displayAlert(error)
+            }
+        }
+    }
+    
+    func runEditingVC(for reminder: Reminder) {
+        let vc = DetailViewController()
+        vc.reminder = reminder
         present(vc, animated: true)
     }
-
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == reminders.count {
+            runEditingVC(for: Reminder())
+        } else {
+            runEditingVC(for: reminders[indexPath.row])
+        }
+        
+    }
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.row == reminders.count {
@@ -142,37 +138,23 @@ class RemindersTableViewController: UITableViewController {
         deleteAction.backgroundColor = .systemRed
         
         let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {
-            (_, _, completionHandler) in
-            //push new vc that allows for editing the reminder
+            (_, _, completionHandler)  in
+            self.runEditingVC(for: self.reminders[indexPath.row])
         })
         editAction.backgroundColor = UIColor(named: K.Colors.accent)
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return configuration
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    //MARK: Alerts
+    func displayAlert(_ error: Error) {
+        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
+        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
+        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: {
+            [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+        alert.addAction(alertAction)
+        present(alert, animated: true)
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
