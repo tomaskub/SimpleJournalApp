@@ -33,6 +33,7 @@
 		D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B129900D48003A44D8 /* EKEventStore.swift */; };
 		D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B32990178B003A44D8 /* EKReminder.swift */; };
 		D69F20B8299021AD003A44D8 /* RemindersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */; };
+		D6B261292997ADF600339B2C /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
 		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
@@ -97,6 +98,7 @@
 		D69F20B129900D48003A44D8 /* EKEventStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKEventStore.swift; sourceTree = "<group>"; };
 		D69F20B32990178B003A44D8 /* EKReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder.swift; sourceTree = "<group>"; };
 		D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewController.swift; sourceTree = "<group>"; };
+		D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
+				D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -434,6 +437,7 @@
 				D6B58AEC293276AA00A89B19 /* K.swift in Sources */,
 				D6B9558B2995251E0093F20E /* DetailTableViewCell.swift in Sources */,
 				D6E04BF82989AB1100AA26BD /* Question.swift in Sources */,
+				D6B261292997ADF600339B2C /* ReminderTableViewCell.swift in Sources */,
 				D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */,
 				D6D827B7294CB038005AF563 /* EntryViewController.swift in Sources */,
 				D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */,

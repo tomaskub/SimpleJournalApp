@@ -9,14 +9,14 @@ import UIKit
 
 class LabelCell: UITableViewCell {
     
-    static let identifier = "LabelCell"
-    var constraintsWithoutImage: [NSLayoutConstraint] = []
+    class var identifier: String { return "LabelCell" }
+    
     var cornerRadius: CGFloat = 10
     
     let label: UILabel = {
         let label = UILabel()
         label.text = "Sample cell text check"
-        label.textColor = UIColor(named: "ComplementColor")
+        label.textColor = UIColor(named: K.Colors.complement)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,18 +43,7 @@ class LabelCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    func initConstraints() {
-        let height = contentView.frame.height
-        
-        
-        constraintsWithoutImage = []
-        
-        
-        constraintsWithoutImage = [
-            
-            
-        ]
-    }
+   
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 5.0, left: 10, bottom: 5, right: 10))
