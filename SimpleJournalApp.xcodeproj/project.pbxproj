@@ -34,6 +34,7 @@
 		D69F20B42990178B003A44D8 /* EKReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B32990178B003A44D8 /* EKReminder.swift */; };
 		D69F20B8299021AD003A44D8 /* RemindersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */; };
 		D6B261292997ADF600339B2C /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */; };
+		D6B2612B29980EF900339B2C /* ReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B2612A29980EF900339B2C /* ReminderManager.swift */; };
 		D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43022291FB0B500E9C791 /* AppDelegate.swift */; };
 		D6B43025291FB0B500E9C791 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43024291FB0B500E9C791 /* SceneDelegate.swift */; };
 		D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B43026291FB0B500E9C791 /* MainViewController.swift */; };
@@ -99,6 +100,7 @@
 		D69F20B32990178B003A44D8 /* EKReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKReminder.swift; sourceTree = "<group>"; };
 		D69F20B7299021AD003A44D8 /* RemindersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTableViewController.swift; sourceTree = "<group>"; };
 		D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
+		D6B2612A29980EF900339B2C /* ReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderManager.swift; sourceTree = "<group>"; };
 		D6B4301F291FB0B500E9C791 /* SimpleJournalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleJournalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B43022291FB0B500E9C791 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6B43024291FB0B500E9C791 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				D69F20AD2990070F003A44D8 /* ReminderStore.swift */,
 				D69F20B129900D48003A44D8 /* EKEventStore.swift */,
 				D69F20B32990178B003A44D8 /* EKReminder.swift */,
+				D6B2612A29980EF900339B2C /* ReminderManager.swift */,
 			);
 			path = ReminderModels;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
 				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
+				D6B2612B29980EF900339B2C /* ReminderManager.swift in Sources */,
 				D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */,
 				D69F20AC29900636003A44D8 /* Reminder.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,

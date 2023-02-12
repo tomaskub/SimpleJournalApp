@@ -14,6 +14,7 @@ enum ReminderError: LocalizedError {
     case accessRestricted
     case failedReadingReminders
     case reminderHasNoDueDate
+    case reminderForIndexPathDoesNotExist
     case unknown
     
     var errorDescription: String? {
@@ -29,6 +30,8 @@ enum ReminderError: LocalizedError {
             return NSLocalizedString("Failed to read reminders.", comment: "failed reading reminders error description")
         case .reminderHasNoDueDate:
             return NSLocalizedString("A reminder has no due date.", comment: "reminder has no due date error description")
+        case .reminderForIndexPathDoesNotExist:
+            return NSLocalizedString("Remidner does not exist", comment: "reminder for given indexPath does not exist")
         case .unknown:
             return NSLocalizedString("An unknown error occurred.", comment: "unknown error description")
         }

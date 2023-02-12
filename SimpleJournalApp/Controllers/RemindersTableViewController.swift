@@ -8,87 +8,63 @@
 import UIKit
 import EventKitUI
 
-class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate {
+class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate, ReminderManagerDelegate {
     
     private var reminderStore: ReminderStore { ReminderStore.shared }
     
-    var reminders: [Reminder] = []
-    var processedReminders: [IndexPath : Reminder] = [ : ]
+    let reminderManager = ReminderManager()
     
+    private let addButton: UIButton = {
+       let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "plus.circle"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    func requestUIUpdate() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        
+    }
+    
+    @objc func addButtonTapped() {
+        runEditingVC(for: Reminder())
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(addButton)
+        NSLayoutConstraint.activate(  [
+            addButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            addButton.heightAnchor.constraint(equalToConstant: 50),
+            addButton.widthAnchor.constraint(equalToConstant: 50)])
+        
         tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-        tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
+//        tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
         tableView.rowHeight = 50
-        prepareReminderStore()
-    }
-    //MARK: EventKit Reminders
-    func prepareReminderStore() {
-        Task {
-            do {
-                try await reminderStore.requestAccess()
-//                let unprocessedReminders
-                reminders = try await reminderStore.readAll()
-                processedReminders = processReminders(reminders)//Reminder.sampleData)
-                print(processedReminders)
-                
-                
-                NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
-            } catch ReminderError.accessDenied, ReminderError.accessRestricted {
-                
-            } catch {
-                displayAlert(error)
-            }
+        reminderManager.delegate = self
+        do {
+            try reminderManager.prepareReminderStore()
             tableView.reloadData()
+        } catch {
+            displayAlert(error)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
     }
-    func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
-        
-        var temp: [IndexPath : Reminder] = [:]
-        var future: [Reminder] = []
-        var today: [Reminder] = []
-        var tomorrow: [Reminder] = []
-        
-        for reminder in reminders {
-            if let dueDate = reminder.dueDate {
-                if Calendar.current.isDateInToday(dueDate) {
-                    today.append(reminder)
-                } else if Calendar.current.isDateInTomorrow(dueDate) {
-                    tomorrow.append(reminder)
-                } //add case for future calendar items that have
-            } else {
-                if !reminder.isComplete {
-                    //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
-                    future.append(reminder)
-                }
-            }
-            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            for (i, reminder) in today.enumerated() {
-                temp[IndexPath(row: i, section: 0)] = reminder
-            }
-            
-            for (i, reminder) in tomorrow.enumerated() {
-                temp[IndexPath(row: i, section: 1)] = reminder
-            }
-            for (i, reminder) in future.enumerated() {
-                temp[IndexPath(row: i, section: 2)] = reminder
-            }
-        }
-        return temp
-    }
+    
     @objc func eventStoreChanged (_ notification: NSNotification){
-        Task {
-            reminders = try await reminderStore.readAll()
-            processedReminders = processReminders(reminders)
-            tableView.reloadData()
-        }
+            reminderManager.updateSnapshot()
     }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
 //        return 1
-        return 3
+        return reminderManager.numbersOfSections()
     }
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
@@ -98,53 +74,38 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
             return "Tomorrow"
         case 2:
             return "Future"
+        case 3:
+            return "No due date"
+        case 4:
+            return "Past"
         default:
             return "Unknown"
         }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        var count: Int = 0
-        for key in processedReminders.keys{
-            if key.section == section {
-                count += 1
-            }
-        }
-        return count
-//        return reminders.count+1
+        return reminderManager.numberOfItemsInSection(section: section)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
-        guard let reminder = processedReminders[indexPath] else { return cell }
-        cell.configureCell(with: reminder.title)
-        cell.updateDoneButtonConfiguration(for: reminder)
-        cell.delegate = self
+        do {
+            let reminder = try reminderManager.reminder(forIndexPath: indexPath)
+            cell.configureCell(with: reminder.title, buttonState: reminder.isComplete)
+            cell.delegate = self
+        } catch {
+            displayAlert(error)
+        }
         return cell
-        
-        
-        /*
-        if indexPath.row == reminders.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
-            cell.configureCell(with: "Add new reminder")
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
-                    let reminder = reminders[indexPath.row]
-                    cell.configureCell(with: reminder.title)
-                    cell.updateDoneButtonConfiguration(for: reminder)
-                    cell.delegate = self
-            return cell
-        }*/
     }
     
     func doneButtonTapped(sender: ReminderTableViewCell) {
+        
         if let indexPath = tableView.indexPath(for: sender) {
-            reminders[indexPath.row].isComplete.toggle()
-            sender.updateDoneButtonConfiguration(for: reminders[indexPath.row])
             do {
-                _ = try reminderStore.save(reminders[indexPath.row])
+                try reminderManager.updateReminder(atIndexPath: indexPath)
+            } catch ReminderError.reminderForIndexPathDoesNotExist {
+                
             } catch {
                 displayAlert(error)
             }
@@ -156,20 +117,12 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         vc.reminder = reminder
         present(vc, animated: true)
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if indexPath.row == reminders.count {
-//            runEditingVC(for: Reminder())
-//        } else {
-            runEditingVC(for: processedReminders[indexPath]!)
-//        }
-        
-    }
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.row == reminders.count {
-            return false
-        } else {
-            return true
+        do {
+            runEditingVC(for: try reminderManager.reminder(forIndexPath: indexPath))
+        } catch {
+            displayAlert(error)
         }
     }
     
@@ -190,28 +143,36 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         }    
     }
     */
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+            return true
+    }
+    
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .destructive, title: nil, handler: {
             (_, _, completionHandler) in
-            do {
-                try self.reminderStore.remove(with: self.reminders[indexPath.row].id)
-            } catch {
-                self.displayAlert(error)
-            }
-            self.reminders.remove(at: indexPath.row)
+            self.reminderManager.removeReminder(for: indexPath)
         })
+        
         deleteAction.image = UIImage(systemName: "trash")
         deleteAction.backgroundColor = .systemRed
         
         let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {
             (_, _, completionHandler)  in
-            self.runEditingVC(for: self.reminders[indexPath.row])
+            do {
+                self.runEditingVC(for: try self.reminderManager.reminder(forIndexPath: indexPath))
+            } catch {
+                print(error)
+            }
         })
+        
         editAction.backgroundColor = UIColor(named: K.Colors.accent)
+        
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return configuration
     }
+    
     //MARK: Alerts
     func displayAlert(_ error: Error) {
         let alertTitle = NSLocalizedString("Error", comment: "Error alert title")

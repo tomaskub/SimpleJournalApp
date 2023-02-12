@@ -47,6 +47,15 @@ class ReminderTableViewCell: LabelCell {
         
     }
     
+    func configureCell(with text: String? = nil, buttonState: Bool) {
+        if let text = text {
+            label.text = text
+        }
+        let symbolName = buttonState ? "circle.fill" : "circle"
+        let image = UIImage(systemName: symbolName)
+        doneButton.setImage(image, for: .normal)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -57,12 +66,4 @@ class ReminderTableViewCell: LabelCell {
 
         // Configure the view for the selected state
     }
-    
-    func updateDoneButtonConfiguration(for reminder: Reminder) {
-        let symbolName = reminder.isComplete ? "circle.fill" : "circle"
-        let image = UIImage(systemName: symbolName)
-        self.doneButton.setImage(image, for: .normal)
-    }
-    
-
 }

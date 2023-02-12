@@ -48,6 +48,23 @@ class ReminderStore {
         return ekReminder
     }
     
+    func readAllCompleted() async throws -> [Reminder] {
+        
+        guard isAvaliable else { throw ReminderError.accessDenied }
+        let predicate = ekStore.predicateForCompletedReminders(withCompletionDateStarting: nil, ending: nil, calendars: nil)
+        let ekReminders = try await ekStore.reminders(matching: predicate)
+        let reminders: [Reminder] = try ekReminders.compactMap({
+            ekReminder in
+            do {
+                return try Reminder(with: ekReminder)
+            } catch ReminderError.reminderHasNoDueDate {
+                return nil
+            }
+        })
+        return reminders
+    }
+    
+    
     func readAll() async throws -> [Reminder] {
         guard isAvaliable else { throw ReminderError.accessDenied }
         //in shoul be a custom calendar created for the app
