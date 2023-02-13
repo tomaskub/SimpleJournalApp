@@ -9,11 +9,30 @@ import Foundation
 
 protocol ReminderManagerDelegate {
     func requestUIUpdate()
+    func controllerWillChangeContent(_ controller: ReminderManager)
+    func controllerDidChangeContent(_ controller: ReminderManager)
+    func controller(_ controller: ReminderManager, didChange aReminder: Reminder, at indexPath: IndexPath?, for type: ReminderManagerChangeType, newIndexPath: IndexPath?)
+    func controller(_ controller: ReminderManager, didChange sectionInfo: ReminderResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: ReminderManagerChangeType)
+}
+
+protocol ReminderResultsSectionInfo {
+    var numberOfObject: Int { get }
+    var objects: [Reminder]? { get }
+    var name: String { get }
+    var indexTitle: String? { get }
+}
+
+enum ReminderManagerChangeType {
+    case insert
+    case delete
+    case update
+    case move
 }
 
 class ReminderManager {
     
-    private var reminderStore = ReminderStore.shared
+    
+    private lazy var reminderStore = ReminderStore.shared
     
     var delegate: ReminderManagerDelegate?
     
@@ -80,6 +99,7 @@ class ReminderManager {
                 throw error
             }
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSnapshot), name: .EKEventStoreChanged, object: nil)
     }
     
     func numbersOfSections() -> Int {
@@ -105,13 +125,15 @@ class ReminderManager {
         }
         return count
     }
-    func updateSnapshot() {
+    
+    @objc func updateSnapshot() {
         Task {
             let tempReminders = try await reminderStore.readAll()
             reminders = processReminders(tempReminders)
             delegate?.requestUIUpdate()
         }
     }
+    
     func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
         guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
         return reminder
@@ -136,4 +158,7 @@ class ReminderManager {
             print(error)
         }
     }
+    
+    //Delegate methods
+    
 }

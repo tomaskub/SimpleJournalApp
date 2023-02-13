@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6096B39299AA3EB00B3CC11 /* ReminderManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6096B38299AA3EB00B3CC11 /* ReminderManagerTests.swift */; };
 		D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323394298C21550024E0D7 /* PhotoCell.swift */; };
 		D6323397298C21810024E0D7 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6323396298C21810024E0D7 /* LabelCell.swift */; };
 		D635C53C298EE21700F962BF /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635C53B298EE21700F962BF /* QuestionView.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D6096B38299AA3EB00B3CC11 /* ReminderManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderManagerTests.swift; sourceTree = "<group>"; };
 		D6323394298C21550024E0D7 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		D6323396298C21810024E0D7 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D635C53B298EE21700F962BF /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				D6B43039291FB0B800E9C791 /* SimpleJournalAppTests.swift */,
 				D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */,
 				D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */,
+				D6096B38299AA3EB00B3CC11 /* ReminderManagerTests.swift */,
 			);
 			path = SimpleJournalAppTests;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */,
+				D6096B39299AA3EB00B3CC11 /* ReminderManagerTests.swift in Sources */,
 				D68CE7B12991690B003B54CF /* ReminderStoreTests.swift in Sources */,
 				D6B4303A291FB0B800E9C791 /* SimpleJournalAppTests.swift in Sources */,
 				D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */,
