@@ -7,7 +7,7 @@
 import EventKit
 import Foundation
 
-struct Reminder: Equatable, Identifiable {
+struct Reminder: Equatable, Identifiable, Hashable {
     var id: String = UUID().uuidString
     var title: String
     var dueDate: Date?
