@@ -8,11 +8,11 @@
 import UIKit
 import EventKitUI
 
-class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate, ReminderManagerDelegate {
-    
-    private var reminderStore: ReminderStore { ReminderStore.shared }
+class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate {
     
     let reminderManager = ReminderManager()
+    
+    let dataSource: [[Reminder]] = []
     
     private let addButton: UIButton = {
        let button = UIButton()
@@ -23,12 +23,7 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         return button
     }()
     
-    func requestUIUpdate() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-        
-    }
+    
     
     @objc func addButtonTapped() {
         runEditingVC(for: Reminder())
@@ -49,42 +44,29 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         reminderManager.delegate = self
         do {
             try reminderManager.prepareReminderStore()
+            
             tableView.reloadData()
         } catch {
             displayAlert(error)
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
-    }
-    
-    @objc func eventStoreChanged (_ notification: NSNotification){
-            reminderManager.updateSnapshot()
     }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
 //        return 1
-        return reminderManager.numbersOfSections()
+        return reminderManager.sortedReminders.count
     }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Today"
-        case 1:
-            return "Tomorrow"
-        case 2:
-            return "Future"
-        case 3:
-            return "No due date"
-        case 4:
-            return "Past"
-        default:
-            return "Unknown"
-        }
+        let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
+        return sectionHeaders[section]
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reminderManager.numberOfItemsInSection(section: section)
+//        return reminderManager.numberOfItemsInSection(section: section)
+        
+        return reminderManager.sortedReminders[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -185,4 +167,50 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         alert.addAction(alertAction)
         present(alert, animated: true)
     }
+}
+
+extension RemindersTableViewController: ReminderManagerDelegate {
+    
+    func controllerWillChangeContent(_ controller: ReminderManager) {
+      tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: ReminderManager) {
+      tableView.endUpdates()
+    }
+    
+    
+    func requestUIUpdate() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+  
+  func controller(_ controller: ReminderManager, didChange aReminder: Reminder, at indexPath: IndexPath?, for type: ReminderManagerChangeType, newIndexPath: IndexPath?){
+    switch type {
+    case .insert:
+      tableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .delete:
+      tableView.deleteRows(at: [indexPath!], with: .automatic)
+    case .update:
+      let cell = tableView.cellForRow(at: indexPath!) as! ReminderTableViewCell
+        cell.configureCell(buttonState: aReminder.isComplete)
+    case .move:
+      tableView.deleteRows(at: [indexPath!], with: .automatic)
+      tableView.insertRows(at: [newIndexPath!], with: .automatic)
+    }
+  }
+  
+  
+    func controller(_ controller: ReminderManager, didChange sectionInfo: ReminderResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: ReminderManagerChangeType) {
+      let indexSet = IndexSet(integer: sectionIndex)
+    switch type {
+    case .insert:
+      tableView.insertSections(indexSet, with: .automatic)
+    case .delete:
+      tableView.deleteSections(indexSet, with: .automatic)
+    default:
+      break
+    }
+  }
 }

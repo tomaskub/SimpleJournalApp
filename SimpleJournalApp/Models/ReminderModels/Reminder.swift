@@ -13,6 +13,13 @@ struct Reminder: Equatable, Identifiable, Hashable {
     var dueDate: Date?
     var notes: String? = nil
     var isComplete: Bool = false
+    
+    static func == (lhs: Reminder, rhs: Reminder) -> Bool {
+        return lhs.id == rhs.id && lhs.title == rhs.title &&
+               lhs.dueDate == rhs.dueDate &&
+               lhs.isComplete == rhs.isComplete
+    }
+    
 }
 
 extension [Reminder] {
