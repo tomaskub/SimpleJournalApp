@@ -6,30 +6,88 @@
 //
 
 import XCTest
+@testable import SimpleJournalApp
 
 final class ReminderManagerTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    var sut: ReminderManager!
+    let oldData = Reminder.sampleData
+    
+    
+    
+    override func setUp() {
+        super.setUp()
+        sut = ReminderManager()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testDiffFunction_withDataDeletion() throws {
+        
+        var newData = oldData
+        newData.remove(at: 0)
+        
+        
+        let changes = sut.diff(old: oldData, new: newData)
+        
+        XCTAssert(changes.count == 1, "There should be one change present")
+        XCTAssert(changes[0].changeType == .delete, "The change type should be delete")
+        XCTAssert(changes[0].reminder.id == oldData[0].id, "The id of the deleted element should be the id of the first element in old array")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testDiffFunction_withDataInsertion() throws {
+        var newData = oldData
+        
+        let addedReminder = Reminder(
+            id: UUID().uuidString,
+            title: "This is a newly added reminder",
+            dueDate: Date().addingTimeInterval(2200.0),
+            notes: "These are notes for the newly added reminder",
+            isComplete: false )
+        
+        newData.insert(addedReminder, at: 2)
+        
+        let changes = sut.diff(old: oldData, new: newData)
+        
+        XCTAssert(changes.count == 1, "There should be one change present")
+        XCTAssert(changes[0].changeType == .insert, "The change type should be insert")
+        XCTAssert(changes[0].reminder.id == addedReminder.id, "The id of the inserted element should be the id of the previously added reminder")
+    }
+    func testDiffFunction_withDataInsertionAndDataDeletion() throws {
+        
+        var newData = oldData
+        
+        newData.remove(at: 0)
+        
+        let addedReminder = Reminder(
+            id: UUID().uuidString,
+            title: "This is a newly added reminder",
+            dueDate: Date().addingTimeInterval(2200.0),
+            notes: "These are notes for the newly added reminder",
+            isComplete: false )
+        
+        newData.insert(addedReminder, at: 2)
+        
+        let changes = sut.diff(old: oldData, new: newData)
+        
+        XCTAssert(changes.count == 2, "There should be two changes present")
+        
+        for change in changes {
+            if change.changeType == .insert {
+                XCTAssert(change.reminder.id == addedReminder.id, "The id of the inserted element should be the id of the previously added reminder")
+            } else if change.changeType == .delete {
+                XCTAssert(change.reminder.id == oldData[0].id, "The id of the deleted element should be the id of the first element in old array")
+            }
         }
     }
+//    func testPerformanceExample() throws {
+//        // This is an example of a performance test case.
+//        self.measure {
+//            // Put the code you want to measure the time of here.
+//        }
+//    }
 
 }

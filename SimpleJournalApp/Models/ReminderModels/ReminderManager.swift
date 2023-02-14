@@ -180,7 +180,7 @@ class ReminderManager {
     
     //TODO: Review below - think about using tableView.indexPathForVisibleRows to not check changes for all of the data. For this to work it might be neccessary to make the reminder.id equal to ekReminder.calendarItemIdentifier (it is when it pulled from calendar)
     
-    private func diff(old: [Reminder], new: [Reminder]) -> [ReminderManagerChange] {
+    func diff(old: [Reminder], new: [Reminder]) -> [ReminderManagerChange] {
         
         var changes: [ReminderManagerChange] = []
         
@@ -206,10 +206,10 @@ class ReminderManager {
         
         //Define remaining
         
-        var updated = new.filter { old.contains($0) }
+        let _updated = new.filter { old.contains($0) }
         
-        let unchanged = updated.filter { old.contains($0) }
-        updated = updated.filter { !unchanged.contains($0) }
+        let unchanged = _updated.filter { old.contains($0) }
+        let updated = _updated.filter { !unchanged.contains($0) }
         
         // need to check if the updated was not different based on dueDate
         
@@ -237,9 +237,8 @@ class ReminderManager {
                     
                 } // missing edge case where any of the properties changes, also with the due date
             }
-            
-            return changes
         }
+        return changes
     }
     
     
@@ -252,7 +251,7 @@ class ReminderManager {
             
             delegate?.controllerWillChangeContent(self)
             for change in changes {
-                
+                /*
                 switch change.changeType {
                 case .delete:
                     //find the section where the changing reminder should be
@@ -275,14 +274,14 @@ class ReminderManager {
                     // provide old and new index with sections
                     // pass to controller
                 }
+                */
                 
                 
                 
-                
-                delegate?.controller(self, didChange: change.reminder, at: <#T##IndexPath?#>, for: change.changeType, newIndexPath: <#T##IndexPath?#>)
+//                delegate?.controller(self, didChange: change.reminder, at: <#T##IndexPath?#>, for: change.changeType, newIndexPath: <#T##IndexPath?#>)
             }
             
-            
+            delegate?.controllerDidChangeContent(self)
             delegate?.requestUIUpdate()
         }
     }
