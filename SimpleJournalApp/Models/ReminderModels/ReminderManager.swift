@@ -183,7 +183,8 @@ class ReminderManager {
     func diff(old: [Reminder], new: [Reminder]) -> [ReminderManagerChange] {
         
         var changes: [ReminderManagerChange] = []
-        
+        var oldFiltered = old
+        var newFiltered = new
         // handle removed and added reminders by ids
         
         let oldIDSet = Set(old.map { $0.id })
@@ -194,25 +195,20 @@ class ReminderManager {
         for id in inserted {
             if let reminder = new.first(where: { $0.id == id}) {
                 changes.append(ReminderManagerChange(changeType: .insert, reminder: reminder))
+                newFiltered.removeAll(where: {$0 == reminder})
             }
         }
         
         for id in deleted {
             if let i = old.firstIndex(where: { $0.id == id}) {
                 changes.append(ReminderManagerChange(changeType: .delete, reminder: old[i]))
-                //                old.remove(at: i)
+                oldFiltered.removeAll(where: {$0 == old[i]})
             }
         }
         
-        //Define remaining
         
-        let _updated = new.filter { old.contains($0) }
-        
-        let unchanged = _updated.filter { old.contains($0) }
-        let updated = _updated.filter { !unchanged.contains($0) }
-        
-        // need to check if the updated was not different based on dueDate
-        
+        //Define updated as new objects that are not in old objects
+        let updated = newFiltered.filter( { !oldFiltered.contains($0) })
         for reminder in updated {
             //the cases are:
             //the content changed but the date is the same

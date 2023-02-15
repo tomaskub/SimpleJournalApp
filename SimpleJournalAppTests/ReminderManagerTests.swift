@@ -83,6 +83,30 @@ final class ReminderManagerTests: XCTestCase {
             }
         }
     }
+    
+    func testDiffFunction_withDataUpdate() throws {
+        var newData = oldData
+        newData[1].title = "this has changed"
+        
+        let changes = sut.diff(old: oldData, new: newData)
+        
+        
+        XCTAssert(changes.count == 1, "There should be one change present")
+        XCTAssert(changes[0].changeType == .update, "The change type should be .update")
+        XCTAssert(changes[0].reminder.title == "this has changed", "The title of updated reminder should be 'this has changed'")
+    }
+    
+    func testDiffFunction_withDataMove() throws {
+        var newData = oldData
+        newData[1].dueDate = Date().addingTimeInterval(-800.0)
+        let idToCheck = newData[1].id
+        let changes = sut.diff(old: oldData, new: newData)
+        
+        
+        XCTAssert(changes.count == 1, "There should be one change present")
+        XCTAssert(changes[0].changeType == .move, "The change type should be .move")
+        XCTAssert(changes[0].reminder.id == idToCheck, "The id of the updated reminder should be equal to idToCheck")
+    }
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        self.measure {
