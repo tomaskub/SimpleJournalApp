@@ -172,11 +172,17 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
 extension RemindersTableViewController: ReminderManagerDelegate {
     
     func controllerWillChangeContent(_ controller: ReminderManager) {
-      tableView.beginUpdates()
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+        }
+        
     }
     
     func controllerDidChangeContent(_ controller: ReminderManager) {
-      tableView.endUpdates()
+      
+        DispatchQueue.main.async {
+            self.tableView.endUpdates()
+        }
     }
     
     
@@ -187,18 +193,22 @@ extension RemindersTableViewController: ReminderManagerDelegate {
     }
   
   func controller(_ controller: ReminderManager, didChange aReminder: Reminder, at indexPath: IndexPath?, for type: ReminderManagerChangeType, newIndexPath: IndexPath?){
-    switch type {
-    case .insert:
-      tableView.insertRows(at: [newIndexPath!], with: .automatic)
-    case .delete:
-      tableView.deleteRows(at: [indexPath!], with: .automatic)
-    case .update:
-      let cell = tableView.cellForRow(at: indexPath!) as! ReminderTableViewCell
-        cell.configureCell(buttonState: aReminder.isComplete)
-    case .move:
-      tableView.deleteRows(at: [indexPath!], with: .automatic)
-      tableView.insertRows(at: [newIndexPath!], with: .automatic)
-    }
+      DispatchQueue.main.async {
+          
+          
+          switch type {
+          case .insert:
+              self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+          case .delete:
+              self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+          case .update:
+              let cell = self.tableView.cellForRow(at: indexPath!) as! ReminderTableViewCell
+              cell.configureCell(buttonState: aReminder.isComplete)
+          case .move:
+              self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+              self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+          }
+      }
   }
   
   

@@ -5,6 +5,9 @@
 //  Created by Tomasz Kubiak on 2/11/23.
 //
 
+
+//TODO: Fix error when the controller requests the table reload and not triggering the controller methods - additional issue, due to task construction in data request the updates are not being called from the main thread.
+
 import Foundation
 
 protocol ReminderManagerDelegate {
@@ -47,6 +50,7 @@ class ReminderManager {
     var oldReminders: [Reminder] = []
     var newReminders: [Reminder] = []
     var sortedReminders: [[Reminder]] = []
+    var tasks: [Task<[Reminder], any Error>] = []
     
     func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
         
@@ -70,10 +74,10 @@ class ReminderManager {
                 }
             } else {
                 noDueDate.append(reminder)
-//                if !reminder.isComplete {
-                    //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
-//                    future.append(reminder)
-//                }
+                //                if !reminder.isComplete {
+                //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
+                //                    future.append(reminder)
+                //                }
             }
             
             today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
@@ -114,25 +118,24 @@ class ReminderManager {
         for reminder in reminders {
             if let dueDate = reminder.dueDate {
                 //TODO: how to handle incomplete due date data?
-                
-                    if Calendar.current.isDateInToday(dueDate) {
-                        if !reminder.isComplete {
-                            today.append(reminder)
-                        } else {
-                            todayCompleted.append(reminder)
-                        }
-                    } else if Calendar.current.isDateInTomorrow(dueDate) {
-                        if !reminder.isComplete { tomorrow.append(reminder) } else { tomorrowCompleted.append(reminder) }
-                    } else if dueDate.timeIntervalSinceNow.sign == .minus {
-                        if !reminder.isComplete {
-                            past.append(reminder)
-                        } else {
-                            pastCompleted.append(reminder)
-                        }
-                    } else if dueDate.timeIntervalSinceNow.sign == .plus {
-                            future.append(reminder)
+                if Calendar.current.isDateInToday(dueDate) {
+                    if !reminder.isComplete {
+                        today.append(reminder)
+                    } else {
+                        todayCompleted.append(reminder)
                     }
-                 
+                } else if Calendar.current.isDateInTomorrow(dueDate) {
+                    if !reminder.isComplete { tomorrow.append(reminder) } else { tomorrowCompleted.append(reminder) }
+                } else if dueDate.timeIntervalSinceNow.sign == .minus {
+                    if !reminder.isComplete {
+                        past.append(reminder)
+                    } else {
+                        pastCompleted.append(reminder)
+                    }
+                } else if dueDate.timeIntervalSinceNow.sign == .plus {
+                    future.append(reminder)
+                }
+                
             } else {
                 if !reminder.isComplete {
                     noDueDate.append(reminder)
@@ -158,7 +161,7 @@ class ReminderManager {
         today.append(contentsOf: todayCompleted)
         tomorrow.append(contentsOf: tomorrowCompleted)
         noDueDate.append(contentsOf: noDueDateCompleted)
-//        past.append(contentsOf: pastCompleted)
+        //        past.append(contentsOf: pastCompleted)
         
         return  [past, today, tomorrow, future, noDueDate, pastCompleted]
     }
@@ -168,8 +171,9 @@ class ReminderManager {
             do {
                 try await reminderStore.requestAccess()
                 newReminders = try await reminderStore.readAll()
-//                reminders = processReminders(tempReminders)
+                //                reminders = processReminders(tempReminders)
                 sortedReminders = processReminders(newReminders)
+                
                 delegate?.requestUIUpdate()
             } catch {
                 throw error
@@ -195,7 +199,7 @@ class ReminderManager {
         for id in inserted {
             if let reminder = new.first(where: { $0.id == id}) {
                 changes.append(ReminderManagerChange(changeType: .insert, reminder: reminder))
-                newFiltered.removeAll(where: {$0 == reminder})
+                newFiltered.removeAll(where: {$0.id == id})
             }
         }
         
@@ -238,55 +242,117 @@ class ReminderManager {
     }
     
     
-    
+    //TODO: fix the issue with snapshot being triggered twice
     @objc func updateSnapshot() {
-        Task {
+        
+            print("updating snapshot triggered")
             oldReminders = newReminders
+        
+        Task {
             newReminders = try await reminderStore.readAll()
+            
+            
             let changes = diff(old: oldReminders, new: newReminders)
             
             delegate?.controllerWillChangeContent(self)
+            
             for change in changes {
-                /*
+                
                 switch change.changeType {
                 case .delete:
-                    //find the section where the changing reminder should be
-                    //Find which index it has
-                    //Remove at index
-                    //pass the index to the controller call
+                    
+                    if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
+                        sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                        delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                    }
+                    
                 case .insert:
-                    //find the section
-                    //Find at which index should it be
-                    //insert it at the right index
-                    //pass the new index path to the controller call
-                    case .update:
-                    //find the section
-//                    find which index it has
-//                    update data in index,
-//                    pass intex to the controller call
+                    print("insert")
+                    let indexPathToInsert = indexPath(toInsert: change.reminder)
+                    sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                    delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
+                case .update:
+                    if let indexPathToUpdate = indexPath(for: change.reminder.id, in: sortedReminders) {
+                        sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
+                        delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .delete, newIndexPath: nil)
+                    }
                 case .move:
-//                    this also gets into update since diff does not take that into account
-                    // find the right section for the new data
-                    // provide old and new index with sections
-                    // pass to controller
+                    if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
+                        sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                        
+                        delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                    }
+                    let indexPathToInsert = indexPath(toInsert: change.reminder)
+                    sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                    delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
                 }
-                */
-                
-                
-                
-//                delegate?.controller(self, didChange: change.reminder, at: <#T##IndexPath?#>, for: change.changeType, newIndexPath: <#T##IndexPath?#>)
             }
             
             delegate?.controllerDidChangeContent(self)
-            delegate?.requestUIUpdate()
+            print("updating snapshot ended task controller updates")
+            
+            
         }
+            //            delegate?.requestUIUpdate() <- this call is obsoleted
+        
+    }
+    
+    func indexPath(for id: String, in sortedReminders: [[Reminder]]) -> IndexPath? {
+        
+        for (i, array) in sortedReminders.enumerated() {
+            for (j, element) in array.enumerated() {
+                if element.id == id {
+                    return IndexPath(row: j, section: i)
+                }
+            }
+        }
+        return nil
+    }
+    
+    
+    func indexPath(toInsert reminder: Reminder) -> IndexPath {
+        //        [past, today, tomorrow, future, noDueDate, pastCompleted]
+        var row: Int = 0
+        var section: Int = 0
+        
+        if let dueDate = reminder.dueDate {
+            //TODO: how to handle incomplete due date data?
+            if Calendar.current.isDateInToday(dueDate) {
+                section = 1
+                row = sortedReminders[section].firstIndex(where: {
+                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+            } else if Calendar.current.isDateInTomorrow(dueDate) {
+                // tomorrow
+                section = 2
+                row = sortedReminders[section].firstIndex(where: {
+                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+            } else if dueDate.timeIntervalSinceNow.sign == .minus {
+                //past
+                section = 0
+                row = sortedReminders[section].firstIndex(where: {
+                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+            } else if dueDate.timeIntervalSinceNow.sign == .plus {
+                //future
+                section = 3
+                row = sortedReminders[section].firstIndex(where: {
+                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+            }
+            
+        } else {
+            section = 4
+            row = sortedReminders[section].firstIndex(where: {
+                $0.isComplete == reminder.isComplete }) ?? 0
+            
+            
+        }
+        return IndexPath(row: row, section: section)
     }
     
     func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
-//        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
+        //        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
         
         guard sortedReminders.indices.contains(indexPath.section),
-                sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
+              sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
             print("reminder for index path throw - Reminder for indexpath \(indexPath) does not exist")
             throw ReminderError.reminderForIndexPathDoesNotExist }
         
@@ -294,9 +360,9 @@ class ReminderManager {
     }
     
     func updateReminder(atIndexPath indexPath: IndexPath) throws {
-//        guard var reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
+        //        guard var reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
         guard sortedReminders.indices.contains(indexPath.section),
-                sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
+              sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
             print("Update reminder throw - Reminder for indexpath \(indexPath) does not exist")
             throw ReminderError.reminderForIndexPathDoesNotExist
         }
@@ -311,15 +377,17 @@ class ReminderManager {
     
     func removeReminder(for indexPath: IndexPath) {
         
-        guard let id = reminders[indexPath]?.id else { return }
         do {
+            let id = try reminder(forIndexPath: indexPath).id
             try reminderStore.remove(with: id)
-            reminders.removeValue(forKey: indexPath)
+        } catch ReminderError.reminderForIndexPathDoesNotExist {
+            print(ReminderError.reminderForIndexPathDoesNotExist.errorDescription)
         } catch {
             print(error)
         }
+        
+        
+        //Delegate methods
+        
     }
-    
-    //Delegate methods
-    
 }

@@ -12,7 +12,12 @@ final class ReminderManagerTests: XCTestCase {
     
     var sut: ReminderManager!
     let oldData = Reminder.sampleData
-    
+    let sortedReminders =
+    [
+        [Reminder.sampleData[1], Reminder.sampleData[0], Reminder.sampleData[2] ],
+        [Reminder.sampleData[3], Reminder.sampleData[4], Reminder.sampleData[5] ],
+        [Reminder.sampleData[6], Reminder.sampleData[7], Reminder.sampleData[8]]
+    ]
     
     
     override func setUp() {
@@ -115,3 +120,26 @@ final class ReminderManagerTests: XCTestCase {
 //    }
 
 }
+
+//MARK: Test indexPath(for id, in [[Reminder]]) -> IndexPath?
+extension ReminderManagerTests {
+    
+    func testIndexPathForID_whenIdExists() {
+        let idToFind = sortedReminders[1][2].id
+        let indexPathReturned = sut.indexPath(for: idToFind, in: sortedReminders)
+        XCTAssertNotNil(indexPathReturned, "indexPath should not be nil")
+        XCTAssert(indexPathReturned?.section == 1, "IndexPath should have a section equal to 1")
+        XCTAssert(indexPathReturned?.row == 2, "indexPath should have a row equal to 2")
+    }
+    
+    func testIndexPathForID_whenIdDoesNotExists() {
+        
+        let idToFind = UUID().uuidString
+        
+        let indexPathReturned = sut.indexPath(for: idToFind, in: sortedReminders)
+        
+        XCTAssertNil(indexPathReturned, "indexPath should be nil")
+    }
+}
+
+//TODO: Write tests for indexPath(toInsert: Reminder) -> IndexPath
