@@ -51,6 +51,7 @@ class ReminderManager {
     var newReminders: [Reminder] = []
     var sortedReminders: [[Reminder]] = []
     var tasks: [Task<[Reminder], any Error>] = []
+    var isTaskRunning: Bool = false
     
     func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
         
@@ -244,11 +245,13 @@ class ReminderManager {
     
     //TODO: fix the issue with snapshot being triggered twice
     @objc func updateSnapshot() {
-        
-            print("updating snapshot triggered")
-            oldReminders = newReminders
+        if !isTaskRunning {
+            
+        print("updating snapshot triggered")
+        oldReminders = newReminders
         
         Task {
+            isTaskRunning = true
             newReminders = try await reminderStore.readAll()
             
             
@@ -274,7 +277,7 @@ class ReminderManager {
                 case .update:
                     if let indexPathToUpdate = indexPath(for: change.reminder.id, in: sortedReminders) {
                         sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
-                        delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .delete, newIndexPath: nil)
+                        delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .update, newIndexPath: nil)
                     }
                 case .move:
                     if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
@@ -290,10 +293,9 @@ class ReminderManager {
             
             delegate?.controllerDidChangeContent(self)
             print("updating snapshot ended task controller updates")
-            
-            
+            isTaskRunning = false
         }
-            //            delegate?.requestUIUpdate() <- this call is obsoleted
+    }   //            delegate?.requestUIUpdate() <- this call is obsoleted
         
     }
     
