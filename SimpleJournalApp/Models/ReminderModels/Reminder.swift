@@ -34,6 +34,9 @@ extension Reminder {
         title = ekReminder.title
         if let dueDate = ekReminder.alarms?.first?.absoluteDate {
             self.dueDate = dueDate
+        } else if let dueDateComponents = ekReminder.dueDateComponents,
+                    let dueDate =  Calendar.current.date(from: dueDateComponents)  {
+            self.dueDate = dueDate
         }
         notes = ekReminder.notes
         isComplete = ekReminder.isCompleted

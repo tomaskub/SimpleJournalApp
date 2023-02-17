@@ -270,7 +270,6 @@ class ReminderManager {
                     }
                     
                 case .insert:
-                    print("insert")
                     let indexPathToInsert = indexPath(toInsert: change.reminder)
                     sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
                     delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
