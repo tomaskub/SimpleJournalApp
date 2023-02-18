@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let navigationController = window?.rootViewController as? TabBarViewController,
               let mainController = navigationController.viewControllers?.first as? MainViewController,
         let historyController = navigationController.viewControllers?[1] as? HistoryViewController,
-        let settingsController = navigationController.viewControllers?[2] as? SettingsViewController else {
+        let settingsController = navigationController.viewControllers?[3] as? SettingsViewController else {
             print("Did not manage to get MainViewController")
             return
         }

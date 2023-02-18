@@ -110,7 +110,7 @@
             </objects>
             <point key="canvasLocation" x="2978" y="145"/>
         </scene>
-        <!--Item-->
+        <!--Reminders Table View Controller-->
         <scene sceneID="Smk-0g-t0g">
             <objects>
                 <tableViewController id="EhR-IN-TlG" customClass="RemindersTableViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,7 +123,9 @@
                             <outlet property="delegate" destination="EhR-IN-TlG" id="jm1-wx-sZu"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="9np-PU-3oX"/>
+                    <tabBarItem key="tabBarItem" title="" image="checkmark.circle" catalog="system" selectedImage="checkmark.circle.fill" id="9np-PU-3oX">
+                        <color key="badgeColor" systemColor="labelColor"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="47H-eX-y2m"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yP3-u5-q22" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -218,8 +220,8 @@
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pOo-ET-mMa"/>
                         <segue destination="R6N-g6-tHS" kind="relationship" relationship="viewControllers" id="hQ5-Fm-cmd"/>
-                        <segue destination="Bha-bv-caT" kind="relationship" relationship="viewControllers" id="mqQ-ng-3dO"/>
                         <segue destination="EhR-IN-TlG" kind="relationship" relationship="viewControllers" id="dco-Kt-ZZ6"/>
+                        <segue destination="Bha-bv-caT" kind="relationship" relationship="viewControllers" id="mqQ-ng-3dO"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vsb-sq-GRX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -259,10 +261,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingCell" id="vWe-O4-Td8" customClass="SettingCell" customModule="SimpleJournalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="10"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vWe-O4-Td8" id="Zsp-jw-AdF">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="10"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -300,6 +302,8 @@
     <resources>
         <image name="chart.bar" catalog="system" width="128" height="89"/>
         <image name="chart.bar.fill" catalog="system" width="128" height="90"/>
+        <image name="checkmark.circle" catalog="system" width="128" height="123"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="star" catalog="system" width="128" height="116"/>

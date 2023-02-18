@@ -53,6 +53,8 @@ class ReminderManager {
     var tasks: [Task<[Reminder], any Error>] = []
     var isTaskRunning: Bool = false
     
+    
+    
     func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
         
         var temp: [IndexPath : Reminder] = [:]
@@ -242,8 +244,6 @@ class ReminderManager {
         return changes
     }
     
-    
-    //TODO: fix the issue with snapshot being triggered twice
     @objc func updateSnapshot() {
         if !isTaskRunning {
             
