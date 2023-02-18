@@ -312,6 +312,14 @@ class ReminderManager {
         }
     }
     
+    func save(_ reminder: Reminder) {
+        do {
+            _ = try reminderStore.save(reminder)
+        } catch {
+            print(error)
+        }
+    }
+    
     func removeReminder(for indexPath: IndexPath) {
         
         do {
