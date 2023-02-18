@@ -15,6 +15,8 @@ struct K {
         static let sendFailureReports = "sendFailureReports"
         static let useDarkTheme = "useDarkTheme"
         static let wasRunBefore = "isRunFirstTime"
+        static let useDefaultReminderCalendar = "useDefaultReminderCalendar"
+        static let useAppBundleReminderCalendar = "useAppBundleReminderCalendar"
 //        static let
     }
     struct Reminder {
