@@ -136,22 +136,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "06CD006D-74BD-4ECB-B7A7-F8083B90196C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
-            landmarkName = "updateSnapshot()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "06FC5EEC-B2C7-4879-AAAA-D31FB4AAAEAE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -159,8 +143,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>
@@ -175,8 +159,8 @@
             filePath = "SimpleJournalApp/Controllers/RemindersTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>

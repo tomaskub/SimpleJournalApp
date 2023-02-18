@@ -8,63 +8,61 @@
 import UIKit
 import EventKitUI
 
-class RemindersTableViewController: UITableViewController, ReminderTableViewCellDelegate {
+class RemindersTableViewController: UITableViewController {
     
     let reminderManager = ReminderManager()
     
-    let dataSource: [[Reminder]] = []
-    
-    private let addButton: UIButton = {
-       let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "plus.circle"), for: .normal)
-        button.tintColor = .black
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    
-    
-    @objc func addButtonTapped() {
-        runEditingVC(for: Reminder())
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(addButton)
-        NSLayoutConstraint.activate(  [
-            addButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            addButton.heightAnchor.constraint(equalToConstant: 50),
-            addButton.widthAnchor.constraint(equalToConstant: 50)])
-        
         tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
-//        tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
         tableView.rowHeight = 50
         reminderManager.delegate = self
+        //Move this to reminderManager
         do {
             try reminderManager.prepareReminderStore()
-            
-            tableView.reloadData()
         } catch {
             displayAlert(error)
         }
+        
     }
-    // MARK: - Table view data source
+    
+    func runEditingVC(for reminder: Reminder) {
+        let vc = DetailViewController()
+        vc.reminder = reminder
+        vc.reminderManager = reminderManager
+        
+        present(vc, animated: true)
+        
+    }
+    
+    //MARK: Alerts
+    func displayAlert(_ error: Error) {
+        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
+        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
+        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: {
+            [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+        alert.addAction(alertAction)
+        present(alert, animated: true)
+    }
+}
 
+// MARK: - Table view data source
+extension RemindersTableViewController {
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-//        return 1
         return reminderManager.sortedReminders.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        //this should come from the reminderManager
         let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
         return sectionHeaders[section]
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return reminderManager.numberOfItemsInSection(section: section)
         
         return reminderManager.sortedReminders[section].count
     }
@@ -80,26 +78,7 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         }
         return cell
     }
-    
-    func doneButtonTapped(sender: ReminderTableViewCell) {
-        
-        if let indexPath = tableView.indexPath(for: sender) {
-            do {
-                try reminderManager.updateReminder(atIndexPath: indexPath)
-            } catch ReminderError.reminderForIndexPathDoesNotExist {
-                
-            } catch {
-                displayAlert(error)
-            }
-        }
-    }
-    
-    func runEditingVC(for reminder: Reminder) {
-        let vc = DetailViewController()
-        vc.reminder = reminder
-        present(vc, animated: true)
-    }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         do {
             runEditingVC(for: try reminderManager.reminder(forIndexPath: indexPath))
@@ -107,25 +86,11 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
             displayAlert(error)
         }
     }
-    
+}
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            do {
-                try reminderStore.remove(with: reminders[indexPath.row].id)
-            } catch {
-                displayAlert(error)
-            }
-            reminders.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-    // Override to support conditional editing of the table view.
+//MARK: Table view configuration methods
+extension RemindersTableViewController {
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
             return true
     }
@@ -154,21 +119,9 @@ class RemindersTableViewController: UITableViewController, ReminderTableViewCell
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction, editAction])
         return configuration
     }
-    
-    //MARK: Alerts
-    func displayAlert(_ error: Error) {
-        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
-        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
-        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
-        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: {
-            [weak self] _ in
-            self?.dismiss(animated: true)
-        })
-        alert.addAction(alertAction)
-        present(alert, animated: true)
-    }
 }
 
+//MARK: ReminderManagerDelegate methods
 extension RemindersTableViewController: ReminderManagerDelegate {
     
     func controllerWillChangeContent(_ controller: ReminderManager) {
@@ -223,4 +176,20 @@ extension RemindersTableViewController: ReminderManagerDelegate {
       break
     }
   }
+}
+
+//MARK: ReminderTableViewCellDelegate methods
+extension RemindersTableViewController: ReminderTableViewCellDelegate {
+    func doneButtonTapped(sender: ReminderTableViewCell) {
+        
+        if let indexPath = tableView.indexPath(for: sender) {
+            do {
+                try reminderManager.updateReminder(atIndexPath: indexPath)
+            } catch ReminderError.reminderForIndexPathDoesNotExist {
+                
+            } catch {
+                displayAlert(error)
+            }
+        }
+    }
 }

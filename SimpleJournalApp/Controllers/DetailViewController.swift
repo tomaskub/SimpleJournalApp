@@ -11,9 +11,9 @@ class DetailViewController: UIViewController {
     
     var isAddingNewReminder = true
     var reminder: Reminder!
+    var reminderManager: ReminderManager!
     
     var reminderStore = ReminderStore.shared
-    
     
     var dateComponents: DateComponents?
     

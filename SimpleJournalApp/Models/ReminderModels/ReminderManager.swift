@@ -41,69 +41,11 @@ class ReminderManager {
     
     
     private lazy var reminderStore = ReminderStore.shared
-    
     var delegate: ReminderManagerDelegate?
-    
-    var reminders: [IndexPath : Reminder] = [:]
-    
-    
     var oldReminders: [Reminder] = []
     var newReminders: [Reminder] = []
     var sortedReminders: [[Reminder]] = []
-    var tasks: [Task<[Reminder], any Error>] = []
     var isTaskRunning: Bool = false
-    
-    
-    
-    func processReminders(_ reminders: [Reminder]) -> [IndexPath : Reminder] {
-        
-        var temp: [IndexPath : Reminder] = [:]
-        var future: [Reminder] = []
-        var noDueDate: [Reminder] = []
-        var today: [Reminder] = []
-        var tomorrow: [Reminder] = []
-        var past: [Reminder] = []
-        for reminder in reminders {
-            if let dueDate = reminder.dueDate {
-                if Calendar.current.isDateInToday(dueDate) {
-                    today.append(reminder)
-                } else if Calendar.current.isDateInTomorrow(dueDate) {
-                    tomorrow.append(reminder)
-                } else if dueDate.timeIntervalSinceNow.sign == .minus {
-                    //due date is in the past
-                    past.append(reminder)
-                } else if dueDate.timeIntervalSinceNow.sign == .plus {
-                    future.append(reminder)
-                }
-            } else {
-                noDueDate.append(reminder)
-                //                if !reminder.isComplete {
-                //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
-                //                    future.append(reminder)
-                //                }
-            }
-            
-            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            for (i, reminder) in today.enumerated() {
-                temp[IndexPath(row: i, section: 0)] = reminder
-            }
-            tomorrow.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending})
-            for (i, reminder) in tomorrow.enumerated() {
-                temp[IndexPath(row: i, section: 1)] = reminder
-            }
-            future.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending})
-            for (i, reminder) in future.enumerated() {
-                temp[IndexPath(row: i, section: 2)] = reminder
-            }
-            for (i, reminder) in noDueDate.enumerated() {
-                temp[IndexPath(row: i, section: 3)] = reminder
-            }
-            for (i, reminder) in past.enumerated() {
-                temp[IndexPath(row: i, section: 4)] = reminder
-            }
-        }
-        return temp
-    }
     
     func processReminders(_ reminders: [Reminder]) -> [[Reminder]] {
         
@@ -117,6 +59,7 @@ class ReminderManager {
         var tomorrowCompleted: [Reminder] = []
         var past: [Reminder] = []
         var pastCompleted: [Reminder] = []
+     
         
         for reminder in reminders {
             if let dueDate = reminder.dueDate {
@@ -246,56 +189,50 @@ class ReminderManager {
     
     @objc func updateSnapshot() {
         if !isTaskRunning {
-            
-        print("updating snapshot triggered")
-        oldReminders = newReminders
-        
-        Task {
-            isTaskRunning = true
-            newReminders = try await reminderStore.readAll()
-            
-            
-            let changes = diff(old: oldReminders, new: newReminders)
-            
-            delegate?.controllerWillChangeContent(self)
-            
-            for change in changes {
+            oldReminders = newReminders
+            Task {
+                isTaskRunning = true
+                newReminders = try await reminderStore.readAll()
                 
-                switch change.changeType {
-                case .delete:
+                
+                let changes = diff(old: oldReminders, new: newReminders)
+                
+                delegate?.controllerWillChangeContent(self)
+                
+                for change in changes {
                     
-                    if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
-                        sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
-                        delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
-                    }
-                    
-                case .insert:
-                    let indexPathToInsert = indexPath(toInsert: change.reminder)
-                    sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
-                    delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
-                case .update:
-                    if let indexPathToUpdate = indexPath(for: change.reminder.id, in: sortedReminders) {
-                        sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
-                        delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .update, newIndexPath: nil)
-                    }
-                case .move:
-                    if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
-                        sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                    switch change.changeType {
+                    case .delete:
                         
-                        delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                        if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
+                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                            delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                        }
+                        
+                    case .insert:
+                        let indexPathToInsert = indexPath(toInsert: change.reminder)
+                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                        delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
+                    case .update:
+                        if let indexPathToUpdate = indexPath(for: change.reminder.id, in: sortedReminders) {
+                            sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
+                            delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .update, newIndexPath: nil)
+                        }
+                    case .move:
+                        if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
+                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                            
+                            delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                        }
+                        let indexPathToInsert = indexPath(toInsert: change.reminder)
+                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                        delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
                     }
-                    let indexPathToInsert = indexPath(toInsert: change.reminder)
-                    sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
-                    delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
                 }
+                delegate?.controllerDidChangeContent(self)
+                isTaskRunning = false
             }
-            
-            delegate?.controllerDidChangeContent(self)
-            print("updating snapshot ended task controller updates")
-            isTaskRunning = false
         }
-    }   //            delegate?.requestUIUpdate() <- this call is obsoleted
-        
     }
     
     func indexPath(for id: String, in sortedReminders: [[Reminder]]) -> IndexPath? {
@@ -309,7 +246,6 @@ class ReminderManager {
         }
         return nil
     }
-    
     
     func indexPath(toInsert reminder: Reminder) -> IndexPath {
         //        [past, today, tomorrow, future, noDueDate, pastCompleted]
