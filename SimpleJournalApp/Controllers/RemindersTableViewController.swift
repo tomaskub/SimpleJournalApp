@@ -26,11 +26,10 @@ class RemindersTableViewController: UITableViewController {
         
     }
     
-    func runEditingVC(for reminder: Reminder) {
+    func presentDetailViewController(for reminder: Reminder) {
         let vc = DetailViewController()
         vc.reminder = reminder
         vc.reminderManager = reminderManager
-        
         present(vc, animated: true)
         
     }
@@ -81,7 +80,7 @@ extension RemindersTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         do {
-            runEditingVC(for: try reminderManager.reminder(forIndexPath: indexPath))
+            presentDetailViewController(for: try reminderManager.reminder(forIndexPath: indexPath))
         } catch {
             displayAlert(error)
         }
@@ -108,7 +107,7 @@ extension RemindersTableViewController {
         let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {
             (_, _, completionHandler)  in
             do {
-                self.runEditingVC(for: try self.reminderManager.reminder(forIndexPath: indexPath))
+                self.presentDetailViewController(for: try self.reminderManager.reminder(forIndexPath: indexPath))
             } catch {
                 print(error)
             }
