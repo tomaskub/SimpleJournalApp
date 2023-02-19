@@ -47,69 +47,97 @@ class ReminderManager {
     var sortedReminders: [[Reminder]] = []
     var isTaskRunning: Bool = false
     
+    var sectionPredicates: [(Reminder) -> Bool] = [
+        { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInToday(dueDate)
+            } else {
+                return false
+            }
+        },
+        { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInTomorrow(dueDate)
+            } else {
+                return false
+            }
+        },
+        { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInYesterday(dueDate)
+            } else {
+                return false
+            }
+        }
+    
+    ]
+    
     func processReminders(_ reminders: [Reminder]) -> [[Reminder]] {
         
         
-        var future: [Reminder] = []
-        var noDueDate: [Reminder] = []
-        var noDueDateCompleted: [Reminder] = []
+        var yesterday: [Reminder] = []
+//        var noDueDate: [Reminder] = []
+//        var noDueDateCompleted: [Reminder] = []
         var today: [Reminder] = []
-        var todayCompleted: [Reminder] = []
+//        var todayCompleted: [Reminder] = []
         var tomorrow: [Reminder] = []
-        var tomorrowCompleted: [Reminder] = []
-        var past: [Reminder] = []
-        var pastCompleted: [Reminder] = []
-     
+//        var tomorrowCompleted: [Reminder] = []
+//        var past: [Reminder] = []
+//        var pastCompleted: [Reminder] = []
+        var results = [yesterday, today, tomorrow]
         
         for reminder in reminders {
-            if let dueDate = reminder.dueDate {
-                //TODO: how to handle incomplete due date data?
-                if Calendar.current.isDateInToday(dueDate) {
-                    if !reminder.isComplete {
-                        today.append(reminder)
-                    } else {
-                        todayCompleted.append(reminder)
-                    }
-                } else if Calendar.current.isDateInTomorrow(dueDate) {
-                    if !reminder.isComplete { tomorrow.append(reminder) } else { tomorrowCompleted.append(reminder) }
-                } else if dueDate.timeIntervalSinceNow.sign == .minus {
-                    if !reminder.isComplete {
-                        past.append(reminder)
-                    } else {
-                        pastCompleted.append(reminder)
-                    }
-                } else if dueDate.timeIntervalSinceNow.sign == .plus {
-                    future.append(reminder)
-                }
-                
-            } else {
-                if !reminder.isComplete {
-                    noDueDate.append(reminder)
-                } else {
-                    noDueDateCompleted.append(reminder)
-                }
-                //                if !reminder.isComplete {
-                //This only appends reminders that are not completed and have no due date - future uncompleted reminders with dueDate are not appended
-                //                    future.append(reminder)
-                //                }
-            }
             
+            for (i, sectionPredicate) in sectionPredicates.enumerated() {
+                if sectionPredicate(reminder) {
+                    results[i].append(reminder)
+                }
+            }
+//            if let dueDate = reminder.dueDate {
+//                //TODO: how to handle incomplete due date data?
+//                if Calendar.current.isDateInToday(dueDate) {
+//                    if !reminder.isComplete {
+//                        today.append(reminder)
+//                    } else {
+//                        todayCompleted.append(reminder)
+//                    }
+//                } else if Calendar.current.isDateInTomorrow(dueDate) {
+//                    if !reminder.isComplete { tomorrow.append(reminder) } else { tomorrowCompleted.append(reminder) }
+//                } else if dueDate.timeIntervalSinceNow.sign == .minus {
+//                    if !reminder.isComplete {
+//                        past.append(reminder)
+//                    } else {
+//                        pastCompleted.append(reminder)
+//                    }
+//                } else if dueDate.timeIntervalSinceNow.sign == .plus {
+//                    future.append(reminder)
+//                }
+//
+//            } else {
+//                if !reminder.isComplete {
+//                    noDueDate.append(reminder)
+//                } else {
+//                    noDueDateCompleted.append(reminder)
+//                }
+            }
+            return results
             // sort by due date
-            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            todayCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            tomorrow.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            tomorrowCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            future.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            past.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-            pastCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-        }
-        //append the completed sorted at the end of a section
-        today.append(contentsOf: todayCompleted)
-        tomorrow.append(contentsOf: tomorrowCompleted)
-        noDueDate.append(contentsOf: noDueDateCompleted)
+            
+//            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            todayCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            tomorrow.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            tomorrowCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            future.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            past.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//            pastCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
+//        }
+//        //append the completed sorted at the end of a section
+//        today.append(contentsOf: todayCompleted)
+//        tomorrow.append(contentsOf: tomorrowCompleted)
+//        noDueDate.append(contentsOf: noDueDateCompleted)
         //        past.append(contentsOf: pastCompleted)
         
-        return  [past, today, tomorrow, future, noDueDate, pastCompleted]
+//        return  [past, today, tomorrow, future, noDueDate, pastCompleted]
     }
     
     func prepareReminderStore() throws {
@@ -246,42 +274,48 @@ class ReminderManager {
         }
         return nil
     }
-    
+    //TODO: needs troubleshooting
     func indexPath(toInsert reminder: Reminder) -> IndexPath {
         //        [past, today, tomorrow, future, noDueDate, pastCompleted]
         var row: Int = 0
         var section: Int = 0
         
-        if let dueDate = reminder.dueDate {
+//        if let dueDate = reminder.dueDate {
             //TODO: how to handle incomplete due date data?
-            if Calendar.current.isDateInToday(dueDate) {
-                section = 1
-                row = sortedReminders[section].firstIndex(where: {
-                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-            } else if Calendar.current.isDateInTomorrow(dueDate) {
-                // tomorrow
-                section = 2
-                row = sortedReminders[section].firstIndex(where: {
-                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-            } else if dueDate.timeIntervalSinceNow.sign == .minus {
-                //past
-                section = 0
-                row = sortedReminders[section].firstIndex(where: {
-                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-            } else if dueDate.timeIntervalSinceNow.sign == .plus {
-                //future
-                section = 3
-                row = sortedReminders[section].firstIndex(where: {
-                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+        for (i, sectionPredicate) in sectionPredicates.enumerated() {
+            if sectionPredicate(reminder) {
+                section = i
+                row = sortedReminders[i].count
             }
+            }
+//            if Calendar.current.isDateInToday(dueDate) {
+//                section = 1
+//                row = sortedReminders[section].firstIndex(where: {
+//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+//            } else if Calendar.current.isDateInTomorrow(dueDate) {
+//                // tomorrow
+//                section = 2
+//                row = sortedReminders[section].firstIndex(where: {
+//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+//            } else if dueDate.timeIntervalSinceNow.sign == .minus {
+//                //past
+//                section = 0
+//                row = sortedReminders[section].firstIndex(where: {
+//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+//            } else if dueDate.timeIntervalSinceNow.sign == .plus {
+//                //future
+//                section = 3
+//                row = sortedReminders[section].firstIndex(where: {
+//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
+//            }
             
-        } else {
-            section = 4
-            row = sortedReminders[section].firstIndex(where: {
-                $0.isComplete == reminder.isComplete }) ?? 0
+//        } else {
+//            section = 4
+//            row = sortedReminders[section].firstIndex(where: {
+//                $0.isComplete == reminder.isComplete }) ?? 0
+//
             
-            
-        }
+//        }
         return IndexPath(row: row, section: section)
     }
     

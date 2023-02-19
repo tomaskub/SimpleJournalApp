@@ -127,8 +127,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
             landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>
