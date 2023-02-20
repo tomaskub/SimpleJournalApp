@@ -49,6 +49,7 @@
 		D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B58AED2932919800A89B19 /* Preferenes.swift */; };
 		D6B9558B2995251E0093F20E /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9558A2995251E0093F20E /* DetailTableViewCell.swift */; };
 		D6B9558D29953C800093F20E /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9558C29953C7F0093F20E /* DetailView.swift */; };
+		D6CD69B029A3F4EE00F63C83 /* ReminderManagerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */; };
 		D6D827B7294CB038005AF563 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D827B6294CB038005AF563 /* EntryViewController.swift */; };
 		D6E04BF82989AB1100AA26BD /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E04BF72989AB1100AA26BD /* Question.swift */; };
 		D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */; };
@@ -120,6 +121,7 @@
 		D6B58AED2932919800A89B19 /* Preferenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferenes.swift; sourceTree = "<group>"; };
 		D6B9558A2995251E0093F20E /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailTableViewCell.swift; path = SimpleJournalApp/Views/DetailTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		D6B9558C29953C7F0093F20E /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailView.swift; path = SimpleJournalApp/Views/DetailView.swift; sourceTree = SOURCE_ROOT; };
+		D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderManagerSection.swift; sourceTree = "<group>"; };
 		D6D827B6294CB038005AF563 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		D6E04BF72989AB1100AA26BD /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		D6E8D62D2958DE9300433DCB /* Answer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Answer+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -182,7 +184,8 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
-				D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */,
+				D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */,
+				D6CD69B129A3F71A00F63C83 /* New Group */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -269,6 +272,7 @@
 		D6B43054291FB38A00E9C791 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */,
 				D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */,
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
 				D64A996C29294DC3000DEBD4 /* SettingCell.swift */,
@@ -279,6 +283,13 @@
 				D6B9558C29953C7F0093F20E /* DetailView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D6CD69B129A3F71A00F63C83 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -429,6 +440,7 @@
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
 				D6B2612B29980EF900339B2C /* ReminderManager.swift in Sources */,
 				D635C53E298EE9EF00F962BF /* PhotoView.swift in Sources */,
+				D6CD69B029A3F4EE00F63C83 /* ReminderManagerSection.swift in Sources */,
 				D69F20AC29900636003A44D8 /* Reminder.swift in Sources */,
 				D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */,
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,

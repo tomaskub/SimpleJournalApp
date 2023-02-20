@@ -57,8 +57,10 @@ extension RemindersTableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //this should come from the reminderManager
-        let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
-        return sectionHeaders[section]
+//        let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
+//        return sectionHeaders[section]
+        return reminderManager.sectionTitles[section]
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

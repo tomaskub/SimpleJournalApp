@@ -19,7 +19,6 @@ final class ReminderManagerTests: XCTestCase {
         [Reminder.sampleData[6], Reminder.sampleData[7], Reminder.sampleData[8]]
     ]
     
-    
     override func setUp() {
         super.setUp()
         sut = ReminderManager()
@@ -142,4 +141,18 @@ extension ReminderManagerTests {
     }
 }
 
-//TODO: Write tests for indexPath(toInsert: Reminder) -> IndexPath
+//MARK: Test indexPath(toInsert reminder: Reminder) -> IndexPath
+extension ReminderManagerTests {
+ 
+    func testIndexPathToInsert_whenDueDateIsToday() {
+        let reminderToInsert = Reminder(id: UUID().uuidString, title: "Reminder to insert", dueDate: Date())
+        sut.sortedReminders = sut.processReminders(oldData)
+        print(sut.sortedReminders[0].count)
+        let result = sut.indexPath(toInsert: reminderToInsert)
+        
+        XCTAssert(result.section == 0, "Section of result should be 0")
+        XCTAssert(result.row == sut.sortedReminders[0].count, "Row should be 0")
+        
+    }
+        
+}

@@ -37,8 +37,10 @@ struct ReminderManagerChange {
     let reminder: Reminder
 }
 
+
+
+
 class ReminderManager {
-    
     
     private lazy var reminderStore = ReminderStore.shared
     var delegate: ReminderManagerDelegate?
@@ -46,6 +48,8 @@ class ReminderManager {
     var newReminders: [Reminder] = []
     var sortedReminders: [[Reminder]] = []
     var isTaskRunning: Bool = false
+    
+    var sectionTitles: [String] = ["Today", "Tomorrow", "Yesterday"]
     
     var sectionPredicates: [(Reminder) -> Bool] = [
         { reminder in
@@ -69,7 +73,6 @@ class ReminderManager {
                 return false
             }
         }
-    
     ]
     
     func processReminders(_ reminders: [Reminder]) -> [[Reminder]] {
@@ -147,7 +150,6 @@ class ReminderManager {
                 newReminders = try await reminderStore.readAll()
                 //                reminders = processReminders(tempReminders)
                 sortedReminders = processReminders(newReminders)
-                
                 delegate?.requestUIUpdate()
             } catch {
                 throw error
@@ -281,13 +283,13 @@ class ReminderManager {
         var section: Int = 0
         
 //        if let dueDate = reminder.dueDate {
-            //TODO: how to handle incomplete due date data?
         for (i, sectionPredicate) in sectionPredicates.enumerated() {
             if sectionPredicate(reminder) {
                 section = i
                 row = sortedReminders[i].count
             }
-            }
+        }
+        
 //            if Calendar.current.isDateInToday(dueDate) {
 //                section = 1
 //                row = sortedReminders[section].firstIndex(where: {
@@ -313,9 +315,8 @@ class ReminderManager {
 //            section = 4
 //            row = sortedReminders[section].firstIndex(where: {
 //                $0.isComplete == reminder.isComplete }) ?? 0
-//
-            
 //        }
+        
         return IndexPath(row: row, section: section)
     }
     
