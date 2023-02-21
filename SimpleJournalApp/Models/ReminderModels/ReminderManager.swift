@@ -48,6 +48,7 @@ class ReminderManager {
     var newReminders: [Reminder] = []
     var sections: [ReminderManagerSection]
     
+    
     var isTaskRunning: Bool = false
     
     lazy var numberOfSections = {
@@ -82,6 +83,7 @@ class ReminderManager {
                     return Calendar.current.isDateInTomorrow(dueDate)
                 } else { return false } }
             ]
+        
         self.init(sectionNames: names, comparators: comparators)
     }
     
@@ -95,6 +97,19 @@ class ReminderManager {
                     }
                     section.objects?.append(reminder)
                 }
+                section.objects?.sort(by: { (lhs, rhs) -> Bool in
+                    if lhs.isComplete != rhs.isComplete {
+                        return !lhs.isComplete
+                    } else {
+                        if let lhsDueDate = lhs.dueDate, let rhsDueDate = rhs.dueDate {
+                            return lhsDueDate < rhsDueDate
+                        } else if lhs.dueDate != nil {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                })
             }
         }
     }
@@ -252,7 +267,7 @@ class ReminderManager {
     }
 
     func indexPath(toInsert reminder: Reminder) -> IndexPath {
-
+        
         var rowForIndex: Int = 0
         var sectionForIndex: Int = 0
         
@@ -260,11 +275,30 @@ class ReminderManager {
         for (i, section) in sections.enumerated() {
             if section.belongingComparator(reminder) {
                 sectionForIndex = i
-                rowForIndex = section.numberOfObjects
+                
+                if let objects = section.objects {
+                    rowForIndex = objects.firstIndex(where: {
+                        if $0.isComplete != reminder.isComplete {
+                            return !$0.isComplete
+                        } else {
+                            if let lhsDueDate = $0.dueDate, let rhsDueDate = reminder.dueDate {
+                                return lhsDueDate < rhsDueDate
+                            } else if $0.dueDate != nil {
+                                return true
+                            } else {
+                                return false
+                            }
+                        }
+                    }) ?? 0
+                    
+                } else {
+                    rowForIndex = 0
+                }
             }
         }
-        return IndexPath(row: rowForIndex, section: sectionForIndex)
-    }
+            return IndexPath(row: rowForIndex, section: sectionForIndex)
+        }
+        
 
     func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
         //        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }

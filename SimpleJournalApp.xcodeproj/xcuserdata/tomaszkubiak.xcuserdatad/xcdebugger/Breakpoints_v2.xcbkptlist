@@ -127,8 +127,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>
@@ -159,8 +159,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "processReminders(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -175,8 +175,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
             landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>

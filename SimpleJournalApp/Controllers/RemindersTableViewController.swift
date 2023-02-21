@@ -52,7 +52,7 @@ class RemindersTableViewController: UITableViewController {
 extension RemindersTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return reminderManager.sections.count
+        return reminderManager.numberOfSections
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -60,11 +60,9 @@ extension RemindersTableViewController {
 //        let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
 //        return sectionHeaders[section]
         return reminderManager.sectionTitles[section]
-        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return reminderManager.sections[section].numberOfObjects
     }
     
