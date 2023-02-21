@@ -185,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */,
-				D6CD69B129A3F71A00F63C83 /* New Group */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -283,13 +282,6 @@
 				D6B9558C29953C7F0093F20E /* DetailView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		D6CD69B129A3F71A00F63C83 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
