@@ -127,8 +127,8 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>
@@ -159,9 +159,25 @@
             filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "processReminders(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6936C73-323E-4E77-B214-5185CE40771F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SimpleJournalApp/Models/ReminderModels/ReminderManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "updateSnapshot()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -124,18 +124,24 @@ final class ReminderManagerTests: XCTestCase {
 extension ReminderManagerTests {
     
     func testIndexPathForID_whenIdExists() {
-        let idToFind = sortedReminders[1][2].id
-        let indexPathReturned = sut.indexPath(for: idToFind, in: sortedReminders)
+        sut.processReminders(Reminder.sampleData)
+        //This needs to be updated when more definition is added - custom init implemented
+        let idToFind = Reminder.sampleData[0].id
+        let sectionToFind = 1
+        let rowToFind = 0
+        
+        let indexPathReturned = sut.indexPath(for: idToFind)
+        
         XCTAssertNotNil(indexPathReturned, "indexPath should not be nil")
-        XCTAssert(indexPathReturned?.section == 1, "IndexPath should have a section equal to 1")
-        XCTAssert(indexPathReturned?.row == 2, "indexPath should have a row equal to 2")
+        XCTAssert(indexPathReturned?.section == sectionToFind, "IndexPath should have a section equal to section to find")
+        XCTAssert(indexPathReturned?.row == rowToFind, "indexPath should have a row equal to rowToFind")
     }
     
     func testIndexPathForID_whenIdDoesNotExists() {
         
         let idToFind = UUID().uuidString
         
-        let indexPathReturned = sut.indexPath(for: idToFind, in: sortedReminders)
+        let indexPathReturned = sut.indexPath(for: idToFind)
         
         XCTAssertNil(indexPathReturned, "indexPath should be nil")
     }
@@ -146,12 +152,12 @@ extension ReminderManagerTests {
  
     func testIndexPathToInsert_whenDueDateIsToday() {
         let reminderToInsert = Reminder(id: UUID().uuidString, title: "Reminder to insert", dueDate: Date())
-        sut.sortedReminders = sut.processReminders(oldData)
-        print(sut.sortedReminders[0].count)
+        sut.processReminders(oldData)
+        print(sut.sections[1].objects?.count)
         let result = sut.indexPath(toInsert: reminderToInsert)
         
-        XCTAssert(result.section == 0, "Section of result should be 0")
-        XCTAssert(result.row == sut.sortedReminders[0].count, "Row should be 0")
+        XCTAssert(result.section == 1, "Section of result should be 1")
+        XCTAssert(result.row == sut.sections[1].objects?.count, "Row should be 0")
         
     }
         

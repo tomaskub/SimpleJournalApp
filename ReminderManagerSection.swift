@@ -7,16 +7,20 @@
 
 import Foundation
 
-class ReminderManagerSection {
+class ReminderManagerSection: ReminderResultsSectionInfo {
+    
+    var numberOfObjects: Int {
+        return objects?.count ?? 0
+    }
+    var indexTitle: String?
+    
     
     var name: String
     var objects: [Reminder]?
     
     var belongingComparator: (Reminder) -> Bool
     
-    var numberOfObjects: Int {
-        return objects?.count ?? 0
-    }
+    
     
     init(name: String, objects: [Reminder]? = nil, comparator: @escaping (Reminder) -> Bool) {
         self.name = name
