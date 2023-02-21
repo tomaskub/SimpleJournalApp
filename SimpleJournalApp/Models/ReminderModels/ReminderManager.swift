@@ -45,45 +45,46 @@ class ReminderManager {
     private lazy var reminderStore = ReminderStore.shared
     var delegate: ReminderManagerDelegate?
     
-//    var oldReminders: [Reminder] = []
     var newReminders: [Reminder] = []
+    var sections: [ReminderManagerSection]
     
     var isTaskRunning: Bool = false
     
-//    var sortedReminders: [[Reminder]] = []
-    
+    lazy var numberOfSections = {
+        return sections.count
+    }()
     lazy var sectionTitles: [String] = {
         return sections.map { $0.name }
     }()
     
-    var sections: [ReminderManagerSection]
-    
-    
-    init() {
-        sections = [ ReminderManagerSection(name: "Yesterday", comparator: { reminder in
-            if let dueDate = reminder.dueDate {
-                return Calendar.current.isDateInYesterday(dueDate)
-            } else {
-                return false
-            }
-        }),
-        ReminderManagerSection(name: "Today", comparator: { reminder in
-            if let dueDate = reminder.dueDate {
-                return Calendar.current.isDateInToday(dueDate)
-            } else {
-                return false
-            }
-        }),
-                     ReminderManagerSection(name: "Tomorrow", comparator: { reminder in
-            if let dueDate = reminder.dueDate {
-                return Calendar.current.isDateInTomorrow(dueDate)
-            } else {
-                return false
-            }
-        })]
+    init(sectionNames names: [String], comparators comp: [(Reminder) -> Bool]) {
+        self.sections = []
+        for (i, name) in names.enumerated() {
+            var section = ReminderManagerSection(name: name, comparator: comp[i])
+            sections.append(section)
+        }
+        
     }
     
-    //done for sections
+    convenience init() {
+        let names = ["Yesterday", "Today", "Tomorrow"]
+        let comparators: [(Reminder) -> Bool] = [
+            { reminder in
+                if let dueDate = reminder.dueDate {
+                    return Calendar.current.isDateInYesterday(dueDate)
+                } else { return false } },
+            { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInToday(dueDate)
+            } else { return false } },
+            { reminder in
+                if let dueDate = reminder.dueDate {
+                    return Calendar.current.isDateInTomorrow(dueDate)
+                } else { return false } }
+            ]
+        self.init(sectionNames: names, comparators: comparators)
+    }
+    
     func processReminders(_ reminders: [Reminder]){
         
         for reminder in reminders {
@@ -98,7 +99,6 @@ class ReminderManager {
         }
     }
     
-    //done for sections
     func prepareReminderStore() throws {
         Task {
             do {
@@ -114,8 +114,6 @@ class ReminderManager {
         NotificationCenter.default.addObserver(self, selector: #selector(updateSnapshot), name: .EKEventStoreChanged, object: nil)
     }
     
-    //TODO: Review below - think about using tableView.indexPathForVisibleRows to not check changes for all of the data. For this to work it might be neccessary to make the reminder.id equal to ekReminder.calendarItemIdentifier (it is when it pulled from calendar)
-    //seems ok?
     func diff(old: [Reminder], new: [Reminder]) -> [ReminderManagerChange] {
         
         var changes: [ReminderManagerChange] = []
@@ -239,7 +237,7 @@ class ReminderManager {
             }
         }
     }
-    // done for sections
+
     func indexPath(for id: String) -> IndexPath? {
         
         for (i, section) in sections.enumerated() {
@@ -252,7 +250,7 @@ class ReminderManager {
         }
         return nil
     }
-    //done for sections
+
     func indexPath(toInsert reminder: Reminder) -> IndexPath {
 
         var rowForIndex: Int = 0
@@ -267,7 +265,7 @@ class ReminderManager {
         }
         return IndexPath(row: rowForIndex, section: sectionForIndex)
     }
-    //done for sections
+
     func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
         //        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
         
@@ -280,7 +278,7 @@ class ReminderManager {
         // guard above throws if objects is nil so it is safe to force unwrap it
         return sections[indexPath.section].objects![indexPath.row]
     }
-    //done for sections
+
     func updateReminder(atIndexPath indexPath: IndexPath) throws {
         var reminder =  try reminder(forIndexPath: indexPath)
         reminder.isComplete.toggle()
@@ -308,32 +306,4 @@ class ReminderManager {
         }
     }
 }
-
-    //MARK: move this to definition of the sections in RemindersTableViewController
-//            if Calendar.current.isDateInToday(dueDate) {
-//                section = 1
-//                row = sortedReminders[section].firstIndex(where: {
-//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-//            } else if Calendar.current.isDateInTomorrow(dueDate) {
-//                // tomorrow
-//                section = 2
-//                row = sortedReminders[section].firstIndex(where: {
-//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-//            } else if dueDate.timeIntervalSinceNow.sign == .minus {
-//                //past
-//                section = 0
-//                row = sortedReminders[section].firstIndex(where: {
-//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-//            } else if dueDate.timeIntervalSinceNow.sign == .plus {
-//                //future
-//                section = 3
-//                row = sortedReminders[section].firstIndex(where: {
-//                    $0.isComplete == reminder.isComplete && $0.dueDate! < dueDate }) ?? 0
-//            }
-            
-//        } else {
-//            section = 4
-//            row = sortedReminders[section].firstIndex(where: {
-//                $0.isComplete == reminder.isComplete }) ?? 0
-//        }
         
