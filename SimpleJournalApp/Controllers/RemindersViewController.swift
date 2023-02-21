@@ -8,14 +8,27 @@
 import UIKit
 import EventKitUI
 
-class RemindersTableViewController: UITableViewController {
+class RemindersViewController: UIViewController {
+    
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var dateLabel: UILabel!
+    
+    
+    @IBAction func addNewReminder(_ sender: Any) {
+        presentDetailViewController(for: Reminder(), isPresentingNewReminder: true)
+    }
     
     let reminderManager = ReminderManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
+        tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
+        tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
         tableView.rowHeight = 50
+        tableView.delegate = self
+        tableView.dataSource = self
         reminderManager.delegate = self
         //Move this to reminderManager
         do {
@@ -26,9 +39,10 @@ class RemindersTableViewController: UITableViewController {
         
     }
     
-    func presentDetailViewController(for reminder: Reminder) {
+    func presentDetailViewController(for reminder: Reminder, isPresentingNewReminder: Bool) {
         let vc = DetailViewController()
         vc.reminder = reminder
+        vc.isAddingNewReminder = isPresentingNewReminder
         vc.reminderManager = reminderManager
         present(vc, animated: true)
         
@@ -49,24 +63,24 @@ class RemindersTableViewController: UITableViewController {
 }
 
 // MARK: - Table view data source
-extension RemindersTableViewController {
+extension RemindersViewController: UITableViewDataSource, UITableViewDelegate {
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return reminderManager.numberOfSections
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         //this should come from the reminderManager
 //        let sectionHeaders = [ "Past due", "Today", "Tomorrow", "Future", "No due date", "Past"]
 //        return sectionHeaders[section]
         return reminderManager.sectionTitles[section]
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reminderManager.sections[section].numberOfObjects
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
         do {
             let reminder = try reminderManager.reminder(forIndexPath: indexPath)
@@ -78,23 +92,23 @@ extension RemindersTableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         do {
-            presentDetailViewController(for: try reminderManager.reminder(forIndexPath: indexPath))
+            presentDetailViewController(for: try reminderManager.reminder(forIndexPath: indexPath), isPresentingNewReminder: false)
         } catch {
             displayAlert(error)
         }
     }
-}
+
 
 //MARK: Table view configuration methods
-extension RemindersTableViewController {
+
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
             return true
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .destructive, title: nil, handler: {
             (_, _, completionHandler) in
@@ -107,7 +121,7 @@ extension RemindersTableViewController {
         let editAction = UIContextualAction(style: .normal, title: "Edit", handler: {
             (_, _, completionHandler)  in
             do {
-                self.presentDetailViewController(for: try self.reminderManager.reminder(forIndexPath: indexPath))
+                self.presentDetailViewController(for: try self.reminderManager.reminder(forIndexPath: indexPath), isPresentingNewReminder: false)
             } catch {
                 print(error)
             }
@@ -121,7 +135,7 @@ extension RemindersTableViewController {
 }
 
 //MARK: ReminderManagerDelegate methods
-extension RemindersTableViewController: ReminderManagerDelegate {
+extension RemindersViewController: ReminderManagerDelegate {
     
     func controllerWillChangeContent(_ controller: ReminderManager) {
         DispatchQueue.main.async {
@@ -178,7 +192,7 @@ extension RemindersTableViewController: ReminderManagerDelegate {
 }
 
 //MARK: ReminderTableViewCellDelegate methods
-extension RemindersTableViewController: ReminderTableViewCellDelegate {
+extension RemindersViewController: ReminderTableViewCellDelegate {
     func doneButtonTapped(sender: ReminderTableViewCell) {
         
         if let indexPath = tableView.indexPath(for: sender) {

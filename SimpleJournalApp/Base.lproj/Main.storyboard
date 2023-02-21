@@ -110,27 +110,77 @@
             </objects>
             <point key="canvasLocation" x="2978" y="145"/>
         </scene>
-        <!--Reminders Table View Controller-->
-        <scene sceneID="Smk-0g-t0g">
+        <!--Reminders View Controller-->
+        <scene sceneID="yXc-j0-JKo">
             <objects>
-                <tableViewController id="EhR-IN-TlG" customClass="RemindersTableViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="dE4-je-dng">
+                <viewController id="hhN-nr-LvD" customClass="RemindersViewController" customModule="SimpleJournalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="O72-uI-baw">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <connections>
-                            <outlet property="dataSource" destination="EhR-IN-TlG" id="Zz2-OJ-vvB"/>
-                            <outlet property="delegate" destination="EhR-IN-TlG" id="jm1-wx-sZu"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="" image="checkmark.circle" catalog="system" selectedImage="checkmark.circle.fill" id="9np-PU-3oX">
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="BUC-Oe-xSK">
+                                <rect key="frame" x="0.0" y="118" width="414" height="778"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aO3-Me-lRh">
+                                <rect key="frame" x="10" y="48" width="334" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="DDD, DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t04-7m-5FX">
+                                        <rect key="frame" x="0.0" y="0.0" width="85" height="18.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="ComplementColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVA-je-LWQ">
+                                        <rect key="frame" x="0.0" y="26.5" width="141" height="33.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                        <color key="textColor" name="ComplementColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="onv-ET-FoO"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpJ-h3-kyw">
+                                <rect key="frame" x="354" y="53" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="3VA-ac-O5B"/>
+                                    <constraint firstAttribute="width" secondItem="MpJ-h3-kyw" secondAttribute="height" multiplier="1:1" id="v7t-6A-tdD"/>
+                                </constraints>
+                                <color key="tintColor" name="ComplementColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="plus.circle" catalog="system"/>
+                                <connections>
+                                    <action selector="addNewReminder:" destination="hhN-nr-LvD" eventType="touchUpInside" id="3ij-C1-lel"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="i5B-4l-AjJ"/>
+                        <color key="backgroundColor" name="DominantColor"/>
+                        <constraints>
+                            <constraint firstItem="MpJ-h3-kyw" firstAttribute="leading" secondItem="aO3-Me-lRh" secondAttribute="trailing" constant="10" id="2AM-pT-nba"/>
+                            <constraint firstItem="i5B-4l-AjJ" firstAttribute="trailing" secondItem="BUC-Oe-xSK" secondAttribute="trailing" id="Fe6-tB-qrv"/>
+                            <constraint firstItem="BUC-Oe-xSK" firstAttribute="top" secondItem="aO3-Me-lRh" secondAttribute="bottom" constant="10" id="G1t-xB-hIN"/>
+                            <constraint firstItem="BUC-Oe-xSK" firstAttribute="leading" secondItem="i5B-4l-AjJ" secondAttribute="leading" id="Kj0-p6-i8y"/>
+                            <constraint firstAttribute="bottom" secondItem="BUC-Oe-xSK" secondAttribute="bottom" id="Qn1-qY-DkK"/>
+                            <constraint firstItem="aO3-Me-lRh" firstAttribute="top" secondItem="i5B-4l-AjJ" secondAttribute="top" id="VFP-PO-kxX"/>
+                            <constraint firstItem="MpJ-h3-kyw" firstAttribute="centerY" secondItem="aO3-Me-lRh" secondAttribute="centerY" id="iwa-2h-6xd"/>
+                            <constraint firstItem="i5B-4l-AjJ" firstAttribute="trailing" secondItem="MpJ-h3-kyw" secondAttribute="trailing" constant="10" id="mjw-sQ-piE"/>
+                            <constraint firstItem="aO3-Me-lRh" firstAttribute="leading" secondItem="i5B-4l-AjJ" secondAttribute="leading" constant="10" id="x1j-3Q-Q5q"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="checkmark.circle" catalog="system" selectedImage="checkmark.circle.fill" id="j6A-4l-Z3o">
                         <color key="badgeColor" systemColor="labelColor"/>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" id="47H-eX-y2m"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yP3-u5-q22" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="t04-7m-5FX" id="W6u-kw-cGS"/>
+                        <outlet property="tableView" destination="BUC-Oe-xSK" id="7VM-x4-nOJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Rz-3T-MCI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1278" y="1015"/>
+            <point key="canvasLocation" x="1005" y="920"/>
         </scene>
         <!--History View Controller-->
         <scene sceneID="XtN-YL-4wz">
@@ -220,7 +270,7 @@
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pOo-ET-mMa"/>
                         <segue destination="R6N-g6-tHS" kind="relationship" relationship="viewControllers" id="hQ5-Fm-cmd"/>
-                        <segue destination="EhR-IN-TlG" kind="relationship" relationship="viewControllers" id="dco-Kt-ZZ6"/>
+                        <segue destination="hhN-nr-LvD" kind="relationship" relationship="viewControllers" id="GWB-zW-2DJ"/>
                         <segue destination="Bha-bv-caT" kind="relationship" relationship="viewControllers" id="mqQ-ng-3dO"/>
                     </connections>
                 </tabBarController>
@@ -306,6 +356,7 @@
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
+        <image name="plus.circle" catalog="system" width="128" height="123"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <namedColor name="ComplementColor">

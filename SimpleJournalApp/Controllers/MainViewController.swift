@@ -95,7 +95,7 @@ class MainViewController: UIViewController {
     func layoutUI(){
         //adjust tableview appearance
         tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
-        tableView.layer.cornerRadius = tableView.layer.bounds.width / 10
+        tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         // configure date label text
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
         // TODO: set up calendar button constraints to work properly with scrollView - still has
