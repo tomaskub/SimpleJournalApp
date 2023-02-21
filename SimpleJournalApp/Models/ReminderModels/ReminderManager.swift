@@ -19,7 +19,7 @@ protocol ReminderManagerDelegate {
 }
 
 protocol ReminderResultsSectionInfo {
-    var numberOfObject: Int { get }
+    var numberOfObjects: Int { get }
     var objects: [Reminder]? { get }
     var name: String { get }
     var indexTitle: String? { get }
@@ -44,112 +44,68 @@ class ReminderManager {
     
     private lazy var reminderStore = ReminderStore.shared
     var delegate: ReminderManagerDelegate?
-    var oldReminders: [Reminder] = []
+    
+//    var oldReminders: [Reminder] = []
     var newReminders: [Reminder] = []
-    var sortedReminders: [[Reminder]] = []
+    
     var isTaskRunning: Bool = false
     
-    var sectionTitles: [String] = ["Today", "Tomorrow", "Yesterday"]
+//    var sortedReminders: [[Reminder]] = []
     
-    var sectionPredicates: [(Reminder) -> Bool] = [
-        { reminder in
-            if let dueDate = reminder.dueDate {
-                return Calendar.current.isDateInToday(dueDate)
-            } else {
-                return false
-            }
-        },
-        { reminder in
-            if let dueDate = reminder.dueDate {
-                return Calendar.current.isDateInTomorrow(dueDate)
-            } else {
-                return false
-            }
-        },
-        { reminder in
+    lazy var sectionTitles: [String] = {
+        return sections.map { $0.name }
+    }()
+    
+    var sections: [ReminderManagerSection]
+    
+    
+    init() {
+        sections = [ ReminderManagerSection(name: "Yesterday", comparator: { reminder in
             if let dueDate = reminder.dueDate {
                 return Calendar.current.isDateInYesterday(dueDate)
             } else {
                 return false
             }
-        }
-    ]
-    
-    func processReminders(_ reminders: [Reminder]) -> [[Reminder]] {
-        
-        
-        var yesterday: [Reminder] = []
-//        var noDueDate: [Reminder] = []
-//        var noDueDateCompleted: [Reminder] = []
-        var today: [Reminder] = []
-//        var todayCompleted: [Reminder] = []
-        var tomorrow: [Reminder] = []
-//        var tomorrowCompleted: [Reminder] = []
-//        var past: [Reminder] = []
-//        var pastCompleted: [Reminder] = []
-        var results = [yesterday, today, tomorrow]
-        
-        for reminder in reminders {
-            
-            for (i, sectionPredicate) in sectionPredicates.enumerated() {
-                if sectionPredicate(reminder) {
-                    results[i].append(reminder)
-                }
+        }),
+        ReminderManagerSection(name: "Today", comparator: { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInToday(dueDate)
+            } else {
+                return false
             }
-//            if let dueDate = reminder.dueDate {
-//                //TODO: how to handle incomplete due date data?
-//                if Calendar.current.isDateInToday(dueDate) {
-//                    if !reminder.isComplete {
-//                        today.append(reminder)
-//                    } else {
-//                        todayCompleted.append(reminder)
-//                    }
-//                } else if Calendar.current.isDateInTomorrow(dueDate) {
-//                    if !reminder.isComplete { tomorrow.append(reminder) } else { tomorrowCompleted.append(reminder) }
-//                } else if dueDate.timeIntervalSinceNow.sign == .minus {
-//                    if !reminder.isComplete {
-//                        past.append(reminder)
-//                    } else {
-//                        pastCompleted.append(reminder)
-//                    }
-//                } else if dueDate.timeIntervalSinceNow.sign == .plus {
-//                    future.append(reminder)
-//                }
-//
-//            } else {
-//                if !reminder.isComplete {
-//                    noDueDate.append(reminder)
-//                } else {
-//                    noDueDateCompleted.append(reminder)
-//                }
+        }),
+                     ReminderManagerSection(name: "Tomorrow", comparator: { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInTomorrow(dueDate)
+            } else {
+                return false
             }
-            return results
-            // sort by due date
-            
-//            today.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            todayCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            tomorrow.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            tomorrowCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            future.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            past.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//            pastCompleted.sort(by: { $0.dueDate!.compare($1.dueDate!) == .orderedDescending })
-//        }
-//        //append the completed sorted at the end of a section
-//        today.append(contentsOf: todayCompleted)
-//        tomorrow.append(contentsOf: tomorrowCompleted)
-//        noDueDate.append(contentsOf: noDueDateCompleted)
-        //        past.append(contentsOf: pastCompleted)
-        
-//        return  [past, today, tomorrow, future, noDueDate, pastCompleted]
+        })]
     }
     
+    //done for sections
+    func processReminders(_ reminders: [Reminder]){
+        
+        for reminder in reminders {
+            for section in sections {
+                if section.belongingComparator(reminder) {
+                    if section.objects == nil {
+                        section.objects = []
+                    }
+                    section.objects?.append(reminder)
+                }
+            }
+        }
+    }
+    
+    //done for sections
     func prepareReminderStore() throws {
         Task {
             do {
                 try await reminderStore.requestAccess()
                 newReminders = try await reminderStore.readAll()
                 //                reminders = processReminders(tempReminders)
-                sortedReminders = processReminders(newReminders)
+                processReminders(newReminders)
                 delegate?.requestUIUpdate()
             } catch {
                 throw error
@@ -159,7 +115,7 @@ class ReminderManager {
     }
     
     //TODO: Review below - think about using tableView.indexPathForVisibleRows to not check changes for all of the data. For this to work it might be neccessary to make the reminder.id equal to ekReminder.calendarItemIdentifier (it is when it pulled from calendar)
-    
+    //seems ok?
     func diff(old: [Reminder], new: [Reminder]) -> [ReminderManagerChange] {
         
         var changes: [ReminderManagerChange] = []
@@ -219,43 +175,62 @@ class ReminderManager {
     
     @objc func updateSnapshot() {
         if !isTaskRunning {
-            oldReminders = newReminders
+            let oldReminders = newReminders
             Task {
+                //still need to check for failures
                 isTaskRunning = true
                 newReminders = try await reminderStore.readAll()
-                
-                
                 let changes = diff(old: oldReminders, new: newReminders)
                 
+                //change is done for sections
                 delegate?.controllerWillChangeContent(self)
-                
                 for change in changes {
                     
                     switch change.changeType {
                     case .delete:
-                        
-                        if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
-                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                        //crashed on delete? - works if not optional if let var
+                        if let indexPathToRemove = indexPath(for: change.reminder.id) {
+                            sections[indexPathToRemove.section].objects?.remove(at: indexPathToRemove.row)
+                            
+//                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                            
                             delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
                         }
                         
                     case .insert:
+                        //works after different unwrapping
                         let indexPathToInsert = indexPath(toInsert: change.reminder)
-                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                        
+                        if sections[indexPathToInsert.section].objects != nil {
+                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                        } else {
+                            sections[indexPathToInsert.section].objects = []
+                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                        }
+//                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
                         delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
+                        
                     case .update:
-                        if let indexPathToUpdate = indexPath(for: change.reminder.id, in: sortedReminders) {
-                            sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
+                        if let indexPathToUpdate = indexPath(for: change.reminder.id) {
+                            sections[indexPathToUpdate.section].objects?[indexPathToUpdate.row] = change.reminder
+//                            sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
                             delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .update, newIndexPath: nil)
                         }
                     case .move:
-                        if let indexPathToRemove = indexPath(for: change.reminder.id, in: sortedReminders) {
-                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
+                        if let indexPathToRemove = indexPath(for: change.reminder.id) {
+                            sections[indexPathToRemove.section].objects?.remove(at: indexPathToRemove.row)
+//                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
                             
                             delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
                         }
                         let indexPathToInsert = indexPath(toInsert: change.reminder)
-                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                        if sections[indexPathToInsert.section].objects != nil {
+                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                        } else {
+                            sections[indexPathToInsert.section].objects = []
+                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                        }
+//                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
                         delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
                     }
                 }
@@ -264,32 +239,77 @@ class ReminderManager {
             }
         }
     }
-    
-    func indexPath(for id: String, in sortedReminders: [[Reminder]]) -> IndexPath? {
+    // done for sections
+    func indexPath(for id: String) -> IndexPath? {
         
-        for (i, array) in sortedReminders.enumerated() {
-            for (j, element) in array.enumerated() {
-                if element.id == id {
-                    return IndexPath(row: j, section: i)
-                }
+        for (i, section) in sections.enumerated() {
+            if let objectsArray = section.objects {
+                for (j, element) in objectsArray.enumerated() {
+                    if element.id == id {
+                        return IndexPath(row: j, section: i)
+                    }}
             }
         }
         return nil
     }
-    //TODO: needs troubleshooting
+    //done for sections
     func indexPath(toInsert reminder: Reminder) -> IndexPath {
-        //        [past, today, tomorrow, future, noDueDate, pastCompleted]
-        var row: Int = 0
-        var section: Int = 0
+
+        var rowForIndex: Int = 0
+        var sectionForIndex: Int = 0
         
-//        if let dueDate = reminder.dueDate {
-        for (i, sectionPredicate) in sectionPredicates.enumerated() {
-            if sectionPredicate(reminder) {
-                section = i
-                row = sortedReminders[i].count
+        //TODO: Transfer the search of row to section
+        for (i, section) in sections.enumerated() {
+            if section.belongingComparator(reminder) {
+                sectionForIndex = i
+                rowForIndex = section.numberOfObjects
             }
         }
+        return IndexPath(row: rowForIndex, section: sectionForIndex)
+    }
+    //done for sections
+    func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
+        //        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
         
+        guard sections.indices.contains(indexPath.section),
+              let objects = sections[indexPath.section].objects,
+              objects.indices.contains(indexPath.row) else {
+            print("reminder for index path throw - Reminder for indexpath \(indexPath) does not exist")
+            throw ReminderError.reminderForIndexPathDoesNotExist
+        }
+        // guard above throws if objects is nil so it is safe to force unwrap it
+        return sections[indexPath.section].objects![indexPath.row]
+    }
+    //done for sections
+    func updateReminder(atIndexPath indexPath: IndexPath) throws {
+        var reminder =  try reminder(forIndexPath: indexPath)
+        reminder.isComplete.toggle()
+            _ = try reminderStore.save(reminder)
+    }
+    
+    
+    func save(_ reminder: Reminder) {
+        do {
+            _ = try reminderStore.save(reminder)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func removeReminder(for indexPath: IndexPath) {
+        
+        do {
+            let id = try reminder(forIndexPath: indexPath).id
+            try reminderStore.remove(with: id)
+        } catch ReminderError.reminderForIndexPathDoesNotExist {
+            print(ReminderError.reminderForIndexPathDoesNotExist.errorDescription)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+    //MARK: move this to definition of the sections in RemindersTableViewController
 //            if Calendar.current.isDateInToday(dueDate) {
 //                section = 1
 //                row = sortedReminders[section].firstIndex(where: {
@@ -317,57 +337,3 @@ class ReminderManager {
 //                $0.isComplete == reminder.isComplete }) ?? 0
 //        }
         
-        return IndexPath(row: row, section: section)
-    }
-    
-    func reminder(forIndexPath indexPath: IndexPath) throws -> Reminder {
-        //        guard let reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
-        
-        guard sortedReminders.indices.contains(indexPath.section),
-              sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
-            print("reminder for index path throw - Reminder for indexpath \(indexPath) does not exist")
-            throw ReminderError.reminderForIndexPathDoesNotExist }
-        
-        return sortedReminders[indexPath.section][indexPath.row]
-    }
-    
-    func updateReminder(atIndexPath indexPath: IndexPath) throws {
-        //        guard var reminder = reminders[indexPath] else { throw ReminderError.reminderForIndexPathDoesNotExist }
-        guard sortedReminders.indices.contains(indexPath.section),
-              sortedReminders[indexPath.section].indices.contains(indexPath.row) else {
-            print("Update reminder throw - Reminder for indexpath \(indexPath) does not exist")
-            throw ReminderError.reminderForIndexPathDoesNotExist
-        }
-        var reminder = sortedReminders[indexPath.section][indexPath.row]
-        reminder.isComplete.toggle()
-        do {
-            _ = try reminderStore.save(reminder)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func save(_ reminder: Reminder) {
-        do {
-            _ = try reminderStore.save(reminder)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func removeReminder(for indexPath: IndexPath) {
-        
-        do {
-            let id = try reminder(forIndexPath: indexPath).id
-            try reminderStore.remove(with: id)
-        } catch ReminderError.reminderForIndexPathDoesNotExist {
-            print(ReminderError.reminderForIndexPathDoesNotExist.errorDescription)
-        } catch {
-            print(error)
-        }
-        
-        
-        //Delegate methods
-        
-    }
-}

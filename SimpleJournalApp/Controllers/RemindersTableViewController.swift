@@ -52,7 +52,7 @@ class RemindersTableViewController: UITableViewController {
 extension RemindersTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return reminderManager.sortedReminders.count
+        return reminderManager.sections.count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -65,7 +65,7 @@ extension RemindersTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return reminderManager.sortedReminders[section].count
+        return reminderManager.sections[section].numberOfObjects
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
