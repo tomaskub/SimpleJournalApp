@@ -44,8 +44,8 @@ class DetailViewController: UIViewController {
         view.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         view.okButton.addTarget(self, action: #selector(okAction), for: .touchUpInside)
         //Using .editingDidEndOnExit to trigger only on finish of the editing
-        view.datePicker.addTarget(self, action: #selector(datePickerDidEndEditing), for: .editingDidEndOnExit)
-        view.timePicker.addTarget(self, action: #selector(timePickerDidEndEditing), for: .editingDidEndOnExit)
+        view.datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)//.editingDidEndOnExit)
+        view.timePicker.addTarget(self, action: #selector(timePickerValueChanged), for: .editingDidEndOnExit)
     }
     
     
@@ -73,12 +73,12 @@ extension DetailViewController {
         self.dismiss(animated: true)
     }
     
-    @objc func datePickerDidEndEditing() {
+    @objc func datePickerValueChanged() {
         guard let view = view as? DetailView else { return }
         dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: view.datePicker.date)
     }
     
-    @objc func timePickerDidEndEditing() {
+    @objc func timePickerValueChanged() {
         guard let view = view as? DetailView else { return }
         dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: view.datePicker.date)
     }
