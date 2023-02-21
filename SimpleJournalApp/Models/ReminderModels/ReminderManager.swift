@@ -6,8 +6,6 @@
 //
 
 
-//TODO: Fix error when the controller requests the table reload and not triggering the controller methods - additional issue, due to task construction in data request the updates are not being called from the main thread.
-
 import Foundation
 
 protocol ReminderManagerDelegate {
@@ -134,8 +132,8 @@ class ReminderManager {
         var changes: [ReminderManagerChange] = []
         var oldFiltered = old
         var newFiltered = new
-        // handle removed and added reminders by ids
         
+        // handle removed and added reminders by ids
         let oldIDSet = Set(old.map { $0.id })
         let newIDSet = Set(new.map { $0.id })
         let inserted = newIDSet.subtracting(oldIDSet)
@@ -159,13 +157,14 @@ class ReminderManager {
         //Define updated as new objects that are not in old objects
         let updated = newFiltered.filter( { !oldFiltered.contains($0) })
         for reminder in updated {
+            
             //the cases are:
-            //the content changed but the date is the same
-            //the content is the same but the date changed
-            //The content is different and the date changed
+            //the content changed but the date is the same -> update
+            //the content is the same but the date changed -> move
+            //The content is different and the date changed -> update & move
             
             if let oldReminder = old.first(where: {$0.id == reminder.id }) {
-                if oldReminder.dueDate == reminder.dueDate {
+                if oldReminder.dueDate == reminder.dueDate &&  oldReminder.isComplete == reminder.isComplete {
                     
                     changes.append(ReminderManagerChange(changeType: .update, reminder: reminder))
                     
@@ -180,7 +179,7 @@ class ReminderManager {
                     
                     changes.append(ReminderManagerChange(changeType: .move, reminder: reminder))
                     
-                } // missing edge case where any of the properties changes, also with the due date
+                }
             }
         }
         return changes
@@ -201,17 +200,14 @@ class ReminderManager {
                     
                     switch change.changeType {
                     case .delete:
-                        //crashed on delete? - works if not optional if let var
+                        
                         if let indexPathToRemove = indexPath(for: change.reminder.id) {
                             sections[indexPathToRemove.section].objects?.remove(at: indexPathToRemove.row)
-                            
-//                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
-                            
                             delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
                         }
                         
                     case .insert:
-                        //works after different unwrapping
+                        
                         let indexPathToInsert = indexPath(toInsert: change.reminder)
                         
                         if sections[indexPathToInsert.section].objects != nil {
@@ -220,31 +216,36 @@ class ReminderManager {
                             sections[indexPathToInsert.section].objects = []
                             sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
                         }
-//                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
+                        
                         delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
                         
                     case .update:
                         if let indexPathToUpdate = indexPath(for: change.reminder.id) {
                             sections[indexPathToUpdate.section].objects?[indexPathToUpdate.row] = change.reminder
-//                            sortedReminders[indexPathToUpdate.section][indexPathToUpdate.row] = change.reminder
+
                             delegate?.controller(self, didChange: change.reminder, at: indexPathToUpdate, for: .update, newIndexPath: nil)
                         }
                     case .move:
+                        
+                        
                         if let indexPathToRemove = indexPath(for: change.reminder.id) {
-                            sections[indexPathToRemove.section].objects?.remove(at: indexPathToRemove.row)
-//                            sortedReminders[indexPathToRemove.section].remove(at: indexPathToRemove.row)
                             
-                            delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                            sections[indexPathToRemove.section].objects?.remove(at: indexPathToRemove.row)
+                            
+                            let indexPathToInsert = indexPath(toInsert: change.reminder)
+                            if sections[indexPathToInsert.section].objects != nil {
+                                sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                            } else {
+                                sections[indexPathToInsert.section].objects = []
+                                sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
+                            }
+                            
+                            if indexPathToRemove != indexPathToInsert {
+                                delegate?.controller(self, didChange: change.reminder, at: indexPathToRemove, for: .delete, newIndexPath: nil)
+                                delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
+                            }
                         }
-                        let indexPathToInsert = indexPath(toInsert: change.reminder)
-                        if sections[indexPathToInsert.section].objects != nil {
-                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
-                        } else {
-                            sections[indexPathToInsert.section].objects = []
-                            sections[indexPathToInsert.section].objects?.insert(change.reminder, at: indexPathToInsert.row)
-                        }
-//                        sortedReminders[indexPathToInsert.section].insert(change.reminder, at: indexPathToInsert.row)
-                        delegate?.controller(self, didChange: change.reminder, at: nil, for: .insert, newIndexPath: indexPathToInsert)
+
                     }
                 }
                 delegate?.controllerDidChangeContent(self)
@@ -271,7 +272,6 @@ class ReminderManager {
         var rowForIndex: Int = 0
         var sectionForIndex: Int = 0
         
-        //TODO: Transfer the search of row to section
         for (i, section) in sections.enumerated() {
             if section.belongingComparator(reminder) {
                 sectionForIndex = i
@@ -279,7 +279,7 @@ class ReminderManager {
                 if let objects = section.objects {
                     rowForIndex = objects.firstIndex(where: {
                         if $0.isComplete != reminder.isComplete {
-                            return !$0.isComplete
+                            return $0.isComplete
                         } else {
                             if let lhsDueDate = $0.dueDate, let rhsDueDate = reminder.dueDate {
                                 return lhsDueDate < rhsDueDate
@@ -289,7 +289,7 @@ class ReminderManager {
                                 return false
                             }
                         }
-                    }) ?? 0
+                    }) ?? objects.count // if all the due dates are the same in completed reminders insert at the end
                     
                 } else {
                     rowForIndex = 0
