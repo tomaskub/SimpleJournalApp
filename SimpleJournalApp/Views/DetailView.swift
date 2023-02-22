@@ -113,16 +113,15 @@ class DetailView: UIView {
             okButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
             titleLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
-
         NSLayoutConstraint.activate([
-        titleTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
-        titleTextField.widthAnchor.constraint(equalToConstant: self.bounds.width - 2 * spacing),
-        titleTextField.heightAnchor.constraint(equalToConstant: 100),
-        notesTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        notesTextField.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: spacing),
-        notesTextField.widthAnchor.constraint(equalToConstant: self.bounds.width - 2 * spacing),
-        notesTextField.heightAnchor.constraint(equalToConstant: 100),
+            titleTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
+            titleTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
+            titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
+//            titleTextField.heightAnchor.constraint(equalToConstant: 100),
+            notesTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
+            notesTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
+            notesTextField.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: spacing),
+            notesTextField.heightAnchor.constraint(equalToConstant: 100)
         ])
         NSLayoutConstraint.activate([
             dateLabel.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -spacing),
