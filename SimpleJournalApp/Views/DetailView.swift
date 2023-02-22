@@ -12,22 +12,26 @@ class DetailView: UIView {
     let spacing: CGFloat = 10
     let textColor = UIColor(named: K.Colors.complement)
     
-    let titleTextField: UITextField = {
-        let view = UITextField()
+    let titleTextView: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.placeholder = "Title"
-        view.backgroundColor = .gray
+        view.font = UIFont.systemFont(ofSize: 17)
+        view.isScrollEnabled = false
+        view.adjustsFontForContentSizeCategory = true
+        view.backgroundColor = UIColor(named: K.Colors.complement)
         view.layer.cornerRadius = 10
         view.contentMode = .topLeft
         return view
     }()
     
-    let notesTextField: UITextField = {
-        let view = UITextField()
+    let notesTextView: UITextView = {
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.placeholder = "Notes"
+        view.font = UIFont.systemFont(ofSize: 17)
+        view.isScrollEnabled = false
+        view.adjustsFontForContentSizeCategory = true
         view.contentMode = .topLeft
-        view.backgroundColor = .gray
+        view.backgroundColor = UIColor(named: K.Colors.complement)
         view.layer.cornerRadius = 10
         return view
     }()
@@ -35,14 +39,14 @@ class DetailView: UIView {
     let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Date"
+        label.text = "Date:"
         label.textColor = UIColor(named: K.Colors.complement)
         return label
     }()
     let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Time"
+        label.text = "Time:"
         label.textColor = UIColor(named: K.Colors.complement)
         return label
     }()
@@ -59,7 +63,8 @@ class DetailView: UIView {
         let picker = UIDatePicker()
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.datePickerMode = .time
-
+        picker.setValue(UIColor(named: K.Colors.complement), forKey: "textColor")
+        
         return picker
     }()
     
@@ -93,10 +98,11 @@ class DetailView: UIView {
     }
     
     private func internalInit(){
-        for view in [cancelButton, okButton, titleLabel, titleTextField, notesTextField, dateLabel, timeLabel, datePicker, timePicker] {
+        for view in [cancelButton, okButton, titleLabel, titleTextView, notesTextView, dateLabel, timeLabel, datePicker, timePicker] {
             self.addSubview(view)
         }
         self.backgroundColor = UIColor(named: K.Colors.dominant)
+        
         layoutSubviews()
     }
     
@@ -114,18 +120,16 @@ class DetailView: UIView {
             titleLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
         NSLayoutConstraint.activate([
-            titleTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
-            titleTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
-            titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
-//            titleTextField.heightAnchor.constraint(equalToConstant: 100),
-            notesTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
-            notesTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
-            notesTextField.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: spacing),
-            notesTextField.heightAnchor.constraint(equalToConstant: 100)
+            titleTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
+            titleTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
+            titleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
+            notesTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: spacing),
+            notesTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -spacing),
+            notesTextView.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: spacing)
         ])
         NSLayoutConstraint.activate([
             dateLabel.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -spacing),
-            dateLabel.topAnchor.constraint(equalTo: notesTextField.bottomAnchor, constant: spacing),
+            dateLabel.topAnchor.constraint(equalTo: notesTextView.bottomAnchor, constant: spacing),
             dateLabel.heightAnchor.constraint(equalToConstant: 50),
             datePicker.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
             datePicker.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: spacing)])
@@ -139,8 +143,8 @@ class DetailView: UIView {
     
     func configureView(title: String, titleText: String? = "Reminder title", notesText: String? = "Notes") {
         titleLabel.text = title
-        titleTextField.text = titleText
-        notesTextField.text = notesText
+        titleTextView.text = titleText
+        notesTextView.text = notesText
     }
     func setDisplayedDate(date: Date){
         datePicker.date = date
