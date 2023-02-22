@@ -26,6 +26,7 @@ class HistoryViewController: UIViewController {
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
+        tableView.layer.backgroundColor = UIColor(named: "ComplementColor")?.cgColor
         tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
