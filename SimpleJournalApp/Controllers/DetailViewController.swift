@@ -43,17 +43,16 @@ class DetailViewController: UIViewController {
     func addTargets(to view: DetailView){
         view.cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         view.okButton.addTarget(self, action: #selector(okAction), for: .touchUpInside)
-        //Using .editingDidEndOnExit to trigger only on finish of the editing
-        view.datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)//.editingDidEndOnExit)
-        view.timePicker.addTarget(self, action: #selector(timePickerValueChanged), for: .editingDidEndOnExit)
+        view.datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+        view.timePicker.addTarget(self, action: #selector(timePickerValueChanged), for: .valueChanged)
     }
     
     
     func updateReminder() {
         guard let view = view as? DetailView,
-              let title = view.titleTextField.text else { return }
+              let title = view.titleTextView.text else { return }
         reminder.title = title
-        reminder.notes = view.notesTextField.text
+        reminder.notes = view.notesTextView.text
         if let dateComponents = dateComponents {
             reminder.dueDate = Calendar.current.date(from: dateComponents)
         }
