@@ -15,7 +15,7 @@ class EntryViewController: UIViewController {
     }
     var isShowingPhoto = false
     //  Constraint with constant to adjust based on keyboard height
-    private var viewBottomConstraint: NSLayoutConstraint?
+    fileprivate var viewBottomConstraint: NSLayoutConstraint?
     
     var journalManager: JournalManager!
     var managedContext: NSManagedObjectContext!
@@ -144,7 +144,6 @@ class EntryViewController: UIViewController {
     @objc func keyboardWillDissapear(_ notification: Notification) {
         viewBottomConstraint?.constant = -30
     }
-    
     //  MARK: UI layout methods
     func addSubviews(){
         view.addSubview(scrollView)

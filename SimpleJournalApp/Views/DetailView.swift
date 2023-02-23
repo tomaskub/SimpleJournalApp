@@ -138,7 +138,8 @@ class DetailView: UIView {
             timeLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: spacing),
             timeLabel.heightAnchor.constraint(equalToConstant: 50),
             timePicker.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            timePicker.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: spacing)])
+            timePicker.leadingAnchor.constraint(equalTo: self.centerXAnchor, constant: spacing),
+            timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)])
     }
     
     func configureView(title: String, titleText: String? = "Reminder title", notesText: String? = "Notes") {
