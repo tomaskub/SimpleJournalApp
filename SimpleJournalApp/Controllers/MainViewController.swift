@@ -18,6 +18,8 @@ class MainViewController: UIViewController {
     var managedContext: NSManagedObjectContext!
     var journalManager: JournalManager?
     var selectedDayLog: DayLog?
+    
+    var selectedDate: Date = Date()
     //Declare calendar buttons in an array
     let dateButtonArray: [CalendarDayButton] = {
         
@@ -47,9 +49,10 @@ class MainViewController: UIViewController {
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
         
         let results = journalManager?.getEntry(for: Date())
-        
+        //this needs to change
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(Date())
+//            selectedDayLog = journalManager?.addEntry(Date())
+            selectedDayLog = nil
         } else {
             selectedDayLog = results?.dayLogs.first
         }
@@ -80,11 +83,12 @@ class MainViewController: UIViewController {
             button.isSelected = false
         }
         sender.isSelected = true
-        let date = (sender as! CalendarDayButton).getDate()
-        let results = journalManager?.getEntry(for: date)
-        
+        selectedDate = (sender as! CalendarDayButton).getDate()
+        let results = journalManager?.getEntry(for: selectedDate)
+        //this needs to change
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-            selectedDayLog = journalManager?.addEntry(date)
+//            selectedDayLog = journalManager?.addEntry(date)
+            selectedDayLog = nil
         } else {
             selectedDayLog = results?.dayLogs.first
         }
@@ -210,10 +214,28 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //need to implement unwrapping the day log to make sure that it is added only when an action is tapped
         switch indexPath.row {
+        
         case 0:
+            if selectedDayLog == nil {
+                let result = journalManager?.getEntry(for: selectedDate)
+                if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
+                    selectedDayLog = journalManager?.addEntry(selectedDate)
+                } else {
+                    selectedDayLog = result?.dayLogs.first
+                }
+            }
             presentPhotoPicker()
         case 1:
+            if selectedDayLog == nil {
+                let result = journalManager?.getEntry(for: selectedDate)
+                if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
+                    selectedDayLog = journalManager?.addEntry(selectedDate)
+                } else {
+                    selectedDayLog = result?.dayLogs.first
+                }
+            }
             let sender = tableView.cellForRow(at: indexPath)
             performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
         default:
