@@ -30,6 +30,9 @@ class QuestionView: UIView {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isEditable = false
+        view.isScrollEnabled = true
+        view.font = UIFont.systemFont(ofSize: 17)
+        view.contentInset = UIEdgeInsets(top: 5, left: 10, bottom: 10, right: 5)
         view.backgroundColor = .clear
         view.contentMode = .topLeft
         view.textColor = UIColor(named: K.Colors.complement)
@@ -60,6 +63,10 @@ class QuestionView: UIView {
             textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
             editButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])
+        textView.layer.cornerRadius = 10.0
+        textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
+        textView.layer.borderWidth = 3.0
+        
 
     }
     

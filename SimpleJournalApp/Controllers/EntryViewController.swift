@@ -16,6 +16,7 @@ class EntryViewController: UIViewController {
     var isShowingPhoto = false
     //  Constraint with constant to adjust based on keyboard height
     fileprivate var viewBottomConstraint: NSLayoutConstraint?
+    fileprivate var qViewHeightConstraint: [NSLayoutConstraint] = []
     
     var journalManager: JournalManager!
     var managedContext: NSManagedObjectContext!
@@ -53,7 +54,6 @@ class EntryViewController: UIViewController {
         for question in Question.allCases {
             let view = QuestionView(frame: .zero)
             view.translatesAutoresizingMaskIntoConstraints = false
-//            view.configure(question: question)
             views.append(view)
         }
         return views
@@ -104,11 +104,6 @@ class EntryViewController: UIViewController {
                 view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
             }
             view.textView.delegate = self
-            //For testing the constraints
-            view.textView.backgroundColor = UIColor(named: K.Colors.complement)
-            view.textView.textColor = .black
-            
-            
         }
         
     }
@@ -138,11 +133,17 @@ class EntryViewController: UIViewController {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
             viewBottomConstraint?.constant = -(keyboardHeight+10)
+            for constraint in qViewHeightConstraint {
+                constraint.constant = -(keyboardHeight+10)
+            }
         }
     }
     
     @objc func keyboardWillDissapear(_ notification: Notification) {
         viewBottomConstraint?.constant = -30
+        for constraint in qViewHeightConstraint {
+            constraint.constant = 0
+        }
     }
     //  MARK: UI layout methods
     func addSubviews(){
@@ -160,10 +161,12 @@ class EntryViewController: UIViewController {
         viewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
         viewBottomConstraint?.isActive = true
         
-        for qview in questionViews {
+        for (i, qview) in questionViews.enumerated() {
+            qViewHeightConstraint.append(qview.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor))
+            
             NSLayoutConstraint.activate([
-                qview.heightAnchor.constraint(equalToConstant: view.frame.height),
-                qview.widthAnchor.constraint(equalToConstant: view.frame.width)])
+                qViewHeightConstraint[i],
+                qview.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor)])
         }
         
         NSLayoutConstraint.activate([
