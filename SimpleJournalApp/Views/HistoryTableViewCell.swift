@@ -30,6 +30,7 @@ import UIKit
         textView.textContainer.lineBreakMode = .byWordWrapping
         textView.contentMode = .topLeft
         
+        textView.isUserInteractionEnabled = false
         textView.isEditable = false
         textView.isSelectable = false 
         textView.isScrollEnabled = false

@@ -16,6 +16,14 @@ class PhotoView: UIView {
         view.clipsToBounds = true
         return view
     }()
+    private let titleLabel: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(named: K.Colors.complement)
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.text = "Photo of the day"
+        return label
+    }()
     
     private let inset: CGFloat = 10
     
@@ -23,6 +31,7 @@ class PhotoView: UIView {
         super.init(frame: frame)
         self.backgroundColor = UIColor(named: K.Colors.dominant)
         addSubview(imageView)
+        addSubview(titleLabel)
     }
     
     override func layoutSubviews() {
@@ -31,6 +40,10 @@ class PhotoView: UIView {
             imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -inset),
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: inset),
+            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+        imageView.layer.cornerRadius = 10
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,6 +51,7 @@ class PhotoView: UIView {
     
     func setImage(_ image: UIImage) {
         imageView.image = image
+        
     }
     
 }

@@ -24,6 +24,7 @@ class QuestionView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(named: K.Colors.complement)
+        label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
     let textView: UITextView = {
