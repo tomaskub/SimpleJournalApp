@@ -112,7 +112,7 @@ class PhotoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImage(_ image: UIImage) {
+    func setImage(_ image: UIImage?) {
         imageView.image = image
         
     }
