@@ -22,6 +22,8 @@ class EntryViewController: UIViewController {
     var managedContext: NSManagedObjectContext!
     var strategy: Strategy = .isCreatingNewEntry
     
+    var lastTrailingConstraint: NSLayoutConstraint?
+    
     var dayLog: DayLog? {
         didSet {
             guard let unwrappedDayLog = dayLog else {
@@ -36,11 +38,13 @@ class EntryViewController: UIViewController {
                 }
                 populate(unwrappedDayLog.answers?.allObjects as! [Answer])
             } else {
-                if isShowingPhoto, let data = unwrappedDayLog.photo, let image = UIImage(data: data) {
-                    photoView.setImage(image)
-                }
+                
                 let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
                 populate(answers)
+            }
+            if let data = unwrappedDayLog.photo, let image = UIImage(data: data) {
+                isShowingPhoto = true
+                photoView.setImage(image)
             }
         }
         
@@ -81,6 +85,29 @@ class EntryViewController: UIViewController {
             view.textView.layer.borderWidth = 3
             view.textView.layer.cornerRadius = 5
         }
+        //Add photoview if edit button is pressed and photoView was not shown before
+        if !isShowingPhoto {
+            scrollView.addSubview(photoView)
+            qViewHeightConstraint = []
+            isShowingPhoto = true
+            photoView.centerButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+            if let qView = questionViews.last, let constraint = lastTrailingConstraint {
+                let i = questionViews.count - 1
+                constraint.isActive = false
+                lastTrailingConstraint = photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+                NSLayoutConstraint.activate([
+                                        photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
+                                        photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
+                                        qView.leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
+                                        qView.trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
+                                        lastTrailingConstraint!
+                                    ])
+               
+                
+            }
+            
+        }
+        
     }
     
     //  MARK: View life-cycle
@@ -92,6 +119,7 @@ class EntryViewController: UIViewController {
         
         addSubviews()
         layoutUI()
+        
         scrollView.delegate = self
         
         for view in questionViews {
@@ -105,6 +133,17 @@ class EntryViewController: UIViewController {
             }
             view.textView.delegate = self
         }
+        
+        if isShowingPhoto {
+            photoView.centerButton.removeFromSuperview()
+            photoView.rightButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+            photoView.leftButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
+        } else {
+            photoView.leftButton.removeFromSuperview()
+            photoView.rightButton.removeFromSuperview()
+            
+        }
+        
         
     }
     
@@ -145,6 +184,18 @@ class EntryViewController: UIViewController {
             constraint.constant = 0
         }
     }
+    
+    @objc func changeButtonTapped() {
+        print("change button clicked!")
+    }
+    
+    @objc func deleteButtonTapped() {
+        print("delete button clicked!")
+    }
+    
+    @objc func addButtonTapped() {
+     print("Add button clicked!")
+    }
     //  MARK: UI layout methods
     func addSubviews(){
         view.addSubview(scrollView)
@@ -180,16 +231,18 @@ class EntryViewController: UIViewController {
             } else if i == questionViews.count - 1 {
                 
                 if isShowingPhoto {
+                    lastTrailingConstraint = photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
                     NSLayoutConstraint.activate([
                         photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
                         photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
                         questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
                         questionViews[i].trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
-                        photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+                        lastTrailingConstraint!
                     ])
                 } else {
+                    lastTrailingConstraint = questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
                     questionViews[i].leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor).isActive = true
-                    questionViews[i].trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+                    lastTrailingConstraint?.isActive = true
                 }
                 
             } else {

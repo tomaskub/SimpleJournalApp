@@ -80,23 +80,27 @@ class PhotoView: UIView {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: spacing),
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+        if leftButton.superview != nil {
         NSLayoutConstraint.activate([
             leftButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: spacing),
             leftButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: spacing),
             leftButton.trailingAnchor.constraint(equalTo: imageView.centerXAnchor, constant: -spacing),
             leftButton.heightAnchor.constraint(equalToConstant: 55)])
-        NSLayoutConstraint.activate([
-            rightButton.leadingAnchor.constraint(equalTo: imageView.centerXAnchor, constant: spacing),
-            rightButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: spacing),
-            rightButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -spacing),
-            rightButton.heightAnchor.constraint(equalToConstant: 55)])
-        NSLayoutConstraint.activate([
-            //            centerButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5 * spacing),
-            centerButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            centerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            centerButton.heightAnchor.constraint(equalToConstant: 55),
-            centerButton.widthAnchor.constraint(equalToConstant: (self.frame.width) / 2 - 4 * spacing)])
-        
+        }
+        if rightButton.superview != nil {
+            NSLayoutConstraint.activate([
+                rightButton.leadingAnchor.constraint(equalTo: imageView.centerXAnchor, constant: spacing),
+                rightButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: spacing),
+                rightButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -spacing),
+                rightButton.heightAnchor.constraint(equalToConstant: 55)])
+        }
+        if centerButton.superview != nil {
+            NSLayoutConstraint.activate([
+                centerButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                centerButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                centerButton.heightAnchor.constraint(equalToConstant: 55),
+                centerButton.widthAnchor.constraint(equalToConstant: (self.frame.width) / 2 - 4 * spacing)])
+        }
         imageView.layer.cornerRadius = 10
         leftButton.layer.cornerRadius = 10
         rightButton.layer.cornerRadius = 10
