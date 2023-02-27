@@ -186,15 +186,34 @@ class EntryViewController: UIViewController {
     }
     
     @objc func changeButtonTapped() {
-        print("change button clicked!")
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        self.present(vc, animated: true)
     }
     
     @objc func deleteButtonTapped() {
-        print("delete button clicked!")
+        
+        journalManager.deletePhoto(entry: dayLog!)
+        photoView.setImage(nil)
+        photoView.leftButton.removeFromSuperview()
+        photoView.rightButton.removeFromSuperview()
+        photoView.addSubview(photoView.centerButton)
+        photoView.centerButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
     @objc func addButtonTapped() {
-     print("Add button clicked!")
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        self.present(vc, animated: true)
+        photoView.centerButton.removeFromSuperview()
+        photoView.addSubview(photoView.rightButton)
+        photoView.rightButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        photoView.addSubview(photoView.leftButton)
+        photoView.leftButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }
     //  MARK: UI layout methods
     func addSubviews(){
@@ -279,5 +298,24 @@ extension EntryViewController: UIScrollViewDelegate {
                 view.textView.becomeFirstResponder()
             }
         }
+    }
+}
+
+extension EntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            guard let data = image.jpegData(compressionQuality: 1.0),
+                    let log = dayLog,
+                  let manager = journalManager else { return }
+            manager.addPhoto(jpegData: data, to: log)
+            photoView.setImage(image)
+        }
+        
+    }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        picker.dismiss(animated: true)
     }
 }
