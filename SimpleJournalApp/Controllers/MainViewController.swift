@@ -51,7 +51,6 @@ class MainViewController: UIViewController {
         let results = journalManager?.getEntry(for: Date())
         //this needs to change
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
-//            selectedDayLog = journalManager?.addEntry(Date())
             selectedDayLog = nil
         } else {
             selectedDayLog = results?.dayLogs.first
@@ -127,7 +126,6 @@ class MainViewController: UIViewController {
         if segue.identifier == K.SegueIdentifiers.toQuestionVC {
             let targetVC = segue.destination as! EntryViewController
             if let dayLog = selectedDayLog {
-                targetVC.isShowingPhoto = true
                 targetVC.dayLog = dayLog
                 targetVC.managedContext = managedContext
                 targetVC.journalManager = journalManager

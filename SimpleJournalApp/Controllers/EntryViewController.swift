@@ -14,6 +14,7 @@ class EntryViewController: UIViewController {
     case isCreatingNewEntry
     }
     var isShowingPhoto = false
+    
     //  Constraint with constant to adjust based on keyboard height
     fileprivate var viewBottomConstraint: NSLayoutConstraint?
     fileprivate var qViewHeightConstraint: [NSLayoutConstraint] = []
@@ -21,36 +22,8 @@ class EntryViewController: UIViewController {
     var journalManager: JournalManager!
     var managedContext: NSManagedObjectContext!
     var strategy: Strategy = .isCreatingNewEntry
-    
     var lastTrailingConstraint: NSLayoutConstraint?
-    
-    var dayLog: DayLog? {
-        didSet {
-            guard let unwrappedDayLog = dayLog else {
-                print("failed to unwrap day log passed to entryViewController by \(String(describing: self.parent))")
-                return
-            }
-            if unwrappedDayLog.answers?.allObjects == nil {
-                for question in Question.allCases {
-                    let answer = Answer()
-                    answer.question = question
-                    answer.dayLog = unwrappedDayLog
-                }
-                populate(unwrappedDayLog.answers?.allObjects as! [Answer])
-            } else {
-                
-                let answers = unwrappedDayLog.answers?.allObjects as! [Answer]
-                populate(answers)
-            }
-            if let data = unwrappedDayLog.photo, let image = UIImage(data: data) {
-                isShowingPhoto = true
-                photoView.setImage(image)
-            }
-        }
-        
-    }
-    
-    
+    var dayLog: DayLog!
     
     //  MARK: UI elements declarations
     private let questionViews: [QuestionView] = {
@@ -76,50 +49,30 @@ class EntryViewController: UIViewController {
         return view
     }()
     
-    //MARK: button actions
-    @objc func editPressed() {
-        //Edit apperance of questionViews to show editable behaviour
-        for view in questionViews {
-            view.textView.isEditable = true
-            view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
-            view.textView.layer.borderWidth = 3
-            view.textView.layer.cornerRadius = 5
-        }
-        //Add photoview if edit button is pressed and photoView was not shown before
-        if !isShowingPhoto {
-            scrollView.addSubview(photoView)
-            qViewHeightConstraint = []
-            isShowingPhoto = true
-            photoView.centerButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-            if let qView = questionViews.last, let constraint = lastTrailingConstraint {
-                let i = questionViews.count - 1
-                constraint.isActive = false
-                lastTrailingConstraint = photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
-                NSLayoutConstraint.activate([
-                                        photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
-                                        photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
-                                        qView.leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
-                                        qView.trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
-                                        lastTrailingConstraint!
-                                    ])
-               
-                
-            }
-            
-        }
-        
-    }
+    
     
     //  MARK: View life-cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = UIColor(named: K.Colors.dominant)
+        
+        if dayLog.answers?.allObjects == nil {
+            for question in Question.allCases {
+                let answer = Answer()
+                answer.question = question
+                answer.dayLog = dayLog
+            }
+        }
+        populate(dayLog.answers?.allObjects as! [Answer])
+        
+        if let data = dayLog.photo, let image = UIImage(data: data) {
+            isShowingPhoto = true
+            photoView.setImage(image)
+        }
         
         addSubviews()
         layoutUI()
-        
         scrollView.delegate = self
         
         for view in questionViews {
@@ -139,6 +92,7 @@ class EntryViewController: UIViewController {
             photoView.rightButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
             photoView.leftButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
         } else {
+            photoView.centerButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
             photoView.leftButton.removeFromSuperview()
             photoView.rightButton.removeFromSuperview()
             
@@ -185,6 +139,37 @@ class EntryViewController: UIViewController {
         }
     }
     
+    //MARK: button actions
+    
+    @objc func editPressed() {
+        //Edit apperance of questionViews to show editable behaviour
+        for view in questionViews {
+            view.textView.isEditable = true
+            view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
+            view.textView.layer.borderWidth = 3
+            view.textView.layer.cornerRadius = 5
+        }
+        //Add photoview if edit button is pressed and photoView was not shown before
+        if !isShowingPhoto {
+            scrollView.addSubview(photoView)
+            qViewHeightConstraint = []
+            isShowingPhoto = true
+            photoView.centerButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+            if let qView = questionViews.last, let constraint = lastTrailingConstraint {
+                let i = questionViews.count - 1
+                constraint.isActive = false
+                lastTrailingConstraint = photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
+                NSLayoutConstraint.activate([
+                                        photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
+                                        photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
+                                        qView.leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
+                                        qView.trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
+                                        lastTrailingConstraint!
+                                    ])
+            }
+        }
+    }
+    
     @objc func changeButtonTapped() {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
@@ -215,6 +200,7 @@ class EntryViewController: UIViewController {
         photoView.addSubview(photoView.leftButton)
         photoView.leftButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }
+    
     //  MARK: UI layout methods
     func addSubviews(){
         view.addSubview(scrollView)
@@ -290,6 +276,7 @@ extension EntryViewController: UITextViewDelegate {
     
 }
 
+//MARK: ScrollView delegate
 extension EntryViewController: UIScrollViewDelegate {
     //used to switch responders for keyboard
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
