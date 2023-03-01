@@ -112,7 +112,7 @@ class ReminderManager {
         }
     }
     
-    func prepareReminderStore() throws {
+    func prepareReminderStore(completionHandler: ( ()-> Void )? = nil ) throws {
         Task {
             do {
                 try await reminderStore.requestAccess()
@@ -120,6 +120,9 @@ class ReminderManager {
                 //                reminders = processReminders(tempReminders)
                 processReminders(newReminders)
                 delegate?.requestUIUpdate()
+                if let completionHandler = completionHandler {
+                    completionHandler()
+                }
             } catch {
                 throw error
             }
