@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     var coreDataStack: CoreDataStack!
     var managedContext: NSManagedObjectContext!
     var journalManager: JournalManager?
+    var reminderManager: ReminderManager?
     var selectedDayLog: DayLog?
     
     var selectedDate: Date = Date()
@@ -42,14 +43,41 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
+    // Properties for reminders (empty section to trick the manager so the indexPath works without extra logic)
+    let sectionNames = ["To-do today:", "", "To-do tomorrow"]
+    let comparators: [(Reminder) -> Bool] = [
+        { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInToday(dueDate)
+            } else { return false }
+        },
+        { reminder in
+            return false
+        },
+        { reminder in
+            if let dueDate = reminder.dueDate {
+                return Calendar.current.isDateInTomorrow(dueDate)
+            } else { return false }
+        }]
+    
+    
     //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         performFirstTimeSetUp()
+        
         journalManager = JournalManager(managedObjectContext: managedContext, coreDataStack: coreDataStack)
+        reminderManager =  ReminderManager(sectionNames: sectionNames, comparators: comparators)
+        
+        reminderManager?.delegate = self
+        do {
+            try reminderManager!.prepareReminderStore()
+        } catch {
+            print(error.localizedDescription)
+        }
         
         let results = journalManager?.getEntry(for: Date())
-        //this needs to change
+        //this needs to change to throw method probably?
         if let error = results?.error as? JournalManagerNSError, error == .noResultsRetrived {
             selectedDayLog = nil
         } else {
@@ -62,6 +90,7 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
         tableView.register(PhotoCell.self, forCellReuseIdentifier: PhotoCell.identifier)
+        tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
         tableView.reloadData()
     }
     
@@ -177,29 +206,59 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return result
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return reminderManager?.numberOfSections ?? 1
+    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return "Actions"
+        default:
+            return reminderManager?.sectionTitles[section] ?? "Section \(section)"
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return K.actions.count
+        if section == 1 {
+            return K.actions.count
+        } else {
+            return reminderManager?.sections[section].numberOfObjects ?? 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0, let data = selectedDayLog?.photo  {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: PhotoCell.identifier, for: indexPath) as! PhotoCell
-            cell.delegate = self
-            cell.myImageView.image = UIImage(data: data)
-            cell.cornerRadius = 20
-            cell.selectionStyle = .none
-            return cell
-            
+        if indexPath.section == 1 {
+            if indexPath.row == 0, let data = selectedDayLog?.photo  {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: PhotoCell.identifier, for: indexPath) as! PhotoCell
+                cell.delegate = self
+                cell.myImageView.image = UIImage(data: data)
+                cell.cornerRadius = 20
+                cell.selectionStyle = .none
+                return cell
+                
+            } else {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
+                cell.configureCell(with: K.actions[indexPath.row])
+                cell.selectionStyle = .none
+                cell.cornerRadius = 20
+                return cell
+                
+            }
         } else {
-        
-            let cell = tableView.dequeueReusableCell(withIdentifier: LabelCell.identifier, for: indexPath) as! LabelCell
-            cell.configureCell(with: K.actions[indexPath.row])
-            cell.selectionStyle = .none
-            cell.cornerRadius = 20
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReminderTableViewCell.identifier, for: indexPath) as! ReminderTableViewCell
+            if let reminderManager = reminderManager {
+            do {
+                let reminder = try reminderManager.reminder(forIndexPath: indexPath)
+                cell.configureCell(with: reminder.title, buttonState: reminder.isComplete)
+                cell.delegate = self
+            } catch {
+                print(error)
+            }}
             return cell
-            
         }
     }
     
@@ -213,32 +272,48 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //need to implement unwrapping the day log to make sure that it is added only when an action is tapped
-        switch indexPath.row {
-        
-        case 0:
-            if selectedDayLog == nil {
-                let result = journalManager?.getEntry(for: selectedDate)
-                if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
-                    selectedDayLog = journalManager?.addEntry(selectedDate)
-                } else {
-                    selectedDayLog = result?.dayLogs.first
+        if indexPath.section == 1 {
+            switch indexPath.row {
+                
+            case 0:
+                if selectedDayLog == nil {
+                    let result = journalManager?.getEntry(for: selectedDate)
+                    if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
+                        selectedDayLog = journalManager?.addEntry(selectedDate)
+                    } else {
+                        selectedDayLog = result?.dayLogs.first
+                    }
                 }
-            }
-            presentPhotoPicker()
-        case 1:
-            if selectedDayLog == nil {
-                let result = journalManager?.getEntry(for: selectedDate)
-                if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
-                    selectedDayLog = journalManager?.addEntry(selectedDate)
-                } else {
-                    selectedDayLog = result?.dayLogs.first
+                presentPhotoPicker()
+            case 1:
+                if selectedDayLog == nil {
+                    let result = journalManager?.getEntry(for: selectedDate)
+                    if let error = result?.error as? JournalManagerNSError, error == .noResultsRetrived {
+                        selectedDayLog = journalManager?.addEntry(selectedDate)
+                    } else {
+                        selectedDayLog = result?.dayLogs.first
+                    }
                 }
+                let sender = tableView.cellForRow(at: indexPath)
+                performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
+            default:
+                print("Add reminders cell tapped!")
+                tableView.reloadData()
             }
-            let sender = tableView.cellForRow(at: indexPath)
-            performSegue(withIdentifier: K.SegueIdentifiers.toQuestionVC, sender: sender)
-        default:
-            print("Add reminders cell tapped!")
+        } else {
+            do {
+                let reminder = try reminderManager?.reminder(forIndexPath: indexPath)
+                let vc = DetailViewController()
+                vc.reminder = reminder
+                vc.isAddingNewReminder = false
+                vc.reminderManager = reminderManager
+                present(vc, animated: true)
+            } catch {
+                print(error)
+            }
+            
         }
+        
     }
 }
 
@@ -269,5 +344,61 @@ extension MainViewController: PhotoCellDelegate {
         guard let entry = selectedDayLog, let _journalManager = journalManager else { return }
         _journalManager.deletePhoto(entry: entry)
         tableView.reloadData()
+    }
+}
+
+extension MainViewController: ReminderManagerDelegate {
+    func requestUIUpdate() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func controllerWillChangeContent(_ controller: ReminderManager) {
+        DispatchQueue.main.async {
+            self.tableView.beginUpdates()
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: ReminderManager) {
+        DispatchQueue.main.async {
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func controller(_ controller: ReminderManager, didChange aReminder: Reminder, at indexPath: IndexPath?, for type: ReminderManagerChangeType, newIndexPath: IndexPath?) {
+        DispatchQueue.main.async {
+            switch type {
+            case .insert:
+                self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            case .delete:
+                self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+            case .move:
+                self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+                self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+            case .update:
+                if let cell = self.tableView.cellForRow(at: indexPath!) as? ReminderTableViewCell {
+                    cell.configureCell(buttonState: aReminder.isComplete)
+                }
+            }
+        }
+    }
+    
+    func controller(_ controller: ReminderManager, didChange sectionInfo: ReminderResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: ReminderManagerChangeType) {
+    }
+    
+    
+}
+
+extension MainViewController: ReminderTableViewCellDelegate {
+    
+    func doneButtonTapped(sender: ReminderTableViewCell) {
+        if let indexPath = tableView.indexPath(for: sender) {
+            do {
+                try reminderManager?.updateReminder(atIndexPath: indexPath)
+            } catch {
+                print(error)
+            }
+        }
     }
 }
