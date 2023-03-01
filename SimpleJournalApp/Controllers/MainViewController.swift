@@ -196,11 +196,11 @@ extension MainViewController {
 
 //MARK: Table view methods
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-    //tableView method implementation
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         var result: CGFloat = tableView.frame.height / 8
-        if indexPath.row == 0 && selectedDayLog?.photo != nil {
+        if indexPath.section == 1 && indexPath.row == 0 && selectedDayLog?.photo != nil {
             result = 5 * tableView.frame.height / 8
         }
         return result
