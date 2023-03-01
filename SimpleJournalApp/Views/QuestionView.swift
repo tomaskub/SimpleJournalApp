@@ -75,7 +75,7 @@ class QuestionView: UIView {
             editButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             editButton.heightAnchor.constraint(equalToConstant: 30),
             editButton.widthAnchor.constraint(equalTo: editButton.heightAnchor),
-            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])ć
+            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])
     }
     
     required init?(coder: NSCoder) {
