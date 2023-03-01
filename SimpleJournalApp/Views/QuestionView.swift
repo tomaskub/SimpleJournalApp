@@ -75,11 +75,7 @@ class QuestionView: UIView {
             editButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             editButton.heightAnchor.constraint(equalToConstant: 30),
             editButton.widthAnchor.constraint(equalTo: editButton.heightAnchor),
-            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])
-        
-        textView.layer.cornerRadius = 10.0
-        textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
-        textView.layer.borderWidth = 3.0
+            editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])ć
     }
     
     required init?(coder: NSCoder) {
