@@ -25,8 +25,10 @@ class QuestionView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(named: K.Colors.complement)
         label.font = UIFont.systemFont(ofSize: 17)
+        label.numberOfLines = 0
         return label
     }()
+    
     let textView: UITextView = {
         let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,14 +41,19 @@ class QuestionView: UIView {
         view.textColor = UIColor(named: K.Colors.complement)
         return view
     }()
+    
     let editButton: UIButton = {
        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: K.SFSymbols.edit)
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(named: K.Colors.complement)!
+        button.contentMode = .scaleAspectFit
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         return button
     }()
+    
     override init(frame: CGRect) {
 
         super.init(frame: frame)
@@ -55,20 +62,24 @@ class QuestionView: UIView {
         addSubview(questionLabel)
         addSubview(textView)
         addSubview(editButton)
+        
         NSLayoutConstraint.activate([
             questionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             questionLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            textView.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 10),
+            questionLabel.trailingAnchor.constraint(equalTo: editButton.leadingAnchor),
+            textView.topAnchor.constraint(lessThanOrEqualTo: questionLabel.bottomAnchor, constant: 15),
+            textView.topAnchor.constraint(lessThanOrEqualTo: editButton.bottomAnchor, constant: 15),
             textView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30),
             editButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            editButton.heightAnchor.constraint(equalToConstant: 30),
+            editButton.widthAnchor.constraint(equalTo: editButton.heightAnchor),
             editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)])
+        
         textView.layer.cornerRadius = 10.0
         textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
         textView.layer.borderWidth = 3.0
-        
-
     }
     
     required init?(coder: NSCoder) {
