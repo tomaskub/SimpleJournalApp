@@ -10,8 +10,8 @@ import UIKit
 class EntryViewController: UIViewController {
     
     enum Strategy {
-    case isShowingOldEntry
-    case isCreatingNewEntry
+        case isShowingOldEntry
+        case isCreatingNewEntry
     }
     var isShowingPhoto = false
     
@@ -80,6 +80,9 @@ class EntryViewController: UIViewController {
             case .isCreatingNewEntry:
                 view.textView.isEditable = true
                 view.editButton.removeFromSuperview()
+                view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
+                view.textView.layer.borderWidth = 3
+                view.textView.layer.cornerRadius = 10
             case .isShowingOldEntry:
                 view.textView.isEditable = false
                 view.editButton.addTarget(self, action: #selector(editPressed), for: .touchUpInside)
@@ -119,9 +122,12 @@ class EntryViewController: UIViewController {
         }
         
     }
+}
+
+
+//  MARK: Selectors and button actions
+extension EntryViewController {
     
-    
-    //  MARK: Selectors
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
@@ -139,15 +145,13 @@ class EntryViewController: UIViewController {
         }
     }
     
-    //MARK: button actions
-    
     @objc func editPressed() {
         //Edit apperance of questionViews to show editable behaviour
         for view in questionViews {
             view.textView.isEditable = true
             view.textView.layer.borderColor = UIColor(named: K.Colors.complement)?.cgColor
             view.textView.layer.borderWidth = 3
-            view.textView.layer.cornerRadius = 5
+            view.textView.layer.cornerRadius = 10
         }
         //Add photoview if edit button is pressed and photoView was not shown before
         if !isShowingPhoto {
@@ -160,12 +164,12 @@ class EntryViewController: UIViewController {
                 constraint.isActive = false
                 lastTrailingConstraint = photoView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor)
                 NSLayoutConstraint.activate([
-                                        photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
-                                        photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
-                                        qView.leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
-                                        qView.trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
-                                        lastTrailingConstraint!
-                                    ])
+                    photoView.heightAnchor.constraint(equalToConstant: view.frame.height),
+                    photoView.widthAnchor.constraint(equalToConstant: view.frame.width),
+                    qView.leadingAnchor.constraint(equalTo: questionViews[i-1].trailingAnchor),
+                    qView.trailingAnchor.constraint(equalTo: photoView.leadingAnchor),
+                    lastTrailingConstraint!
+                ])
             }
         }
     }
@@ -200,8 +204,11 @@ class EntryViewController: UIViewController {
         photoView.addSubview(photoView.leftButton)
         photoView.leftButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     }
+}
+
+//  MARK: UI layout methods
+extension EntryViewController {
     
-    //  MARK: UI layout methods
     func addSubviews(){
         view.addSubview(scrollView)
         for view in questionViews {
@@ -267,7 +274,7 @@ class EntryViewController: UIViewController {
     }
 }
 
-//MARK: UITextViewDelegate
+//MARK: UITextViewDelegate methods
 extension EntryViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -276,7 +283,7 @@ extension EntryViewController: UITextViewDelegate {
     
 }
 
-//MARK: ScrollView delegate
+//MARK: ScrollView delegate methods
 extension EntryViewController: UIScrollViewDelegate {
     //used to switch responders for keyboard
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -288,6 +295,7 @@ extension EntryViewController: UIScrollViewDelegate {
     }
 }
 
+//MARK: ImagePickerDelegate and UINavigation methods
 extension EntryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true)
@@ -300,7 +308,6 @@ extension EntryViewController: UIImagePickerControllerDelegate, UINavigationCont
         }
         
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
         picker.dismiss(animated: true)
