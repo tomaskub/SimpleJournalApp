@@ -28,6 +28,7 @@
 		D6965A6E297F03A400199EC7 /* JournalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6D297F03A400199EC7 /* JournalManager.swift */; };
 		D6965A70297F107A00199EC7 /* JournalManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */; };
 		D6965A72297F41D400199EC7 /* JournalManagerNSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */; };
+		D69E73FA29B1174500CE4CAE /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69E73F929B1174500CE4CAE /* HeaderView.swift */; };
 		D69F20AC29900636003A44D8 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AB29900636003A44D8 /* Reminder.swift */; };
 		D69F20AE2990070F003A44D8 /* ReminderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AD2990070F003A44D8 /* ReminderStore.swift */; };
 		D69F20B029900847003A44D8 /* ReminderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69F20AF29900847003A44D8 /* ReminderError.swift */; };
@@ -96,6 +97,7 @@
 		D6965A6D297F03A400199EC7 /* JournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManager.swift; sourceTree = "<group>"; };
 		D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerTests.swift; sourceTree = "<group>"; };
 		D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerNSError.swift; sourceTree = "<group>"; };
+		D69E73F929B1174500CE4CAE /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeaderView.swift; path = SimpleJournalApp/HeaderView.swift; sourceTree = "<group>"; };
 		D69F20AB29900636003A44D8 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		D69F20AD2990070F003A44D8 /* ReminderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStore.swift; sourceTree = "<group>"; };
 		D69F20AF29900847003A44D8 /* ReminderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderError.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
+				D69E73F929B1174500CE4CAE /* HeaderView.swift */,
 				D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
@@ -440,6 +443,7 @@
 				D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
 				D68CE7B529938A62003B54CF /* DetailTableViewController.swift in Sources */,
+				D69E73FA29B1174500CE4CAE /* HeaderView.swift in Sources */,
 				D6E8D6322958DE9300433DCB /* Answer+CoreDataProperties.swift in Sources */,
 				D6323397298C21810024E0D7 /* LabelCell.swift in Sources */,
 				D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */,

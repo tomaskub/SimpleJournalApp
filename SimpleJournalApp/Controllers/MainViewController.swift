@@ -43,8 +43,8 @@ class MainViewController: UIViewController {
         return tempArray
     }()
     
-    // Properties for reminders (empty section to trick the manager so the indexPath works without extra logic)
-    let sectionNames = ["To-do today:", "", "To-do tomorrow"]
+    // Properties for reminders (empty section to trick the manager, so the indexPath works without extra logic and in tableview dataSource method different source is injected)
+    let sectionNames = ["To-do today:", "", "To-do tomorrow:"]
     let comparators: [(Reminder) -> Bool] = [
         { reminder in
             if let dueDate = reminder.dueDate {
@@ -91,6 +91,7 @@ class MainViewController: UIViewController {
         tableView.register(LabelCell.self, forCellReuseIdentifier: LabelCell.identifier)
         tableView.register(PhotoCell.self, forCellReuseIdentifier: PhotoCell.identifier)
         tableView.register(ReminderTableViewCell.self, forCellReuseIdentifier: ReminderTableViewCell.identifier)
+        tableView.register(HeaderView.self, forHeaderFooterViewReuseIdentifier: HeaderView.identifier)
         tableView.reloadData()
     }
     
@@ -104,7 +105,7 @@ class MainViewController: UIViewController {
             overrideUserInterfaceStyle = .unspecified
         }
     }
-    
+    //MARK: Selectors
     @objc func setSelected(sender: UIButton) {
         
         for button in dateButtonArray {
@@ -122,6 +123,8 @@ class MainViewController: UIViewController {
         }
         tableView.reloadData()
     }
+    
+    
     
 //    MARK: UI layout
     func layoutUI(){
@@ -209,13 +212,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return reminderManager?.numberOfSections ?? 1
     }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 28.0
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderView.identifier) as! HeaderView
         switch section {
         case 1:
-            return "Actions"
+            header.titleLabel.text = "Actions"
+            header.button.removeFromSuperview()
         default:
-            return reminderManager?.sectionTitles[section] ?? "Section \(section)"
+            header.titleLabel.text = reminderManager?.sectionTitles[section] ?? "Section \(section)"
+            header.button.addTarget(self, action: #selector(presentReminderDetailView), for: .touchUpInside)
         }
+        return header
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -270,6 +281,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         self.present(vc, animated: true)
     }
     
+    @objc fileprivate func presentReminderDetailView() {
+        let reminder = Reminder()
+        let vc = DetailViewController()
+        vc.reminder = reminder
+        vc.isAddingNewReminder = false
+        vc.reminderManager = reminderManager
+        
+        present(vc, animated: true)
+    }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //need to implement unwrapping the day log to make sure that it is added only when an action is tapped
         if indexPath.section == 1 {
@@ -302,6 +324,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             }
         } else {
             do {
+                //does not update the
                 let reminder = try reminderManager?.reminder(forIndexPath: indexPath)
                 let vc = DetailViewController()
                 vc.reminder = reminder

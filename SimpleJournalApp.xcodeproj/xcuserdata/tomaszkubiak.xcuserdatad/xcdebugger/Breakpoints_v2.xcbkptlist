@@ -159,8 +159,8 @@
             filePath = "SimpleJournalApp/Controllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -175,42 +175,10 @@
             filePath = "SimpleJournalApp/Controllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
+            startingLineNumber = "403"
+            endingLineNumber = "403"
             landmarkName = "controller(_:didChange:at:for:newIndexPath:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F6222C92-0726-4DAE-AAE1-9A4AFB3D88A3 - 9dfcc39e03eb5625"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in SimpleJournalApp.MainViewController.controller(_: SimpleJournalApp.ReminderManager, didChange: SimpleJournalApp.Reminder, at: Swift.Optional&lt;Foundation.IndexPath&gt;, for: SimpleJournalApp.ReminderManagerChangeType, newIndexPath: Swift.Optional&lt;Foundation.IndexPath&gt;) -&gt; ()"
-                  moduleName = "SimpleJournalApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tomaszkubiak/Documents/SimpleJournalApp/SimpleJournalApp/Controllers/MainViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "381"
-                  endingLineNumber = "381"
-                  offsetFromSymbolStart = "2520">
-               </Location>
-               <Location
-                  uuid = "F6222C92-0726-4DAE-AAE1-9A4AFB3D88A3 - 9dfcc39e03eb5625"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in SimpleJournalApp.MainViewController.controller(_: SimpleJournalApp.ReminderManager, didChange: SimpleJournalApp.Reminder, at: Swift.Optional&lt;Foundation.IndexPath&gt;, for: SimpleJournalApp.ReminderManagerChangeType, newIndexPath: Swift.Optional&lt;Foundation.IndexPath&gt;) -&gt; ()"
-                  moduleName = "SimpleJournalApp"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/tomaszkubiak/Documents/SimpleJournalApp/SimpleJournalApp/Controllers/MainViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "381"
-                  endingLineNumber = "381"
-                  offsetFromSymbolStart = "3224">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
