@@ -20,6 +20,8 @@ class MainViewController: UIViewController {
     var reminderManager: ReminderManager?
     var selectedDayLog: DayLog?
     
+    var collapsedSections: Set<Int> = []
+    
     var selectedDate: Date = Date()
     //Declare calendar buttons in an array
     let dateButtonArray: [CalendarDayButton] = {
@@ -124,6 +126,72 @@ class MainViewController: UIViewController {
         tableView.reloadData()
     }
     
+    @objc func collapseExpandSection(sender: UIButton) {
+        
+        guard let tableView = self.tableView else { return }
+        
+        guard let headerView = sender.superview?.superview as? HeaderView else { print("failed to get superview")
+            return
+        }
+        
+        let sectionNumber: Int? = {
+            for i in 0...tableView.numberOfSections {
+                if tableView.headerView(forSection: i) == headerView {
+                    return i
+                }
+            }
+            return nil
+        }()
+        guard let sectionNumber = sectionNumber else { return }
+        
+        // temp for testing:
+        
+//        guard sectionNumber == 1 else { return }
+        
+        print("section number: \(sectionNumber), titled: \(headerView.titleLabel.text!) changed its collapse - expand state")
+        
+        var image: UIImage?
+        if collapsedSections.contains(sectionNumber) {
+            // insert rows
+            collapsedSections.remove(sectionNumber)
+            
+            var indexesToAdd = [IndexPath]()
+            
+            let numberOfCells: Int = {
+                if sectionNumber == 1 {
+                    return K.actions.count
+                } else {
+                    return reminderManager?.sections[sectionNumber].numberOfObjects ?? 0
+                }
+            }()
+            
+            if !(numberOfCells == 0){
+                for i in 0...numberOfCells - 1 {
+                    indexesToAdd.append(IndexPath(row: i, section: sectionNumber))
+                }
+                tableView.insertRows(at: indexesToAdd, with: .fade)
+            }
+            
+            image = UIImage(systemName: "chevron.up")
+        } else {
+            collapsedSections.insert(sectionNumber) // set before removing rows
+            
+            var indexesToRemove = [IndexPath]()
+            if !(tableView.numberOfRows(inSection: sectionNumber) == 0) {
+                
+                for i in 0...tableView.numberOfRows(inSection: sectionNumber) - 1 {
+                    indexesToRemove.append(IndexPath(row: i, section: sectionNumber))
+                }
+                
+                tableView.deleteRows(at: indexesToRemove, with: .fade)
+                
+            }
+            
+            image = UIImage(systemName: "chevron.down")
+        }
+        
+        sender.setImage(image, for: .normal)
+    }
     
     
 //    MARK: UI layout
@@ -133,7 +201,6 @@ class MainViewController: UIViewController {
         tableView.layer.cornerRadius = tableView.layer.frame.width / 20
         // configure date label text
         dateLabel.text = Date.now.formatted(date: .complete, time: .omitted).uppercased()
-        // TODO: set up calendar button constraints to work properly with scrollView - still has
         // set up constraints for calendar buttons
         for i in 0...dateButtonArray.count-1 {
             scrollView.addSubview(dateButtonArray[i])
@@ -221,21 +288,27 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case 1:
             header.titleLabel.text = "Actions"
-            header.button.removeFromSuperview()
+            header.plusButton.removeFromSuperview()
+            header.chevronButton.addTarget(self, action: #selector(collapseExpandSection(sender:)), for: .touchUpInside)
         default:
             header.titleLabel.text = reminderManager?.sectionTitles[section] ?? "Section \(section)"
-            header.button.addTarget(self, action: #selector(presentReminderDetailView), for: .touchUpInside)
+            header.plusButton.addTarget(self, action: #selector(presentReminderDetailView), for: .touchUpInside)
+            header.chevronButton.addTarget(self, action: #selector(collapseExpandSection(sender:)), for: .touchUpInside)
         }
         return header
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
-            return K.actions.count
-        } else {
-            return reminderManager?.sections[section].numberOfObjects ?? 0
-        }
         
+        if collapsedSections.contains(section) {
+            return 0
+        } else {
+            if section == 1 {
+                return K.actions.count
+            } else {
+                return reminderManager?.sections[section].numberOfObjects ?? 0
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -370,6 +443,7 @@ extension MainViewController: PhotoCellDelegate {
     }
 }
 
+//MARK: ReminderManagerDelegate methods
 extension MainViewController: ReminderManagerDelegate {
     func requestUIUpdate() {
         DispatchQueue.main.async {
@@ -393,15 +467,28 @@ extension MainViewController: ReminderManagerDelegate {
         DispatchQueue.main.async {
             switch type {
             case .insert:
-                self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+                if !self.collapsedSections.contains(newIndexPath!.section) {
+                        self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+                    }
             case .delete:
+                if !self.collapsedSections.contains(indexPath!.section) {
                 self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+            }
             case .move:
+                
+                if !self.collapsedSections.contains(indexPath!.section) {
                 self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+                }
+                
+                if !self.collapsedSections.contains(newIndexPath!.section) {
                 self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+                }
+                
             case .update:
-                if let cell = self.tableView.cellForRow(at: indexPath!) as? ReminderTableViewCell {
-                    cell.configureCell(buttonState: aReminder.isComplete)
+                if !self.collapsedSections.contains(indexPath!.section) {
+                    if let cell = self.tableView.cellForRow(at: indexPath!) as? ReminderTableViewCell {
+                        cell.configureCell(buttonState: aReminder.isComplete)
+                    }
                 }
             }
         }

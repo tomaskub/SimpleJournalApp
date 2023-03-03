@@ -20,7 +20,7 @@ class HeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
-    let button: UIButton = {
+    let plusButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: "plus.circle")
@@ -29,6 +29,16 @@ class HeaderView: UITableViewHeaderFooterView {
         button.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
+        return button
+    }()
+    
+    let chevronButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "chevron.up")
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor(named: K.Colors.dominant)
+        button.contentMode = .scaleAspectFit
         return button
     }()
     
@@ -44,16 +54,22 @@ class HeaderView: UITableViewHeaderFooterView {
     func layoutUI() {
         
         contentView.addSubview(titleLabel)
-        contentView.addSubview(button)
+        contentView.addSubview(plusButton)
+        contentView.addSubview(chevronButton)
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 //            titleLabel.heightAnchor.constraint(equalToConstant: 13),
-            button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            button.heightAnchor.constraint(equalToConstant: 28),
-            button.widthAnchor.constraint(equalTo: button.heightAnchor),
-            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+            plusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            plusButton.heightAnchor.constraint(equalToConstant: 28),
+            plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
+            plusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            chevronButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            chevronButton.heightAnchor.constraint(equalToConstant: 28),
+//            chevronButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
+            chevronButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -20),
+            chevronButton.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -68)
         ])
         
     }
