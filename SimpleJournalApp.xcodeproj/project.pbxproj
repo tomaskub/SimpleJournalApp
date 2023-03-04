@@ -16,12 +16,15 @@
 		D63D6BF6293BA0310092E446 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D63D6BF4293BA0310092E446 /* Model.xcdatamodeld */; };
 		D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63F453029215DAD008598C9 /* TabBarViewController.swift */; };
 		D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64A996C29294DC3000DEBD4 /* SettingCell.swift */; };
+		D66618A429B3BABA00E4B6A3 /* MainViewController+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66618A329B3BABA00E4B6A3 /* MainViewController+Delegates.swift */; };
 		D669ECC32974474100C7CC2A /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D669ECC22974474100C7CC2A /* CoreDataStack.swift */; };
 		D67E689E298AF56200633487 /* DayLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */; };
 		D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */; };
 		D681AF0C29200288001B415C /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0B29200288001B415C /* HistoryViewController.swift */; };
 		D681AF0E2920045C001B415C /* CalendarDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D681AF0D2920045C001B415C /* CalendarDayButton.swift */; };
 		D682D7C0297B34FC00344F09 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */; };
+		D68A495429B3B4DA00D64F8B /* MainViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68A495329B3B4DA00D64F8B /* MainViewController+DataSource.swift */; };
+		D68A495629B3B5E900D64F8B /* MainViewController+UITableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68A495529B3B5E900D64F8B /* MainViewController+UITableViewDelegate.swift */; };
 		D68CE7B12991690B003B54CF /* ReminderStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */; };
 		D68CE7B529938A62003B54CF /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CE7B429938A62003B54CF /* DetailTableViewController.swift */; };
 		D68CE7B729938C05003B54CF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68CE7B629938C05003B54CF /* DetailViewController.swift */; };
@@ -85,19 +88,22 @@
 		D63D6BF5293BA0310092E446 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		D63F453029215DAD008598C9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D64A996C29294DC3000DEBD4 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingCell.swift; path = SimpleJournalApp/Views/SettingCell.swift; sourceTree = SOURCE_ROOT; };
+		D66618A329B3BABA00E4B6A3 /* MainViewController+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Delegates.swift"; sourceTree = "<group>"; };
 		D669ECC22974474100C7CC2A /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		D67E689C298AF56200633487 /* DayLog+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D67E689D298AF56200633487 /* DayLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DayLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D681AF0B29200288001B415C /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D681AF0D2920045C001B415C /* CalendarDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalendarDayButton.swift; path = SimpleJournalApp/Views/CalendarDayButton.swift; sourceTree = SOURCE_ROOT; };
 		D682D7BF297B34FC00344F09 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
+		D68A495329B3B4DA00D64F8B /* MainViewController+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+DataSource.swift"; sourceTree = "<group>"; };
+		D68A495529B3B5E900D64F8B /* MainViewController+UITableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+UITableViewDelegate.swift"; sourceTree = "<group>"; };
 		D68CE7B02991690B003B54CF /* ReminderStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStoreTests.swift; sourceTree = "<group>"; };
 		D68CE7B429938A62003B54CF /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D68CE7B629938C05003B54CF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = SimpleJournalApp/Controllers/DetailViewController.swift; sourceTree = SOURCE_ROOT; };
 		D6965A6D297F03A400199EC7 /* JournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManager.swift; sourceTree = "<group>"; };
 		D6965A6F297F107A00199EC7 /* JournalManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerTests.swift; sourceTree = "<group>"; };
 		D6965A71297F41D400199EC7 /* JournalManagerNSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalManagerNSError.swift; sourceTree = "<group>"; };
-		D69E73F929B1174500CE4CAE /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HeaderView.swift; path = SimpleJournalApp/HeaderView.swift; sourceTree = "<group>"; };
+		D69E73F929B1174500CE4CAE /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		D69F20AB29900636003A44D8 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		D69F20AD2990070F003A44D8 /* ReminderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStore.swift; sourceTree = "<group>"; };
 		D69F20AF29900847003A44D8 /* ReminderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderError.swift; sourceTree = "<group>"; };
@@ -159,6 +165,7 @@
 		D69F20B52990195E003A44D8 /* ReminderModels */ = {
 			isa = PBXGroup;
 			children = (
+				D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */,
 				D69F20AF29900847003A44D8 /* ReminderError.swift */,
 				D69F20AB29900636003A44D8 /* Reminder.swift */,
 				D69F20AD2990070F003A44D8 /* ReminderStore.swift */,
@@ -186,8 +193,6 @@
 		D6B43016291FB0B500E9C791 = {
 			isa = PBXGroup;
 			children = (
-				D69E73F929B1174500CE4CAE /* HeaderView.swift */,
-				D6CD69AF29A3F4EE00F63C83 /* ReminderManagerSection.swift */,
 				D6B43021291FB0B500E9C791 /* SimpleJournalApp */,
 				D6B43038291FB0B800E9C791 /* SimpleJournalAppTests */,
 				D6B43042291FB0B800E9C791 /* SimpleJournalAppUITests */,
@@ -260,6 +265,9 @@
 			children = (
 				D63F453029215DAD008598C9 /* TabBarViewController.swift */,
 				D6B43026291FB0B500E9C791 /* MainViewController.swift */,
+				D66618A329B3BABA00E4B6A3 /* MainViewController+Delegates.swift */,
+				D68A495329B3B4DA00D64F8B /* MainViewController+DataSource.swift */,
+				D68A495529B3B5E900D64F8B /* MainViewController+UITableViewDelegate.swift */,
 				D6D827B6294CB038005AF563 /* EntryViewController.swift */,
 				D681AF0B29200288001B415C /* HistoryViewController.swift */,
 				D63741962924154C00FFF9E5 /* SettingsViewController.swift */,
@@ -274,6 +282,7 @@
 		D6B43054291FB38A00E9C791 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D69E73F929B1174500CE4CAE /* HeaderView.swift */,
 				D6B261282997ADF600339B2C /* ReminderTableViewCell.swift */,
 				D6FF7A9A295DDFDB00A13453 /* HistoryTableViewCell.swift */,
 				D681AF0D2920045C001B415C /* CalendarDayButton.swift */,
@@ -426,11 +435,13 @@
 				D69F20B8299021AD003A44D8 /* RemindersViewController.swift in Sources */,
 				D69F20B029900847003A44D8 /* ReminderError.swift in Sources */,
 				D67E689F298AF56200633487 /* DayLog+CoreDataProperties.swift in Sources */,
+				D68A495429B3B4DA00D64F8B /* MainViewController+DataSource.swift in Sources */,
 				D69F20B229900D48003A44D8 /* EKEventStore.swift in Sources */,
 				D69F20AE2990070F003A44D8 /* ReminderStore.swift in Sources */,
 				D6323395298C21550024E0D7 /* PhotoCell.swift in Sources */,
 				D67E689E298AF56200633487 /* DayLog+CoreDataClass.swift in Sources */,
 				D63F453129215DAD008598C9 /* TabBarViewController.swift in Sources */,
+				D66618A429B3BABA00E4B6A3 /* MainViewController+Delegates.swift in Sources */,
 				D6E8D6312958DE9300433DCB /* Answer+CoreDataClass.swift in Sources */,
 				D6B43027291FB0B500E9C791 /* MainViewController.swift in Sources */,
 				D6B2612B29980EF900339B2C /* ReminderManager.swift in Sources */,
@@ -441,6 +452,7 @@
 				D63741972924154C00FFF9E5 /* SettingsViewController.swift in Sources */,
 				D6B58AEE2932919800A89B19 /* Preferenes.swift in Sources */,
 				D64A996D29294DC3000DEBD4 /* SettingCell.swift in Sources */,
+				D68A495629B3B5E900D64F8B /* MainViewController+UITableViewDelegate.swift in Sources */,
 				D6B43023291FB0B500E9C791 /* AppDelegate.swift in Sources */,
 				D68CE7B529938A62003B54CF /* DetailTableViewController.swift in Sources */,
 				D69E73FA29B1174500CE4CAE /* HeaderView.swift in Sources */,

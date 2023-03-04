@@ -60,14 +60,12 @@ class HeaderView: UITableViewHeaderFooterView {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            titleLabel.heightAnchor.constraint(equalToConstant: 13),
             plusButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             plusButton.heightAnchor.constraint(equalToConstant: 28),
             plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
             plusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             chevronButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             chevronButton.heightAnchor.constraint(equalToConstant: 28),
-//            chevronButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
             chevronButton.trailingAnchor.constraint(equalTo: plusButton.leadingAnchor, constant: -20),
             chevronButton.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -68)
         ])
