@@ -12,14 +12,30 @@ The SimpleJournal app lets you write a summary of your day using meditations wri
 ## Adding entries and reminders
 | Jouraling screen | Adding new reminder | Adding photo |
 |----|---|---|
-|![adding_entry](https://user-images.githubusercontent.com/7796745/230882115-f3faa27a-eedb-4d90-aa20-babe0e634867.gif)| ![Simulator Screen Recording - iPhone 14 Pro - 2023-04-10 at 12 11 45](https://user-images.githubusercontent.com/7796745/230882070-c50c6929-25e9-4bd8-90 | ![Simulator Screen Recording - iPhone 14 Pro - 2023-04-10 at 12 05 30](https://user-images.githubusercontent.com/7796745/230881045-5bac6843-ba29-44ba-b416-b0eeec685db0.gif)|
+|![adding_entry](https://user-images.githubusercontent.com/7796745/230882115-f3faa27a-eedb-4d90-aa20-babe0e634867.gif)| ![addingReminder](https://user-images.githubusercontent.com/7796745/230882620-7a24cffe-26be-47da-bcae-7c5067b4a608.gif)| ![Simulator Screen Recording - iPhone 14 Pro - 2023-04-10 at 12 05 30](https://user-images.githubusercontent.com/7796745/230881045-5bac6843-ba29-44ba-b416-b0eeec685db0.gif)|
 
+# Technologies
 
+- Dark mode support 
+- Swift
+- CoreData
+- UserDefaults
+- EventKit
+- Notifications with UNUserNotificationCenter
+- UIKit (mix of storyboards + programatic approach with autolayout, some CoreGraphics)
+- MVC architecture 
+- XCTest for unit and UI testing
 
+# Highlights
+- Custom FetchResultsController for EventKit allows using the UITableViews in a simple and hassle-free manner. 
+- CalendarDayButton - button with bespoke drawn backgrounds and UIKit elements 
+- Custom CoreDataStack, managers for JournalEntries and Reminders
 
-Custom UI Buttons for day representation styled after calendar card. 
-Daily entries save with CoreData.
-User preferences saved with UserDefaults.
+# Build
 
-Very much WIP, all comments gladly taken. 
+No additional libraries used - clone with xcode and run!
+
+# Feedback 
+
+Feel free to file an issue or submit a PR.
 
